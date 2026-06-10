@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">GamersRL_Meetup</string>
+    <string name="back_button_text">Back</string>
+    <string name="game_page_activity_name">Game Page</string>
 </resources>

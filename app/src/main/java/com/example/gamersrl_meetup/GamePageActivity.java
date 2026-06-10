@@ -10,10 +10,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class GamePageActivity extends AppCompatActivity
 {
+    private TextView mGamePageTextView;
     private EditText mGamePageEditText;
     private Button mBackButton;
 
@@ -29,6 +31,7 @@ public class GamePageActivity extends AppCompatActivity
         setContentView(R.layout.game_page_layout);
 
         // Set the UI elements
+        mGamePageTextView = findViewById(R.id.game_page_header);
         mGamePageEditText = findViewById(R.id.game_page_field);
         mBackButton = findViewById(R.id.game_page_back_button);
 

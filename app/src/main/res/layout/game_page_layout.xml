@@ -8,6 +8,18 @@
     tools:context=".MainActivity"
     >
 
+    <TextView
+        android:id="@+id/game_page_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20sp"
+        android:layout_marginRight="20sp"
+        android:text="@string/game_page_activity_name"
+        android:textAlignment="center"
+        android:textAllCaps="true"
+        >
+
+    </TextView>
     <EditText
         android:id="@+id/game_page_field"
         android:layout_width="match_parent"
@@ -21,6 +33,11 @@
         android:id="@+id/game_page_back_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Back"
+        android:text="@string/back_button_text"
+        />
+
+    <ActionMenuView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         />
 </LinearLayout>
