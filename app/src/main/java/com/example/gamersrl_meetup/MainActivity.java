@@ -1,5 +1,6 @@
 package com.example.gamersrl_meetup;
 
+
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.gamersrl_meetup.HeaderMenuActivity;
 // Sources for logging in Android Studio with Log.d:
@@ -8,38 +9,43 @@ import com.example.gamersrl_meetup.HeaderMenuActivity;
 import android.content.Intent;
 import android.util.Log;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.TextView;
+
 
 public class MainActivity extends AppCompatActivity
 {
-    private EditText mStartPageEditText;
-    private Button mStartPageButton;
-    private Menu mNavMenu;
-    private MenuItem mOpenNavMenu;
-
-    public final int intGamePageMenuItemID = R.id.game_page;
-    public final int intHomePageMenuItemID = R.id.main_activity;
-
     // Source for constant syntax: https://www.w3schools.com/java/java_variables_final.asp
     final String strLogTag = "StartPage - ";
 
+    private TextView mStartPageTextView;
+    private Button mStartPageButton;
 
+
+    /**
+     * Create the view.
+     *
+     * @param savedInstanceState If the activity is being re-initialized after
+     *     previously being shut down then this Bundle contains the data it most
+     *     recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
+     *
+     */
     @Override
     protected  void onCreate(Bundle savedInstanceState)
     {
         Log.d(strLogTag, (strLogTag + "creating view"));
+
         // Set the view
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
 
         // Set the UI elements
-        mStartPageEditText = findViewById(R.id.startpage_field);
-        mStartPageButton = findViewById(R.id.startpage_button);
+        mStartPageTextView = findViewById(R.id.start_page_header);
+        mStartPageButton = findViewById(R.id.start_page_button);
+
+        // Set the header text
+        mStartPageTextView.setText(R.string.start_page_activity_name);
 
         // Set onClick Listener
         mStartPageButton.setOnClickListener(new View.OnClickListener()
@@ -47,50 +53,8 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-
-
+                startActivity(new Intent(MainActivity.this, GamePageActivity.class));
             }
         });
     }
-
-
-    /**
-     * Inflate the Header Menu resource.
-     *
-     * Sources:
-     * https://www.geeksforgeeks.org/android/how-to-implement-options-menu-in-android/
-     * https://developer.android.com/develop/ui/views/components/menus#java
-     * https://developer.android.com/guide/topics/resources/menu-resource#java
-     *
-     * @param menu The options menu in which you place your items.
-     *
-     * @return That the menu was inflated
-     */
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
-        getMenuInflater().inflate(R.menu.header_menu, menu);
-        return true;
-    }
-
-
-    /**
-     * Wrapper method to handle Header Menu selection while overriding onOptionsItemSelected().
-     *
-     * Sources:
-     * https://www.geeksforgeeks.org/android/how-to-implement-options-menu-in-android/
-     * https://developer.android.com/develop/ui/views/components/menus#java
-     * https://developer.android.com/guide/topics/resources/menu-resource#java\
-     *
-     * @param item The menu item that was selected.
-     * @return The result of selecting an item
-     */
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        HeaderMenuActivity headerMenu = new HeaderMenuActivity();
-        Log.d(strLogTag, strLogTag + headerMenu.toString());
-        return headerMenu.handleHeaderMenuSelection(MainActivity.this, item);
-    }
-
 }

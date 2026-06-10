@@ -5,11 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    tools:context=".GamePageActivity"
+    tools:context=".GameDetailsPageActivity"
     >
 
     <TextView
-        android:id="@+id/game_page_header"
+        android:id="@+id/game_details_page_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20sp"
@@ -19,19 +19,5 @@
         >
 
     </TextView>
-
-    <Button
-        android:id="@+id/to_game_details_page_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="To Game Details Page"
-        />
-
-    <Button
-        android:id="@+id/game_page_back_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/back_button_text"
-        />
 
 </LinearLayout>

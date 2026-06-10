@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GamersRL_Meetup">
         <activity
-            android:name="com.example.gamersrl_meetup.MainActivity"
+            android:name=".MainActivity"
             android:exported="true"
             >
             <intent-filter>
@@ -21,12 +21,18 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.example.gamersrl_meetup.GamePageActivity"
+            android:name=".GamePageActivity"
             android:exported="true"
             >
         </activity>
         <activity
-            android:name="com.example.gamersrl_meetup.HeaderMenuActivity"
+            android:name=".GameDetailsPageActivity"
+            android:exported="true"
+            android:parentActivityName=".GamePageActivity"
+            >
+        </activity>
+        <activity
+            android:name=".HeaderMenuActivity"
             android:exported="true"
             >
         </activity>
