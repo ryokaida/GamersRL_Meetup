@@ -3,8 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     >
     <item
-        android:id="@+id/open_nav_menu"
-        android:title="Menu"
-        app:showAsAction="always"
+        android:id="@+id/main_activity"
+        android:title="Home"
+        app:showAsAction="never"
+        />
+    <item
+        android:id="@+id/game_page"
+        android:title="Game Page"
+        app:showAsAction="never"
         />
 </menu>

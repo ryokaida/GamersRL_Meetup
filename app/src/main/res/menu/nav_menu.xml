@@ -3,12 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     >
     <item
-        android:id="@+id/main_activity"
+        android:id="@+id/main_activity2"
         android:title="Home"
         app:showAsAction="ifRoom"
         />
     <item
-        android:id="@+id/game_page"
+        android:id="@+id/game_page2"
         android:title="Game Page"
         app:showAsAction="ifRoom"
         />

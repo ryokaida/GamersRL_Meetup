@@ -1,6 +1,7 @@
 package com.example.gamersrl_meetup;
 
 import androidx.appcompat.app.AppCompatActivity;
+import com.example.gamersrl_meetup.HeaderMenuActivity;
 // Sources for logging in Android Studio with Log.d:
 // https://stackoverflow.com/a/16783890
 // https://developer.android.com/studio/debug
@@ -12,7 +13,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.PopupMenu;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity
@@ -20,12 +20,14 @@ public class MainActivity extends AppCompatActivity
     private EditText mStartPageEditText;
     private Button mStartPageButton;
     private Menu mNavMenu;
+    private MenuItem mOpenNavMenu;
 
     public final int intGamePageMenuItemID = R.id.game_page;
     public final int intHomePageMenuItemID = R.id.main_activity;
 
     // Source for constant syntax: https://www.w3schools.com/java/java_variables_final.asp
     final String strLogTag = "StartPage - ";
+
 
     @Override
     protected  void onCreate(Bundle savedInstanceState)
@@ -46,42 +48,49 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View v)
             {
 
-                PopupMenu popup = new PopupMenu(MainActivity.this, mStartPageButton);
-                popup.getMenuInflater().inflate(R.menu.nav_menu, popup.getMenu());
-                popup.setOnMenuItemClickListener(menuItem -> {
-                    if (menuItem.getItemId() == R.id.main_activity)
-                    {
-                        // Create Intent for the Game Page and start it
-                        // Source: https://www.geeksforgeeks.org/android/creating-multiple-screen-applications-in-android/
-//                            Intent GamePageIntent = new Intent(MainActivity.this, GamePageActivity.class);
-//                            startActivity(GamePageIntent);
-                        Toast.makeText(MainActivity.this, "bees", Toast.LENGTH_SHORT).show();
-                        return true;
-                    }
-                    else if (menuItem.getItemId() == R.id.game_page)
-                    {
-                        // Create Intent for the Game Page and start it
-                        // Source: https://www.geeksforgeeks.org/android/creating-multiple-screen-applications-in-android/
-                        Intent GamePageIntent = new Intent(MainActivity.this, GamePageActivity.class);
-                        startActivity(GamePageIntent);
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                });
-                popup.show();
+
             }
         });
     }
 
-    // Inflate menu resource
-    // Source: https://www.geeksforgeeks.org/android/how-to-implement-options-menu-in-android/
+
+    /**
+     * Inflate the Header Menu resource.
+     *
+     * Sources:
+     * https://www.geeksforgeeks.org/android/how-to-implement-options-menu-in-android/
+     * https://developer.android.com/develop/ui/views/components/menus#java
+     * https://developer.android.com/guide/topics/resources/menu-resource#java
+     *
+     * @param menu The options menu in which you place your items.
+     *
+     * @return That the menu was inflated
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
         getMenuInflater().inflate(R.menu.header_menu, menu);
         return true;
     }
+
+
+    /**
+     * Wrapper method to handle Header Menu selection while overriding onOptionsItemSelected().
+     *
+     * Sources:
+     * https://www.geeksforgeeks.org/android/how-to-implement-options-menu-in-android/
+     * https://developer.android.com/develop/ui/views/components/menus#java
+     * https://developer.android.com/guide/topics/resources/menu-resource#java\
+     *
+     * @param item The menu item that was selected.
+     * @return The result of selecting an item
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        HeaderMenuActivity headerMenu = new HeaderMenuActivity();
+        Log.d(strLogTag, strLogTag + headerMenu.toString());
+        return headerMenu.handleHeaderMenuSelection(MainActivity.this, item);
+    }
+
 }
