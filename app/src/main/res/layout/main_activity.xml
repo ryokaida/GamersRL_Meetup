@@ -20,6 +20,20 @@
         />
 
     <Button
+        android:id="@+id/to_login_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/to_login_button_text"
+        />
+
+    <Button
+        android:id="@+id/to_signup_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/to_signup_button_text"
+        />
+
+    <Button
         android:id="@+id/start_page_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

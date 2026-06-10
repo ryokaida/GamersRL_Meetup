@@ -21,6 +21,8 @@ public class MainActivity extends AppCompatActivity
 
     private TextView mStartPageTextView;
     private Button mStartPageButton;
+    private Button mLoginButton;
+    private Button mSignupButton;
 
 
     /**
@@ -43,6 +45,8 @@ public class MainActivity extends AppCompatActivity
         // Set the UI elements
         mStartPageTextView = findViewById(R.id.start_page_header);
         mStartPageButton = findViewById(R.id.start_page_button);
+        mLoginButton = findViewById(R.id.to_login_button);
+        mSignupButton = findViewById(R.id.to_signup_button);
 
         // Set the header text
         mStartPageTextView.setText(R.string.start_page_activity_name);
