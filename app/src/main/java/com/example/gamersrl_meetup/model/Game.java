@@ -1,0 +1,228 @@
+package com.example.gamersrl_meetup.model;
+
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+
+/**
+ * Game class
+ *
+ * Models a Game so that the application can work with Games outside the database.
+ */
+public class Game implements Parcelable
+{
+    // Set up the Log tag for the Game class
+    private final String LOG_TAG = "GAME - ";
+
+    // Set up attributes for Game
+    private int id;
+    private String title;
+    private String description;
+    private String developer;
+    private String publisher;
+    private Date releaseDate;
+    private ArrayList<String> categories; // List of categories delimited by ";"
+    private int minPlayers;
+    private int maxPlayers;
+    private int pictureURI; // URI for an image of the Game
+
+    /**
+     * Construct a new Game with the incoming data.
+     *
+     * @param id The ID of the Game
+     * @param title The Game's title
+     * @param description The game's description
+     * @param developer The game's developer
+     * @param publisher The game's publisher
+     * @param releaseDate The game's release date
+     * @param categories A list of the Game's categories delimited by ";"
+     * @param minPlayers The minimum number of players that can play the Game
+     * @param maxPlayers The maximum number of players that can play the Game
+     * @param pictureURI The URI for an image of the Game
+     */
+    public Game(int id, String title, String description, String developer, String publisher, Date releaseDate, ArrayList<String> categories, int minPlayers, int maxPlayers, int pictureURI)
+    {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.developer = developer;
+        this.publisher = publisher;
+        this.releaseDate = releaseDate;
+        this.categories = categories;
+        this.minPlayers = minPlayers;
+        this.maxPlayers = maxPlayers;
+        this.pictureURI = pictureURI;
+    }
+
+    /**
+     * Create a new Game using data from the incoming parcel.
+     *
+     * @param in The incoming Parcel that has the Game data
+     */
+    protected Game(Parcel in)
+    {
+        // Read the data from the incoming parcel and assign them to the Game attributes
+        id = in.readInt();
+        title = in.readString();
+        description = in.readString();
+        developer = in.readString();
+        publisher = in.readString();
+
+        // Read the data for Release Date as a Long and convert to a Date to improve performance [5] [6]
+        releaseDate = new Date(in.readLong());
+
+        /**
+         * If the incoming list of categories is populated, then assign the list to the categories attribute.
+         * Otherwise, assign Null to the categories attribute.
+         * [1]
+         */
+        if (in.readByte() == 0x01)
+        {
+            // Create a new ArrayList for the categories and read in the list of categories from the incoming parcel [1]
+            categories = new ArrayList<>();
+            in.readList(categories, String.class.getClassLoader());
+        }
+        else
+        {
+            categories = null;
+        }
+
+        // Read in the rest of the data from the incoming parcel and assign them to the Game attributes
+        minPlayers = in.readInt();
+        maxPlayers = in.readInt();
+        pictureURI = in.readInt();
+
+//        /**
+//         * Read in the Release Date as a string and try to parse it as a date,
+//         * and log an Error message if parsing fails [2] [3].
+//         */
+//        try
+//        {
+//            SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy 00:00:00");
+//            releaseDate = dateFormat.parse(in.readString());
+//        }
+//        catch (Exception e)
+//        {
+//            Log.e(LOG_TAG, "Unable to parse Release Date for Game from parcel data: " + e.getMessage());
+//        }
+    }
+
+    /**
+     * Use the Creator to make a new Game using the parcel and set up the array of Games.
+     */
+    public static final Creator<Game> CREATOR = new Creator<Game>()
+    {
+        /**
+         * Use the Game(Parcel in) constructor to make a new Game using the incoming parcel.
+         *
+         * @param in The Parcel to read the object's data from.
+         * @return the new Game
+         */
+        @Override
+        public Game createFromParcel(Parcel in)
+        {
+            return new Game(in);
+        }
+
+        /**
+         * Make a new array of Games that hast he size indicated by the incoming size.
+         *
+         * @param size Size of the array.
+         * @return the new array of Games
+         */
+        @Override
+        public Game[] newArray(int size)
+        {
+            return new Game[size];
+        }
+    };
+
+    /**
+     * Describe the contents of the Game.
+     *
+     * @return 0
+     */
+    @Override
+    public int describeContents()
+    {
+        return 0;
+    }
+
+    /**
+     * Write the Game data to into the parcel.
+     *
+     * @param dest The Parcel in which the object should be written.
+     * @param flags Additional flags about how the object should be written.
+     * May be 0 or {@link #PARCELABLE_WRITE_RETURN_VALUE}.
+     */
+    @Override
+    public void writeToParcel(@NonNull Parcel dest, int flags)
+    {
+        // Write the data into the parcel
+        dest.writeInt(id);
+        dest.writeString(title);
+        dest.writeString(description);
+        dest.writeString(developer);
+        dest.writeString(publisher);
+
+        // Write the Release Date as a Long for better performance [5] [6]
+        dest.writeLong(releaseDate.getTime());
+
+        /**
+         * If categories is null, write that there is nothing in the list into the parcel.
+         * Otherwise, write the list into the parcel.
+         * [1]
+         */
+        if (categories == null)
+        {
+            dest.writeByte((byte) (0x00));
+        }
+        else
+        {
+            dest.writeByte((byte) (0x01)); // Start the list before writing it into the parcel [4]
+            dest.writeList(categories);
+        }
+
+        // Write the rest of the data into the parcel
+        dest.writeInt(minPlayers);
+        dest.writeInt(maxPlayers);
+        dest.writeInt(pictureURI);
+    }
+
+    /**
+     * Getters for the Game attributes.
+     *
+     * @return id, title, description, developer, publisher, releaseDate, categories, minPlayers, maxPlayers, pictureURI
+     */
+    public int getId() { return id; }
+    public String getTitle() { return title; }
+    public String getDescription() { return description; }
+    public String getDeveloper() { return developer; }
+    public String getPublisher() { return publisher; }
+    public Date getReleaseDate() { return releaseDate; }
+    public ArrayList<String> getCategories() { return categories; }
+    public int getMinPlayers() { return minPlayers; }
+    public int getMaxPlayers() { return maxPlayers; }
+    public int getPictureURI() { return pictureURI; }
+
+    /**
+     * Setters for the Game attributes.
+     * @param id, title, description, developer, publisher, releaseDate, categories, minPlayers, maxPlayers, pictureURI
+     */
+    public void setId(int id) { this.id = id; }
+    public void setTitle(String title) { this.title = title; }
+    public void setDescription(String description) { this.description = description; }
+    public void setDeveloper(String developer) { this.developer = developer; }
+    public void setPublisher(String publisher) { this.publisher = publisher; }
+    public void setReleaseDate(Date releaseDate) { this.releaseDate = releaseDate; }
+    public void setCategories(ArrayList<String> categories) { this.categories = categories; }
+    public void setMinPlayers(int minPlayers) { this.minPlayers = minPlayers; }
+    public void setMaxPlayers(int maxPlayers) { this.maxPlayers = maxPlayers; }
+    public void setPictureURI(int pictureURI) { this.pictureURI = pictureURI; }
+}
