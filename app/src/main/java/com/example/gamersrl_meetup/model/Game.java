@@ -27,7 +27,6 @@ public class Game implements Parcelable
     private String developer;
     private String publisher;
     private Date releaseDate;
-    private ArrayList<String> categories; // List of categories delimited by ";"
     private int minPlayers;
     private int maxPlayers;
     private int pictureURI; // URI for an image of the Game
@@ -41,12 +40,11 @@ public class Game implements Parcelable
      * @param developer The game's developer
      * @param publisher The game's publisher
      * @param releaseDate The game's release date
-     * @param categories A list of the Game's categories delimited by ";"
      * @param minPlayers The minimum number of players that can play the Game
      * @param maxPlayers The maximum number of players that can play the Game
      * @param pictureURI The URI for an image of the Game
      */
-    public Game(int id, String title, String description, String developer, String publisher, Date releaseDate, ArrayList<String> categories, int minPlayers, int maxPlayers, int pictureURI)
+    public Game(int id, String title, String description, String developer, String publisher, Date releaseDate, int minPlayers, int maxPlayers, int pictureURI)
     {
         this.id = id;
         this.title = title;
@@ -54,7 +52,6 @@ public class Game implements Parcelable
         this.developer = developer;
         this.publisher = publisher;
         this.releaseDate = releaseDate;
-        this.categories = categories;
         this.minPlayers = minPlayers;
         this.maxPlayers = maxPlayers;
         this.pictureURI = pictureURI;
@@ -77,21 +74,21 @@ public class Game implements Parcelable
         // Read the data for Release Date as a Long and convert to a Date to improve performance [5] [6]
         releaseDate = new Date(in.readLong());
 
-        /**
-         * If the incoming list of categories is populated, then assign the list to the categories attribute.
-         * Otherwise, assign Null to the categories attribute.
-         * [1]
-         */
-        if (in.readByte() == 0x01)
-        {
-            // Create a new ArrayList for the categories and read in the list of categories from the incoming parcel [1]
-            categories = new ArrayList<>();
-            in.readList(categories, String.class.getClassLoader());
-        }
-        else
-        {
-            categories = null;
-        }
+//        /**
+//         * If the incoming list of categories is populated, then assign the list to the categories attribute.
+//         * Otherwise, assign Null to the categories attribute.
+//         * [1]
+//         */
+//        if (in.readByte() == 0x01)
+//        {
+//            // Create a new ArrayList for the categories and read in the list of categories from the incoming parcel [1]
+//            categories = new ArrayList<>();
+//            in.readList(categories, String.class.getClassLoader());
+//        }
+//        else
+//        {
+//            categories = null;
+//        }
 
         // Read in the rest of the data from the incoming parcel and assign them to the Game attributes
         minPlayers = in.readInt();
@@ -174,20 +171,20 @@ public class Game implements Parcelable
         // Write the Release Date as a Long for better performance [5] [6]
         dest.writeLong(releaseDate.getTime());
 
-        /**
-         * If categories is null, write that there is nothing in the list into the parcel.
-         * Otherwise, write the list into the parcel.
-         * [1]
-         */
-        if (categories == null)
-        {
-            dest.writeByte((byte) (0x00));
-        }
-        else
-        {
-            dest.writeByte((byte) (0x01)); // Start the list before writing it into the parcel [4]
-            dest.writeList(categories);
-        }
+//        /**
+//         * If categories is null, write that there is nothing in the list into the parcel.
+//         * Otherwise, write the list into the parcel.
+//         * [1]
+//         */
+//        if (categories == null)
+//        {
+//            dest.writeByte((byte) (0x00));
+//        }
+//        else
+//        {
+//            dest.writeByte((byte) (0x01)); // Start the list before writing it into the parcel [4]
+//            dest.writeList(categories);
+//        }
 
         // Write the rest of the data into the parcel
         dest.writeInt(minPlayers);
@@ -198,7 +195,7 @@ public class Game implements Parcelable
     /**
      * Getters for the Game attributes.
      *
-     * @return id, title, description, developer, publisher, releaseDate, categories, minPlayers, maxPlayers, pictureURI
+     * @return id, title, description, developer, publisher, releaseDate, minPlayers, maxPlayers, pictureURI
      */
     public int getId() { return id; }
     public String getTitle() { return title; }
@@ -206,14 +203,13 @@ public class Game implements Parcelable
     public String getDeveloper() { return developer; }
     public String getPublisher() { return publisher; }
     public Date getReleaseDate() { return releaseDate; }
-    public ArrayList<String> getCategories() { return categories; }
     public int getMinPlayers() { return minPlayers; }
     public int getMaxPlayers() { return maxPlayers; }
     public int getPictureURI() { return pictureURI; }
 
     /**
      * Setters for the Game attributes.
-     * @param id, title, description, developer, publisher, releaseDate, categories, minPlayers, maxPlayers, pictureURI
+     * @param id, title, description, developer, publisher, releaseDate, minPlayers, maxPlayers, pictureURI
      */
     public void setId(int id) { this.id = id; }
     public void setTitle(String title) { this.title = title; }
@@ -221,7 +217,6 @@ public class Game implements Parcelable
     public void setDeveloper(String developer) { this.developer = developer; }
     public void setPublisher(String publisher) { this.publisher = publisher; }
     public void setReleaseDate(Date releaseDate) { this.releaseDate = releaseDate; }
-    public void setCategories(ArrayList<String> categories) { this.categories = categories; }
     public void setMinPlayers(int minPlayers) { this.minPlayers = minPlayers; }
     public void setMaxPlayers(int maxPlayers) { this.maxPlayers = maxPlayers; }
     public void setPictureURI(int pictureURI) { this.pictureURI = pictureURI; }
