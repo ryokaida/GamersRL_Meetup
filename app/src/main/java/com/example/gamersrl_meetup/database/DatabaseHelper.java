@@ -21,13 +21,6 @@ public abstract class DatabaseHelper extends SQLiteOpenHelper
     private static final int DATABASE_VERSION = 1;
 
     /**
-     * Abstract method to create the query to make the pertinent table [8] [9] [10].
-     *
-     * @return The query to create the pertinent table
-     */
-    public abstract String createTable();
-
-    /**
      * Constructor to create the database helper, with the database name and version.
      *
      * @param context The context to make the database helper in
@@ -38,7 +31,16 @@ public abstract class DatabaseHelper extends SQLiteOpenHelper
     }
 
     /**
+     * Abstract method to create the query to make the pertinent table [8] [9] [10].
+     *
+     * @return The query to create the pertinent table
+     */
+    public abstract String createTable();
+
+    /**
      * Execute the query from createTable() to create the table in the database.
+     *
+     * NOTE: You should only have to call super.onCreate(db); in the specific Game/User/etc. DatabseHelpers
      *
      * @param db The database.
      */
@@ -51,6 +53,8 @@ public abstract class DatabaseHelper extends SQLiteOpenHelper
 
     /**
      * Upgrade the database to version 2 if it is still on version 1.
+     *
+     * NOTE: You should only have to call super.onUpgrade(db, oldVersion, newVersion); in the specific Game/User/etc. DatabseHelpers
      *
      * @param db The database.
      * @param oldVersion The old database version.
@@ -65,12 +69,15 @@ public abstract class DatabaseHelper extends SQLiteOpenHelper
          */
         if (oldVersion < 2)
         {
+            Log.d(LOG_TAG, "Need to upgrade to database version 2");
             // TODO - Update to the database to version 2
         }
     }
 
     /**
      * Determine whether the table is empty or not.
+     *
+     * NOTE: You should only have to call return super.isTableEmpty(in_TableName); in the specific Game/User/etc. DatabseHelpers
      *
      * @return Whether the table is empty or not - TRUE is empty; FALSE is populated
      */

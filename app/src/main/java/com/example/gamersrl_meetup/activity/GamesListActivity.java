@@ -35,7 +35,7 @@ public class GamesListActivity extends AppCompatActivity
         setContentView(R.layout.list_page_layout);
 
         // Instantiate the RecyclerView, the dividers indicating the start and end the RecyclerView, and the Button
-        Log.d(LOG_TAG, "Instantiating UI elements");
+        Log.d(LOG_TAG, "Instantiating UI elements for the Games List page");
         mRecyclerView = findViewById(R.id.recycler_view);
         mStartOfRecyclerViewDivider = findViewById(R.id.start_of_recyclerview_divider);
         mEndOfRecyclerViewDivider = findViewById(R.id.end_of_recyclerview_divider);

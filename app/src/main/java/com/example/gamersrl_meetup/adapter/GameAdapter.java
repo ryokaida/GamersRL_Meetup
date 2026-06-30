@@ -1,39 +1,115 @@
 package com.example.gamersrl_meetup.adapter;
 
-import android.view.LayoutInflater;
-import android.view.View;
+import android.content.Context;
+import android.util.Log;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
-
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gamersrl_meetup.R;
 import com.example.gamersrl_meetup.model.Game;
 
 import java.util.List;
 
-public class GameAdapter extends RecyclerView.Adapter<GameAdapter.ViewHolder>
-{
+/**
+ * GameAdapter class
+ *
+ * Provides an intermediary between the data and the list item views for Games.
+ * Extends the Adapter abstract class to dynamically populate the list item views with data.
+ */
+public class GameAdapter extends Adapter {
     // Set up the Log tag
     private final String LOG_TAG = "GAME ADAPTER - ";
 
-    // Initialize a List of Games
+    // Initialize a List of items
     private List<Game> games;
 
     /**
-     * Construct a new Adapter with the list of Games to display.
+     * Construct a new Adapter with the list of items to display.
      *
-     * @param games The list of Games to display
+     * @param games The list of items to display
      */
-    public GameAdapter(List<Game> games)
-    {
+    public GameAdapter(List<Game> games) {
+        super();
         this.games = games;
     }
 
     /**
-     * Create a ViewHolder for a single Game in the List.
+     * Dynamically retrieve the labels for the data in the list item.
+     * These abstract helper methods are used so that labels can be retrieved for Games, Users, etc.
+     *
+     * @param context The context that the label is being retrieved for
+     * @return The developer, description, and ID labels
+     */
+    @Override
+    public String getLabel1(Context context)
+    {
+        // Retrieve the Developer Label from the String resources [23]
+        String label1 = context.getResources().getString(R.string.games_list_page_developer_label);
+        Log.d(LOG_TAG, "Retrieved Label1: " + label1);
+        return label1;
+    }
+    @Override
+    public String getLabel2(Context context)
+    {
+        // Retrieve the Description Label from the String resources [23]
+        String label2 = context.getResources().getString(R.string.list_item_description_label);
+        Log.d(LOG_TAG, "Retrieved Label2: " + label2);
+        return label2;
+    }
+    @Override
+    public String getIdLabel(Context context)
+    {
+        // Retrieve the ID Label from the String resources [23]
+        String idLabel = context.getResources().getString(R.string.list_item_id_label);
+        Log.d(LOG_TAG, "Retrieved ID Label: " + idLabel);
+        return idLabel;
+    }
+
+    /**
+     * Dynamically retrieve the data to be displayed in the list item.
+     * These abstract helper methods are used so that data can be retrieved for Games, Users, etc.
+     *
+     * @param position The position of the current item in the list
+     * @return The Game's title, developer, description, ID, and picture URI
+     */
+    @Override
+    public String getNameText(int position)
+    {
+        String nameText = games.get(position).getTitle();
+        Log.d(LOG_TAG, "Retrieved name text: " + nameText);
+        return nameText;
+    }
+    @Override
+    public String getSubtitle1(int position)
+    {
+        String subtitle1 = games.get(position).getDeveloper();
+        Log.d(LOG_TAG, "Retrieved subtitle 1: " + subtitle1);
+        return subtitle1;
+    }
+    @Override
+    public String getSubtitle2(int position)
+    {
+        String subtitle2 = games.get(position).getDescription();
+        Log.d(LOG_TAG, "Retrieved subtitle 2: " + subtitle2);
+        return subtitle2;
+    }
+    @Override
+    public String getIdText(int position)
+    {
+        String idText = String.valueOf(games.get(position).getId());
+        Log.d(LOG_TAG, "Retrieved ID text: " + idText);
+        return idText;
+    }
+    @Override
+    public int getImage(int position)
+    {
+        int imageID = games.get(position).getPictureURI();
+        Log.d(LOG_TAG, "Retrieved image ID: " + String.valueOf(imageID));
+        return imageID;
+    }
+
+    /**
+     * Create a ViewHolder for a single item in the List.
+     * Uses the Adapter abstract class's onCreateViewHolder method.
      *
      * @param parent   The ViewGroup into which the new View will be added after it is bound to
      *                 an adapter position.
@@ -41,16 +117,15 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.ViewHolder>
      * @return the ViewHolder for a single Product in the list
      */
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+    public Adapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
     {
-        // Inflate the view for a single Product in the list
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item, parent, false);
-        // Use the inflated view for the Product to make its ViewHolder
-        return new ViewHolder(view);
+        Log.d(LOG_TAG, "Creating View Holder");
+        return super.onCreateViewHolder(parent, viewType);
     }
 
     /**
-     * Bind the Game's data to its view in the list item.
+     * Bind the list item's data to its view in the list.
+     * Uses the Adapter abstract class's onBindViewHolder method (the parent method is set up to use the abstract data retrieval methods to populate the views).
      *
      * @param holder   The ViewHolder which should be updated to represent the contents of the
      *                 item at the given position in the data set.
@@ -59,76 +134,20 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.ViewHolder>
     @Override
     public void onBindViewHolder(ViewHolder holder, int position)
     {
-        // Assign position to a new variable so it can be used to populate the RecyclerView and for the OnClickListener [18] [19] [20] [21]
-        int position2 = position;
-
-        // Get the selected Game
-        Game game = games.get(position2);
-
-        // Populate the views with the data
-        holder.titleTextView.setText(game.getTitle());
-        holder.developerLabel.setText(R.string.games_list_page_developer_label);
-        holder.developerTextView.setText(game.getDeveloper());
-        holder.descriptionLabel.setText(R.string.list_item_description_label);
-        holder.descriptionTextView.setText(game.getDescription());
-        holder.idLabel.setText(R.string.list_item_id_label);
-        holder.idTextView.setText(String.valueOf(game.getId()));
-
-        // Populate the image with the correct Product icon [22]
-        holder.imageView.setImageResource(game.getPictureURI());
-
-        //holder.viewButton.set
+        Log.d(LOG_TAG, "Binding data to View Holder");
+        super.onBindViewHolder(holder, position);
     }
 
     /**
-     * Retrieve the number of Games in the list.
+     * Retrieve the number of items in the list.
      *
-     * @return The number of Games in the list
+     * @return The number of items in the list
      */
     @Override
     public int getItemCount()
     {
-        return games.size();
-    }
-
-    /**
-     * ViewHolder class
-     *
-     * Holds the Views for the Game's data and image.
-     */
-    public class ViewHolder extends RecyclerView.ViewHolder
-    {
-        // Initialize the TextViews for the Game attributes and the list item dividers
-        public TextView titleTextView, developerTextView, descriptionTextView, idTextView, developerLabel, descriptionLabel, idLabel;
-        public View listItemDivider;
-
-        // Initialize the View button for each list item
-        public Button viewButton;
-
-        // Initialize the ImageView for the ImageView for the Game image [22]
-        public ImageView imageView;
-
-        /**
-         * Construct a new ViewHolder with the Views needed for the Game's data, icon, and View button.
-         *
-         * @param itemView the View of the Game in the list
-         */
-        public ViewHolder(View itemView)
-        {
-            // Set the itemView
-            super(itemView);
-
-            // Instantiate the UI elements for the list item
-            titleTextView = itemView.findViewById(R.id.nameTextView);
-            developerLabel = itemView.findViewById(R.id.label_1);
-            developerTextView = itemView.findViewById(R.id.subtitle_1);
-            descriptionLabel = itemView.findViewById(R.id.label_2);
-            descriptionTextView = itemView.findViewById(R.id.subtitle_2);
-            idLabel = itemView.findViewById(R.id.label_id);
-            idTextView = itemView.findViewById(R.id.idTextView);
-            imageView = itemView.findViewById(R.id.list_item_icon);
-            listItemDivider = itemView.findViewById(R.id.list_item_divider_bottom);
-            viewButton = itemView.findViewById(R.id.viewButton);
-        }
+        int numItemsInList = games.size();
+        Log.d(LOG_TAG, "Retrieved number of items in list: " + String.valueOf(numItemsInList));
+        return numItemsInList;
     }
 }

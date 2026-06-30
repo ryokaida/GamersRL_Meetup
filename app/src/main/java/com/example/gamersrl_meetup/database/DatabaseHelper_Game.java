@@ -33,6 +33,21 @@ public class DatabaseHelper_Game extends DatabaseHelper
     // The picture is indicated via a URI so that the code can refer to its file location
     private static final String KEY_PICTURE_URI = "picture_uri";
 
+    /**
+     * Constructor to create the database helper, with the database name and version.
+     *
+     * @param context The context to make the database helper in
+     */
+    public DatabaseHelper_Game(Context context)
+    {
+        super(context);
+    }
+
+    /**
+     * Create the query to make the pertinent table.
+     *
+     * @return The query to create the pertinent table
+     */
     @Override
     public String createTable()
     {
@@ -49,16 +64,6 @@ public class DatabaseHelper_Game extends DatabaseHelper
                 ")";
         Log.d(LOG_TAG, "Created query to create table: " + QUERY_CREATE_TABLE);
         return QUERY_CREATE_TABLE;
-    }
-
-    /**
-     * Create the database helper, with the database name and version.
-     *
-     * @param context The context to make the database helper in
-     */
-    public DatabaseHelper_Game(Context context)
-    {
-        super(context);
     }
 
     /**
@@ -88,7 +93,7 @@ public class DatabaseHelper_Game extends DatabaseHelper
     /**
      * Determine whether the table is empty or not.
      *
-     * @param in_TableName the Game table
+     * @param in_TableName The name of the table to check
      * @return Whether the table is empty or not
      */
     @Override
@@ -96,6 +101,15 @@ public class DatabaseHelper_Game extends DatabaseHelper
         return super.isTableEmpty(in_TableName);
     }
 
+    /**
+     * Retrieve all Games from the database.
+     * Steps:
+     * 1. Set up the list of Games and constructs the specific query to use
+     * 2. Run the query
+     * 3. Use the traverseTable() helper method to iterate through the table and retrieve the data
+     *
+     * @return
+     */
     public List<Game> getAllGames()
     {
         // Make a new ArrayList for the Games
@@ -119,17 +133,18 @@ public class DatabaseHelper_Game extends DatabaseHelper
     }
 
     /**
-     * Helper method to traverse the Game table and get rows from it.
+     * Helper method to traverse the table and get rows from it.
+     * This code must be repeated in each specific Game/Uesr/etc. DatabaseHelper class since each schema and record data type is different.
      *
-     * @param io_Games The list of Games - Starts as empty when passed into the method; ends with 0 or more items when passed out of the method
+     * @param io_Items The list of items from the table - Starts as empty when passed into the method; ends with 0 or more items when passed out of the method
      * @param in_Cursor Used to iterate through the table
      * @param in_Db The database
-     * @return The updated list of Games
+     * @return The updated list of items
      */
-    private List<Game> traverseTable(List<Game> io_Games, Cursor in_Cursor, SQLiteDatabase in_Db)
+    private List<Game> traverseTable(List<Game> io_Items, Cursor in_Cursor, SQLiteDatabase in_Db)
     {
         /**
-         * If there are rows retrieved, then iterate through them ot get the Game data.
+         * If there are rows retrieved, then iterate through them to get the item data.
          * Otherwise, do nothing.
          */
         if (in_Cursor.moveToFirst())
@@ -137,8 +152,8 @@ public class DatabaseHelper_Game extends DatabaseHelper
             // Iterate through the rows while there are still rows to get data from
             do
             {
-                // Make a Game from the current table row
-                Game game = new Game(
+                // Make an item from the current table row
+                Game item = new Game(
                         in_Cursor.getInt(0), // Get id from current table row
                         in_Cursor.getString(1), // Get title from current table row
                         in_Cursor.getString(2), // Get description from current table row
@@ -150,8 +165,8 @@ public class DatabaseHelper_Game extends DatabaseHelper
                         in_Cursor.getInt(7), // Get min players from current table row
                         in_Cursor.getInt(8) // Get picture URI from current table row
                 );
-                // Add the new Game to the list of Games
-                io_Games.add(game);
+                // Add the new item to the list of items
+                io_Items.add(item);
             }
             while (in_Cursor.moveToNext());
         }
@@ -160,8 +175,64 @@ public class DatabaseHelper_Game extends DatabaseHelper
         in_Cursor.close();
         //in_Db.close();
 
-        // Return the new list of Games
-        return io_Games;
+        // Return the new list of items
+        return io_Items;
+    }
+
+    /**
+     * Add a new Game to the database [12].
+     *
+     * @param game The Game to add to the database
+     */
+    public void addToDatabase(Game game)
+    {
+        // Get the database so it can be accessed/written to
+        SQLiteDatabase db = getWritableDatabase();
+
+        // Initialize the ContentValues
+        ContentValues values = new ContentValues();
+
+        /** Set the data for the new Game */
+        values.put(KEY_TITLE, game.getTitle());
+        Log.d(LOG_TAG, "Using title: " + game.getTitle());
+
+        values.put(KEY_DESCRIPTION, game.getDescription());
+        Log.d(LOG_TAG, "Using description: " + game.getDescription());
+
+        values.put(KEY_DEVELOPER, game.getDeveloper());
+        Log.d(LOG_TAG, "Using developer: " + game.getDeveloper());
+
+        values.put(KEY_PUBLISHER, game.getPublisher());
+        Log.d(LOG_TAG, "Using publisher: " + game.getPublisher());
+
+        values.put(KEY_RELEASE_DATE, game.getReleaseDate().getTime());
+        Log.d(LOG_TAG, "Using release date: " + game.getReleaseDate().getTime());
+
+        values.put(KEY_MIN_PLAYERS, game.getMinPlayers());
+        Log.d(LOG_TAG, "Using min players: " + String.valueOf(game.getMinPlayers()));
+
+        values.put(KEY_MAX_PLAYERS, game.getMaxPlayers());
+        Log.d(LOG_TAG, "Using max players: " + String.valueOf(game.getMaxPlayers()));
+
+        values.put(KEY_PICTURE_URI, game.getPictureURI());
+        Log.d(LOG_TAG, "Using picture URI: " + String.valueOf(game.getPictureURI()));
+
+        // Insert the values into the table
+        Log.d(LOG_TAG, "Inserting new game into db");
+        db.insert(TABLE_NAME, null, values);
+
+        // Close the database connection
+       // db.close();
+    }
+
+    /**
+     * Retrieve the table name.
+     *
+     * @return The table name
+     */
+    public String getTableName()
+    {
+        return TABLE_NAME;
     }
 
     /**
@@ -245,61 +316,5 @@ public class DatabaseHelper_Game extends DatabaseHelper
         // Insert the values into the table
         Log.d(LOG_TAG, "Inserting Dead by Daylight into db");
         database.insert(TABLE_NAME, null, values);
-    }
-
-    /**
-     * Add a new Game to the database [12].
-     *
-     * @param game The Game to add to the database
-     */
-    public void addToDatabase(Game game)
-    {
-        // Get the database so it can be accessed/written to
-        SQLiteDatabase db = getWritableDatabase();
-
-        // Initialize the ContentValues
-        ContentValues values = new ContentValues();
-
-        /** Set the data for the new Game */
-        values.put(KEY_TITLE, game.getTitle());
-        Log.d(LOG_TAG, "Using title: " + game.getTitle());
-
-        values.put(KEY_DESCRIPTION, game.getDescription());
-        Log.d(LOG_TAG, "Using description: " + game.getDescription());
-
-        values.put(KEY_DEVELOPER, game.getDeveloper());
-        Log.d(LOG_TAG, "Using developer: " + game.getDeveloper());
-
-        values.put(KEY_PUBLISHER, game.getPublisher());
-        Log.d(LOG_TAG, "Using publisher: " + game.getPublisher());
-
-        values.put(KEY_RELEASE_DATE, game.getReleaseDate().getTime());
-        Log.d(LOG_TAG, "Using release date: " + game.getReleaseDate().getTime());
-
-        values.put(KEY_MIN_PLAYERS, game.getMinPlayers());
-        Log.d(LOG_TAG, "Using min players: " + String.valueOf(game.getMinPlayers()));
-
-        values.put(KEY_MAX_PLAYERS, game.getMaxPlayers());
-        Log.d(LOG_TAG, "Using max players: " + String.valueOf(game.getMaxPlayers()));
-
-        values.put(KEY_PICTURE_URI, game.getPictureURI());
-        Log.d(LOG_TAG, "Using picture URI: " + String.valueOf(game.getPictureURI()));
-
-        // Insert the values into the table
-        Log.d(LOG_TAG, "Inserting new game into db");
-        db.insert(TABLE_NAME, null, values);
-
-        // Close the database connection
-       // db.close();
-    }
-
-    /**
-     * Retrieve the table name.
-     *
-     * @return The table name
-     */
-    public String getTableName()
-    {
-        return TABLE_NAME;
     }
 }
