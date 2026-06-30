@@ -17,7 +17,7 @@ import java.util.Date;
  */
 public class Game implements Parcelable
 {
-    // Set up the Log tag for the Game class
+    // Set up the Log tag
     private final String LOG_TAG = "GAME - ";
 
     // Set up attributes for Game

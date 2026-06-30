@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 /**
  * DatabaseHelper abstract class
@@ -12,8 +13,8 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 public abstract class DatabaseHelper extends SQLiteOpenHelper
 {
-    // Set up the Log tag for the Game class
-    private final String LOG_TAG = "GAME - ";
+    // Set up the Log tag
+    private final String LOG_TAG = "DATABASE HELPER - ";
 
     // Set the database name and version
     private static final String DATABASE_NAME = "gamers_irl_database";
@@ -37,13 +38,14 @@ public abstract class DatabaseHelper extends SQLiteOpenHelper
     }
 
     /**
-     * Execute the query from createProductsTable() to create the Products table in the database.
+     * Execute the query from createTable() to create the table in the database.
      *
      * @param db The database.
      */
     @Override
     public void onCreate(SQLiteDatabase db)
     {
+        Log.d(LOG_TAG, "Creating table");
         db.execSQL(createTable());
     }
 
@@ -82,6 +84,7 @@ public abstract class DatabaseHelper extends SQLiteOpenHelper
 
         // Retrieve the count of the rows in the table via SQL
         Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM " + in_TableName, null);
+        Log.d(LOG_TAG, "Created querty to retrieve the count of rows in table " + in_TableName);
 
         /**
          * If the cursor is populated with the count of rows, then verify that more than 0 rows were retrieved.
@@ -108,6 +111,7 @@ public abstract class DatabaseHelper extends SQLiteOpenHelper
         }
 
         // Return whether the database is empty or not - TRUE is empty; FALSE is populated
+        Log.d(LOG_TAG, "Result of isEmpty check: " + String.valueOf(isEmpty));
         return isEmpty;
     }
 

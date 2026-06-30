@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.example.gamersrl_meetup.R;
 import com.example.gamersrl_meetup.model.Game;
@@ -14,6 +15,9 @@ import java.util.List;
 
 public class DatabaseHelper_Game extends DatabaseHelper
 {
+    // Set up the Log tag
+    private final String LOG_TAG = "GAME DATABASE HELPER - ";
+
     // Set the table name
     private static final String TABLE_NAME = "game";
 
@@ -43,6 +47,7 @@ public class DatabaseHelper_Game extends DatabaseHelper
                 KEY_MAX_PLAYERS + " INTEGER, " +
                 KEY_PICTURE_URI + " TEXT" +
                 ")";
+        Log.d(LOG_TAG, "Created query to create table: " + QUERY_CREATE_TABLE);
         return QUERY_CREATE_TABLE;
     }
 
@@ -95,17 +100,21 @@ public class DatabaseHelper_Game extends DatabaseHelper
     {
         // Make a new ArrayList for the Games
         List<Game> games = new ArrayList<>();
+
         // Make the query to get all data
         String selectQuery = "SELECT * FROM " + TABLE_NAME;
+        Log.d(LOG_TAG, "Created query to get all games: " + selectQuery);
 
         // Get the database so it can be accessed/written to
         SQLiteDatabase db = getWritableDatabase();
         // Execute the query to get all Games
         Cursor cursor = db.rawQuery(selectQuery, null);
 
+        Log.d(LOG_TAG, "Retrieving all games from db");
         games = traverseTable(games, cursor, db);
 
         // Return the list of Games
+        Log.d(LOG_TAG, "Retrieved " + String.valueOf(games.size()) + " games from db");
         return games;
     }
 
@@ -149,7 +158,7 @@ public class DatabaseHelper_Game extends DatabaseHelper
 
         // Close the cursor and database connections
         in_Cursor.close();
-        in_Db.close();
+        //in_Db.close();
 
         // Return the new list of Games
         return io_Games;
@@ -176,7 +185,10 @@ public class DatabaseHelper_Game extends DatabaseHelper
         values.put(KEY_RELEASE_DATE, "9/11/2025 00:00:00");
         values.put(KEY_MIN_PLAYERS, 1);
         values.put(KEY_MAX_PLAYERS, 4);
-        values.put(KEY_PICTURE_URI, R.drawable.neckdefender);
+        values.put(KEY_PICTURE_URI, R.drawable.borderlands4);
+        // Insert the values into the table
+        Log.d(LOG_TAG, "Inserting Borderlands 4 into db");
+        database.insert(TABLE_NAME, null, values);
 
         // Refresh the ContentValues and add to the table
         values = new ContentValues();
@@ -187,7 +199,10 @@ public class DatabaseHelper_Game extends DatabaseHelper
         values.put(KEY_RELEASE_DATE, "8/3/2016 00:00:00");
         values.put(KEY_MIN_PLAYERS, 1);
         values.put(KEY_MAX_PLAYERS, 4);
-        values.put(KEY_PICTURE_URI, R.drawable.neckdefender);
+        values.put(KEY_PICTURE_URI, R.drawable.overcooked);
+        // Insert the values into the table
+        Log.d(LOG_TAG, "Inserting Overcooked into db");
+        database.insert(TABLE_NAME, null, values);
 
         // Refresh the ContentValues and add to the table
         values = new ContentValues();
@@ -198,7 +213,10 @@ public class DatabaseHelper_Game extends DatabaseHelper
         values.put(KEY_RELEASE_DATE, "1/14/2022 00:00:00");
         values.put(KEY_MIN_PLAYERS, 1);
         values.put(KEY_MAX_PLAYERS, 1);
-        values.put(KEY_PICTURE_URI, R.drawable.neckdefender);
+        values.put(KEY_PICTURE_URI, R.drawable.god_of_war);
+        // Insert the values into the table
+        Log.d(LOG_TAG, "Inserting God of War into db");
+        database.insert(TABLE_NAME, null, values);
 
         // Refresh the ContentValues and add to the table
         values = new ContentValues();
@@ -209,7 +227,10 @@ public class DatabaseHelper_Game extends DatabaseHelper
         values.put(KEY_RELEASE_DATE, "4/5/2022 00:00:00");
         values.put(KEY_MIN_PLAYERS, 1);
         values.put(KEY_MAX_PLAYERS, 2);
-        values.put(KEY_PICTURE_URI, R.drawable.neckdefender);
+        values.put(KEY_PICTURE_URI, R.drawable.lego_star_wars_the_skywalker_saga);
+        // Insert the values into the table
+        Log.d(LOG_TAG, "Inserting Lego Star Wars: The Skywalker Saga into db");
+        database.insert(TABLE_NAME, null, values);
 
         // Refresh the ContentValues and add to the table
         values = new ContentValues();
@@ -220,7 +241,10 @@ public class DatabaseHelper_Game extends DatabaseHelper
         values.put(KEY_RELEASE_DATE, "6/14/2016 00:00:00");
         values.put(KEY_MIN_PLAYERS, 1);
         values.put(KEY_MAX_PLAYERS, 5);
-        values.put(KEY_PICTURE_URI, R.drawable.neckdefender);
+        values.put(KEY_PICTURE_URI, R.drawable.dead_by_daylight);
+        // Insert the values into the table
+        Log.d(LOG_TAG, "Inserting Dead by Daylight into db");
+        database.insert(TABLE_NAME, null, values);
     }
 
     /**
@@ -236,20 +260,46 @@ public class DatabaseHelper_Game extends DatabaseHelper
         // Initialize the ContentValues
         ContentValues values = new ContentValues();
 
-        // Set the data for the new Game
+        /** Set the data for the new Game */
         values.put(KEY_TITLE, game.getTitle());
+        Log.d(LOG_TAG, "Using title: " + game.getTitle());
+
         values.put(KEY_DESCRIPTION, game.getDescription());
+        Log.d(LOG_TAG, "Using description: " + game.getDescription());
+
         values.put(KEY_DEVELOPER, game.getDeveloper());
+        Log.d(LOG_TAG, "Using developer: " + game.getDeveloper());
+
         values.put(KEY_PUBLISHER, game.getPublisher());
+        Log.d(LOG_TAG, "Using publisher: " + game.getPublisher());
+
         values.put(KEY_RELEASE_DATE, game.getReleaseDate().getTime());
+        Log.d(LOG_TAG, "Using release date: " + game.getReleaseDate().getTime());
+
         values.put(KEY_MIN_PLAYERS, game.getMinPlayers());
+        Log.d(LOG_TAG, "Using min players: " + String.valueOf(game.getMinPlayers()));
+
         values.put(KEY_MAX_PLAYERS, game.getMaxPlayers());
+        Log.d(LOG_TAG, "Using max players: " + String.valueOf(game.getMaxPlayers()));
+
         values.put(KEY_PICTURE_URI, game.getPictureURI());
+        Log.d(LOG_TAG, "Using picture URI: " + String.valueOf(game.getPictureURI()));
 
         // Insert the values into the table
+        Log.d(LOG_TAG, "Inserting new game into db");
         db.insert(TABLE_NAME, null, values);
 
         // Close the database connection
-        db.close();
+       // db.close();
+    }
+
+    /**
+     * Retrieve the table name.
+     *
+     * @return The table name
+     */
+    public String getTableName()
+    {
+        return TABLE_NAME;
     }
 }

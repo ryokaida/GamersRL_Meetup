@@ -9,4 +9,16 @@
     <string name="game_page_activity_name">Game Page</string>
 
     <string name="game_details_page_activity_name">Game Details Page</string>
+
+    <!-- Strings for the Games List page -->
+    <string name="games_list_page_activity_name">Games List</string>
+    <string name="games_list_page_developer_label">Developer: </string>
+
+
+
+
+    <!-- General strings for the list items -->
+    <string name="list_item_description_label">Description: </string>
+    <string name="list_item_id_label">ID: </string>
+    <string name="list_item_view_button_text">View</string>
 </resources>
