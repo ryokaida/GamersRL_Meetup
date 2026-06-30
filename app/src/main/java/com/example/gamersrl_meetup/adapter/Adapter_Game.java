@@ -10,12 +10,12 @@ import com.example.gamersrl_meetup.model.Game;
 import java.util.List;
 
 /**
- * GameAdapter class
+ * Adapter_Game class
  *
  * Provides an intermediary between the data and the list item views for Games.
  * Extends the Adapter abstract class to dynamically populate the list item views with data.
  */
-public class GameAdapter extends Adapter {
+public class Adapter_Game extends Adapter {
     // Set up the Log tag
     private final String LOG_TAG = "GAME ADAPTER - ";
 
@@ -27,7 +27,7 @@ public class GameAdapter extends Adapter {
      *
      * @param games The list of items to display
      */
-    public GameAdapter(List<Game> games) {
+    public Adapter_Game(List<Game> games) {
         super();
         this.games = games;
     }

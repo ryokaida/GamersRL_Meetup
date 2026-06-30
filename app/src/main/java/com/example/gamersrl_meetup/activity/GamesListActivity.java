@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gamersrl_meetup.R;
-import com.example.gamersrl_meetup.adapter.GameAdapter;
+import com.example.gamersrl_meetup.adapter.Adapter_Game;
 import com.example.gamersrl_meetup.database.DatabaseHelper_Game;
 import com.example.gamersrl_meetup.model.Game;
 
@@ -23,7 +23,7 @@ public class GamesListActivity extends AppCompatActivity
     private RecyclerView mRecyclerView;
     private LinearLayoutManager layoutManager;
     private DatabaseHelper_Game dbHelper;
-    private GameAdapter adapter;
+    private Adapter_Game adapter;
     private View mStartOfRecyclerViewDivider;
     private View mEndOfRecyclerViewDivider;
 
@@ -69,7 +69,7 @@ public class GamesListActivity extends AppCompatActivity
 
         // Make the adapter and set it onto the RecyclerView
         Log.d(LOG_TAG, "Making adapter");
-        adapter = new GameAdapter(games);
+        adapter = new Adapter_Game(games);
         mRecyclerView.setAdapter(adapter);
 
         // Make a LinearLayoutManager to draw the objects and set it onto the RecyclerView
