@@ -38,4 +38,7 @@ dependencies {
     testImplementation libs.junit
     androidTestImplementation libs.espresso.core
     androidTestImplementation libs.ext.junit
+    implementation("com.stripe:identity:23.10.0"){
+        exclude group: "com.google.ai.edge.litert", module: "litert-support-api"
+    }
 }
