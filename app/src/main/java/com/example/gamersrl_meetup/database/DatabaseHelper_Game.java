@@ -129,6 +129,7 @@ public class DatabaseHelper_Game extends DatabaseHelper<Game>
     @Override
     public Game constructItemFromDBRow(Cursor in_Cursor)
     {
+        Log.d(LOG_TAG, "Constructing the Game from the db row");
         return new Game(
                 in_Cursor.getInt(0), // Get id from current table row
                 in_Cursor.getString(1), // Get title from current table row
