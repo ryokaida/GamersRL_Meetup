@@ -15,11 +15,18 @@ import com.example.gamersrl_meetup.model.Game;
 
 import java.util.List;
 
+/**
+ * GamesListActivity class
+ *
+ * Displays a RecyclerView with Games.
+ * The user can select a Game to go to its details page by clicking its View button.
+ */
 public class GamesListActivity extends AppCompatActivity
 {
     // Set up the Log tag [26]
     private final String LOG_TAG = "GAMES LIST ACTIVITY - ";
 
+    // Initialize the UI elements
     private RecyclerView mRecyclerView;
     private LinearLayoutManager layoutManager;
     private DatabaseHelper_Game dbHelper;
@@ -27,6 +34,14 @@ public class GamesListActivity extends AppCompatActivity
     private View mStartOfRecyclerViewDivider;
     private View mEndOfRecyclerViewDivider;
 
+    /**
+     * Create the list of Games and populate the list.
+     *
+     * @param savedInstanceState If the activity is being re-initialized after
+     *     previously being shut down then this Bundle contains the data it most
+     *     recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
+     *
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -64,6 +79,7 @@ public class GamesListActivity extends AppCompatActivity
             Log.d(LOG_TAG, "Game table is populated");
         }
 
+        // Get all the items for the list
         Log.d(LOG_TAG, "Populating list");
         games = dbHelper.getAllGames();
 

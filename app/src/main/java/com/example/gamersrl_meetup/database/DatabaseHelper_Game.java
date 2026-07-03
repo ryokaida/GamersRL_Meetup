@@ -271,7 +271,7 @@ public class DatabaseHelper_Game extends DatabaseHelper<Game>
         // Refresh the ContentValues and add to the table
         values = new ContentValues();
         values.put(KEY_TITLE, "Lego Star Wars: The Skywalker Saga");
-        values.put(KEY_DESCRIPTION, " Play through all nine Skywalker saga films in a game unlike any other. With over 300 playable characters, over 100 vehicles, and 23 planets to explore, a galaxy far, far away has never been more fun!");
+        values.put(KEY_DESCRIPTION, "Play through all nine Skywalker saga films in a game unlike any other. With over 300 playable characters, over 100 vehicles, and 23 planets to explore, a galaxy far, far away has never been more fun!");
         values.put(KEY_DEVELOPER, "TT Games");
         values.put(KEY_PUBLISHER, "Warner Bros.");
         values.put(KEY_RELEASE_DATE, "4/5/2022 00:00:00");

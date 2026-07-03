@@ -130,6 +130,11 @@ public abstract class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>
         // Set the onClick listener on the View buttons
         holder.viewButton.setOnClickListener(new View.OnClickListener()
         {
+            /**
+             * OnClick Listener to navigate to the correct details page when the View buttons are clicked.
+             *
+             * @param v The view that was clicked.
+             */
             @Override
             public void onClick(View v)
             {

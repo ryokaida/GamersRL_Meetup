@@ -17,13 +17,7 @@
             >
 
         </activity>
-        <activity
-            android:name=".activity.GameDetailsActivity"
-            android:label="@string/game_details_page_activity_name"
-            android:exported="true"
-            android:parentActivityName=".activity.GamesListActivity"
-            >
-        </activity>
+
         <activity
             android:name=".HeaderMenuActivity"
             android:exported="true"
@@ -40,5 +34,14 @@
                 <action android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".activity.GameDetailsActivity"
+            android:label="@string/game_details_page_activity_name"
+            android:exported="true"
+            android:parentActivityName=".activity.GamesListActivity"
+            >
+        </activity>
+
     </application>
 </manifest>
