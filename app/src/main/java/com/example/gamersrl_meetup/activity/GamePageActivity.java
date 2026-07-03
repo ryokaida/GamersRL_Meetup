@@ -62,7 +62,7 @@
 //                // Sources:
 //                // https://www.geeksforgeeks.org/android/creating-multiple-screen-applications-in-android/
 //                // https://stackoverflow.com/a/6308691
-//                //startActivity(new Intent(GamePageActivity.this, GameDetailsPageActivity.class));
+//                //startActivity(new Intent(GamePageActivity.this, GameDetailsActivity.class));
 //            }
 //        });
 //

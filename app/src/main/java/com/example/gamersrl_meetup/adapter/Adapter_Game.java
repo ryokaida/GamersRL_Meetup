@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 
 
 import com.example.gamersrl_meetup.R;
-import com.example.gamersrl_meetup.activity.GameDetailsPageActivity;
+import com.example.gamersrl_meetup.activity.GameDetailsActivity;
 import com.example.gamersrl_meetup.model.Game;
 
 import java.util.List;
@@ -163,7 +163,7 @@ public class Adapter_Game extends Adapter
     @Override
     public Class<?> getActivityToGoTo()
     {
-        return GameDetailsPageActivity.class;
+        return GameDetailsActivity.class;
     }
 
     /**

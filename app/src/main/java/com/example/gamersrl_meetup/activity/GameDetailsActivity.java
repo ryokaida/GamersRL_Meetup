@@ -13,7 +13,7 @@ import com.example.gamersrl_meetup.model.Game;
  * Class Name: Game Details Page
  * Description: Displays the details for the pertinent game.
  */
-public class GameDetailsPageActivity extends AppCompatActivity
+public class GameDetailsActivity extends AppCompatActivity
 {
     // Set up the Log tag [26]
     final String strLogTag = "GAME DETAILS PAGE - ";
