@@ -1,10 +1,13 @@
 package com.example.gamersrl_meetup.adapter;
 
 import android.content.Context;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.ViewGroup;
 
+
 import com.example.gamersrl_meetup.R;
+import com.example.gamersrl_meetup.activity.GameDetailsPageActivity;
 import com.example.gamersrl_meetup.model.Game;
 
 import java.util.List;
@@ -15,8 +18,9 @@ import java.util.List;
  * Provides an intermediary between the data and the list item views for Games.
  * Extends the Adapter abstract class to dynamically populate the list item views with data.
  */
-public class Adapter_Game extends Adapter {
-    // Set up the Log tag
+public class Adapter_Game extends Adapter
+{
+    // Set up the Log tag [26]
     private final String LOG_TAG = "GAME ADAPTER - ";
 
     // Initialize a List of items
@@ -149,5 +153,30 @@ public class Adapter_Game extends Adapter {
         int numItemsInList = games.size();
         Log.d(LOG_TAG, "Retrieved number of items in list: " + String.valueOf(numItemsInList));
         return numItemsInList;
+    }
+
+    /**
+     * Retrieve the correct activity to navigate to.
+     *
+     * @return The Activity to navigate to
+     */
+    @Override
+    public Class<?> getActivityToGoTo()
+    {
+        return GameDetailsPageActivity.class;
+    }
+
+    /**
+     * Retrieve the selected item, so its details can be displayed on its details page.
+     * This will feed into the intent that is used to navigate to the details page when the View button is clicked.
+     * The item is returned as a Parcelable, so it can be added to the intent.
+     *
+     * @param in_Position The position of the selected item in the list
+     * @return The item to display details for as a Parcelable
+     */
+    @Override
+    public Parcelable getItemToDisplayDetailsFor(int in_Position)
+    {
+        return games.get(in_Position);
     }
 }

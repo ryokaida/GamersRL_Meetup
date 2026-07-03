@@ -21,7 +21,7 @@ import java.util.List;
  */
 public class DatabaseHelper_Game extends DatabaseHelper<Game>
 {
-    // Set up the Log tag
+    // Set up the Log tag [26]
     private final String LOG_TAG = "GAME DATABASE HELPER - ";
 
     // Set the table name

@@ -1,6 +1,8 @@
 package com.example.gamersrl_meetup.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,7 +32,7 @@ import com.example.gamersrl_meetup.R;
  */
 public abstract class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>
 {
-    // Set up the Log tag
+    // Set up the Log tag [26]
     private final String LOG_TAG = "ADAPTER - ";
 
     /**
@@ -125,7 +127,28 @@ public abstract class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>
         Log.d(LOG_TAG, "Setting ImageView");
         holder.imageView.setImageResource(getImage(position2));
 
-        // TODO - set onclick listener
+        // Set the onClick listener on the View buttons
+        holder.viewButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                // Get the activity to go to and the item to display the details for
+                Class<?> activityToGoTo = getActivityToGoTo();
+                Log.d(LOG_TAG, "Retrieved activity to go to: " + getActivityToGoTo().getName());
+                // Get the item to display the details for
+                Parcelable itemToDisplayDetailsFor = getItemToDisplayDetailsFor(position2);
+                Log.d(LOG_TAG, "Retrieved item to display details for: " + itemToDisplayDetailsFor.toString());
+
+                // Construct the intent
+                Log.d(LOG_TAG, "Constructing intent and navigating to the new page");
+                Intent intent = new Intent(v.getContext(), activityToGoTo);
+                intent.putExtra("itemDetails", itemToDisplayDetailsFor);
+
+                // Navigate to the correct details page from the RecyclerView [25]
+                v.getContext().startActivity(intent);
+            }
+        });
     }
 
     /**
@@ -135,6 +158,25 @@ public abstract class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>
      */
     @Override
     public abstract int getItemCount();
+
+    /**
+     * Retrieve the correct activity to navigate to.
+     * This is abstract since each specific Adapter (Game/User/etc.) will navigate to different activities when the View button is clicked.
+     *
+     * @return The Activity to navigate to
+     */
+    public abstract Class<?> getActivityToGoTo();
+
+    /**
+     * Retrieve the selected item, so its details can be displayed on its details page.
+     * This will feed into the intent that is used to navigate to the details page when the View button is clicked.
+     * The item is returned as a Parcelable, so it can be added to the intent.
+     * This is abstract since each specific adapter (Game/User/etc.) will handle different items (Games/Users/etc.).
+     *
+     * @param in_Position The position of the selected item in the list
+     * @return The item to display details for as a Parcelable
+     */
+    public abstract Parcelable getItemToDisplayDetailsFor(int in_Position);
 
     /**
      * ViewHolder class

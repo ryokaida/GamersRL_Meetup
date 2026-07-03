@@ -1,5 +1,4 @@
-package com.example.gamersrl_meetup;
-
+package com.example.gamersrl_meetup.activity;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -7,6 +6,8 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.gamersrl_meetup.R;
+import com.example.gamersrl_meetup.model.Game;
 
 /**
  * Class Name: Game Details Page
@@ -14,11 +15,10 @@ import androidx.appcompat.app.AppCompatActivity;
  */
 public class GameDetailsPageActivity extends AppCompatActivity
 {
-    // Source for constant syntax: https://www.w3schools.com/java/java_variables_final.asp
-    final String strLogTag = "GameDetailsPage - ";
+    // Set up the Log tag [26]
+    final String strLogTag = "GAME DETAILS PAGE - ";
 
     private TextView mGameDetailsPageTextView;
-
 
     /**
      * Create the view.
@@ -37,10 +37,15 @@ public class GameDetailsPageActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.game_details_page_layout);
 
-        // Set the UI elements
+        // Instantiate the UI elements
         mGameDetailsPageTextView = findViewById(R.id.game_details_page_header);
 
         // Set header text
-        mGameDetailsPageTextView.setText(R.string.game_details_page_activity_name);
+        //mGameDetailsPageTextView.setText(R.string.game_details_page_activity_name);
+
+        // Get item to display from the intent extras
+        Game game = getIntent().getParcelableExtra("itemDetails");
+
+        mGameDetailsPageTextView.setText(game.getTitle());
     }
 }

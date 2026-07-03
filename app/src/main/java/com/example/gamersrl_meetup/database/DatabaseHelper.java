@@ -17,7 +17,7 @@ import java.util.List;
  */
 public abstract class DatabaseHelper<T> extends SQLiteOpenHelper
 {
-    // Set up the Log tag
+    // Set up the Log tag [26]
     private final String LOG_TAG = "DATABASE HELPER - ";
 
     // Set the database name and version

@@ -17,7 +17,7 @@ import java.util.List;
 
 public class GamesListActivity extends AppCompatActivity
 {
-    // Set up the Log tag
+    // Set up the Log tag [26]
     private final String LOG_TAG = "GAMES LIST ACTIVITY - ";
 
     private RecyclerView mRecyclerView;
