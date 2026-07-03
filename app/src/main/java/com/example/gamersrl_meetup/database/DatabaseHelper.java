@@ -6,12 +6,19 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.example.gamersrl_meetup.model.Game;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 /**
  * DatabaseHelper abstract class
  *
  * Provides a template for intermediaries between the app and the database.
+ * The generic T type is used, so some of the methods can use different types in the specific DatabaseHelper classes that implement this class (e.g.: DatabaseHelper_Game, etc.) [24].
  */
-public abstract class DatabaseHelper extends SQLiteOpenHelper
+public abstract class DatabaseHelper<T> extends SQLiteOpenHelper
 {
     // Set up the Log tag
     private final String LOG_TAG = "DATABASE HELPER - ";
@@ -126,4 +133,63 @@ public abstract class DatabaseHelper extends SQLiteOpenHelper
      * Abstract method to populate the database with some pre-determined data [8] [9] [10].
      */
     public abstract void populateDatabase();
+
+    /**
+     * Helper method to retrieve items from the database.  This should be called in the wrapper methods of the specific Game/User/etc. DatabaseHelper classes (e.g. in their getALlGames/getUsersbyLocation/etc. methods),
+     * and the specific DatabaseHelper class should indicate the type that T should be (Game/User/etc.) [24].
+     *
+     * Steps:
+     * 1. Set up the list of items and intake the specific query to use
+     * 2. Run the query
+     * 3. Iterate through the table and retrieve the data from the database using the abstract helper method constructItemFromDBRow()
+     *
+     * NOTE: If you have no selection args for the query, pass in null for the in_SelectionArgsForQuery argument
+     *
+     * @return The list of items for the query from the db
+     */
+    public List<T> getItemsFromDB(String in_Query, String[] in_SelectionArgsForQuery)
+    {
+        // Make a new ArrayList for the items
+        List<T> items = new ArrayList<>();
+
+        // Get the database so it can be accessed/written to
+        SQLiteDatabase db = getWritableDatabase();
+
+        // Execute the query to get the items
+        Cursor cursor = db.rawQuery(in_Query, in_SelectionArgsForQuery);
+        Log.d(LOG_TAG, "Retrieving items from db");
+
+        /**
+         * If there are rows retrieved, then iterate through them to get the item data.
+         * Otherwise, do nothing.
+         */
+        if (cursor.moveToFirst())
+        {
+            // Iterate through the rows while there are still rows to get data from
+            do
+            {
+                // Make an item from the current table row, and add the new item to the list of items by calling the abstract helper method constructItemFromDBRow()
+                Log.d(LOG_TAG, "Creating item from db row and adding it to the list of items");
+                items.add(constructItemFromDBRow(cursor));
+            }
+            while (cursor.moveToNext());
+        }
+
+        // Close the cursor and database connections
+        cursor.close();
+        db.close();
+
+        // Return the list of items retrieved from the db
+        Log.d(LOG_TAG, "Retrieved " + String.valueOf(items.size()) + " items from db");
+        return items;
+    }
+
+    /**
+     * Helper method to construct an item from a db row.
+     * This code is abstract with a generic return type since it could be making a Game/User/etc. [].
+     *
+     * @param in_Cursor Used to iterate through the table
+     * @return The item created from the db row
+     */
+    public abstract T constructItemFromDBRow(Cursor in_Cursor);
 }

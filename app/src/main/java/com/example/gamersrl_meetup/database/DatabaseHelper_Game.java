@@ -13,7 +13,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class DatabaseHelper_Game extends DatabaseHelper
+/**
+ * DatabaseHelper_Game class
+ *
+ * Provides an intermediary between the app and the database for Games.
+ * Specifies the Game type in place of the generic T type [24].
+ */
+public class DatabaseHelper_Game extends DatabaseHelper<Game>
 {
     // Set up the Log tag
     private final String LOG_TAG = "GAME DATABASE HELPER - ";
@@ -102,128 +108,100 @@ public class DatabaseHelper_Game extends DatabaseHelper
     }
 
     /**
-     * Retrieve all Games from the database.
-     * Steps:
-     * 1. Set up the list of Games and constructs the specific query to use
-     * 2. Run the query
-     * 3. Use the traverseTable() helper method to iterate through the table and retrieve the data
+     * Helper method to retrieve Games from the database.
+     * The Game type is specified in place of the generic T type [24].
      *
-     * @return
+     * @return The list of Games from the db
+     */
+    @Override
+    public List<Game> getItemsFromDB(String in_Query, String[] in_SelectionArgsForQuery)
+    {
+        return super.getItemsFromDB(in_Query, in_SelectionArgsForQuery);
+    }
+
+    /**
+     * Helper method to construct a Game from the db row.
+     * The Game type is specified in place of the generic T type [24].
+     *
+     * @param in_Cursor Used to iterate through the table
+     * @return a Game from the db
+     */
+    @Override
+    public Game constructItemFromDBRow(Cursor in_Cursor)
+    {
+        return new Game(
+                in_Cursor.getInt(0), // Get id from current table row
+                in_Cursor.getString(1), // Get title from current table row
+                in_Cursor.getString(2), // Get description from current table row
+                in_Cursor.getString(3), // Get developer from current table row
+                in_Cursor.getString(4), // Get publisher from current table row
+                // Read the data for release date from the current table row as a Long and convert to a Date to improve performance [5] [6]
+                new Date(in_Cursor.getLong(5)),
+                in_Cursor.getInt(6), // Get max players from current table row
+                in_Cursor.getInt(7), // Get min players from current table row
+                in_Cursor.getInt(8) // Get picture URI from current table row
+        );
+    }
+
+    /**
+     * Retrieve all Games from the database.
+     *
+     * @return All Games from the database
      */
     public List<Game> getAllGames()
     {
-        // Make a new ArrayList for the Games
-        List<Game> games = new ArrayList<>();
-
         // Make the query to get all data
         String selectQuery = "SELECT * FROM " + TABLE_NAME;
         Log.d(LOG_TAG, "Created query to get all games: " + selectQuery);
 
-        // Get the database so it can be accessed/written to
-        SQLiteDatabase db = getWritableDatabase();
-        // Execute the query to get all Games
-        Cursor cursor = db.rawQuery(selectQuery, null);
-
-        Log.d(LOG_TAG, "Retrieving all games from db");
-        games = traverseTable(games, cursor, db);
-
-        // Return the list of Games
-        Log.d(LOG_TAG, "Retrieved " + String.valueOf(games.size()) + " games from db");
-        return games;
+        return getItemsFromDB(selectQuery, null);
     }
 
-    /**
-     * Helper method to traverse the table and get rows from it.
-     * This code must be repeated in each specific Game/Uesr/etc. DatabaseHelper class since each schema and record data type is different.
-     *
-     * @param io_Items The list of items from the table - Starts as empty when passed into the method; ends with 0 or more items when passed out of the method
-     * @param in_Cursor Used to iterate through the table
-     * @param in_Db The database
-     * @return The updated list of items
-     */
-    private List<Game> traverseTable(List<Game> io_Items, Cursor in_Cursor, SQLiteDatabase in_Db)
-    {
-        /**
-         * If there are rows retrieved, then iterate through them to get the item data.
-         * Otherwise, do nothing.
-         */
-        if (in_Cursor.moveToFirst())
-        {
-            // Iterate through the rows while there are still rows to get data from
-            do
-            {
-                // Make an item from the current table row
-                Game item = new Game(
-                        in_Cursor.getInt(0), // Get id from current table row
-                        in_Cursor.getString(1), // Get title from current table row
-                        in_Cursor.getString(2), // Get description from current table row
-                        in_Cursor.getString(3), // Get developer from current table row
-                        in_Cursor.getString(4), // Get publisher from current table row
-                        // Read the data for release date from the current table row as a Long and convert to a Date to improve performance [5] [6]
-                        new Date(in_Cursor.getLong(5)),
-                        in_Cursor.getInt(6), // Get max players from current table row
-                        in_Cursor.getInt(7), // Get min players from current table row
-                        in_Cursor.getInt(8) // Get picture URI from current table row
-                );
-                // Add the new item to the list of items
-                io_Items.add(item);
-            }
-            while (in_Cursor.moveToNext());
-        }
-
-        // Close the cursor and database connections
-        in_Cursor.close();
-        //in_Db.close();
-
-        // Return the new list of items
-        return io_Items;
-    }
-
-    /**
-     * Add a new Game to the database [12].
-     *
-     * @param game The Game to add to the database
-     */
-    public void addToDatabase(Game game)
-    {
-        // Get the database so it can be accessed/written to
-        SQLiteDatabase db = getWritableDatabase();
-
-        // Initialize the ContentValues
-        ContentValues values = new ContentValues();
-
-        /** Set the data for the new Game */
-        values.put(KEY_TITLE, game.getTitle());
-        Log.d(LOG_TAG, "Using title: " + game.getTitle());
-
-        values.put(KEY_DESCRIPTION, game.getDescription());
-        Log.d(LOG_TAG, "Using description: " + game.getDescription());
-
-        values.put(KEY_DEVELOPER, game.getDeveloper());
-        Log.d(LOG_TAG, "Using developer: " + game.getDeveloper());
-
-        values.put(KEY_PUBLISHER, game.getPublisher());
-        Log.d(LOG_TAG, "Using publisher: " + game.getPublisher());
-
-        values.put(KEY_RELEASE_DATE, game.getReleaseDate().getTime());
-        Log.d(LOG_TAG, "Using release date: " + game.getReleaseDate().getTime());
-
-        values.put(KEY_MIN_PLAYERS, game.getMinPlayers());
-        Log.d(LOG_TAG, "Using min players: " + String.valueOf(game.getMinPlayers()));
-
-        values.put(KEY_MAX_PLAYERS, game.getMaxPlayers());
-        Log.d(LOG_TAG, "Using max players: " + String.valueOf(game.getMaxPlayers()));
-
-        values.put(KEY_PICTURE_URI, game.getPictureURI());
-        Log.d(LOG_TAG, "Using picture URI: " + String.valueOf(game.getPictureURI()));
-
-        // Insert the values into the table
-        Log.d(LOG_TAG, "Inserting new game into db");
-        db.insert(TABLE_NAME, null, values);
-
-        // Close the database connection
-       // db.close();
-    }
+//    /**
+//     * Add a new Game to the database [12].
+//     *
+//     * @param game The Game to add to the database
+//     */
+//    public void addToDatabase(Game game)
+//    {
+//        // Get the database so it can be accessed/written to
+//        SQLiteDatabase db = getWritableDatabase();
+//
+//        // Initialize the ContentValues
+//        ContentValues values = new ContentValues();
+//
+//        /** Set the data for the new Game */
+//        values.put(KEY_TITLE, game.getTitle());
+//        Log.d(LOG_TAG, "Using title: " + game.getTitle());
+//
+//        values.put(KEY_DESCRIPTION, game.getDescription());
+//        Log.d(LOG_TAG, "Using description: " + game.getDescription());
+//
+//        values.put(KEY_DEVELOPER, game.getDeveloper());
+//        Log.d(LOG_TAG, "Using developer: " + game.getDeveloper());
+//
+//        values.put(KEY_PUBLISHER, game.getPublisher());
+//        Log.d(LOG_TAG, "Using publisher: " + game.getPublisher());
+//
+//        values.put(KEY_RELEASE_DATE, game.getReleaseDate().getTime());
+//        Log.d(LOG_TAG, "Using release date: " + game.getReleaseDate().getTime());
+//
+//        values.put(KEY_MIN_PLAYERS, game.getMinPlayers());
+//        Log.d(LOG_TAG, "Using min players: " + String.valueOf(game.getMinPlayers()));
+//
+//        values.put(KEY_MAX_PLAYERS, game.getMaxPlayers());
+//        Log.d(LOG_TAG, "Using max players: " + String.valueOf(game.getMaxPlayers()));
+//
+//        values.put(KEY_PICTURE_URI, game.getPictureURI());
+//        Log.d(LOG_TAG, "Using picture URI: " + String.valueOf(game.getPictureURI()));
+//
+//        // Insert the values into the table
+//        Log.d(LOG_TAG, "Inserting new game into db");
+//        db.insert(TABLE_NAME, null, values);
+//
+//        // Close the database connection
+//       // db.close();
+//    }
 
     /**
      * Retrieve the table name.
