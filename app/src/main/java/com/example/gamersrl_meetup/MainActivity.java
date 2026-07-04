@@ -60,6 +60,14 @@ public class MainActivity extends AppCompatActivity {
                 new IdentityVerificationSheet.Configuration(logoUri),
                 verificationResult -> {
                     Log.d(strLogTag, "Stripe verification result: " + verificationResult.toString());
+
+                    if (verificationResult instanceof IdentityVerificationSheet.VerificationFlowResult.Completed) {
+                        Log.d(strLogTag, "Verification completed");
+                    } else if (verificationResult instanceof IdentityVerificationSheet.VerificationFlowResult.Canceled) {
+                        Log.d(strLogTag, "Verification canceled");
+                    } else if (verificationResult instanceof IdentityVerificationSheet.VerificationFlowResult.Failed) {
+                        Log.d(strLogTag, "Verification failed");
+                    }
                 }
         );
 
