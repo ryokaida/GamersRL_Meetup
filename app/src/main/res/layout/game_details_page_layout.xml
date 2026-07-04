@@ -1,23 +1,222 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    tools:context=".GameDetailsPageActivity"
+    tools:context=".activity.GameDetailsActivity"
     >
 
     <TextView
-        android:id="@+id/game_details_page_header"
+        android:id="@+id/game_details_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20sp"
         android:layout_marginRight="20sp"
         android:textAlignment="center"
         android:textAllCaps="true"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="3sp"
+        />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center_horizontal"
         >
 
-    </TextView>
+        <TextView
+            android:id="@+id/game_details_label_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:text="@string/list_item_id_label"
+            android:layout_marginRight="5dp"
+            android:textAlignment="center"
+            />
+
+        <TextView
+            android:id="@+id/game_details_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textAlignment="center"
+            />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/game_details_image"
+        android:layout_width="300dp"
+        android:layout_height="200dp"
+        android:layout_gravity="center"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="3sp"
+        >
+
+        <TextView
+            android:id="@+id/game_details_label_developer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="20sp"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:text="@string/game_details_page_label_developer"
+            />
+
+        <TextView
+            android:id="@+id/game_details_developer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20sp"
+            android:textSize="16sp"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="3sp"
+        android:orientation="horizontal"
+        >
+
+        <TextView
+            android:id="@+id/game_details_label_publisher"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20sp"
+            android:layout_marginRight="5dp"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:text="@string/game_details_page_label_publisher"
+            />
+
+        <TextView
+            android:id="@+id/game_details_publisher"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20sp"
+            android:textSize="16sp"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+        <TextView
+            android:id="@+id/game_details_label_releasedate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20sp"
+            android:layout_marginRight="5dp"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:text="@string/game_details_page_label_releasedate"
+            />
+
+        <TextView
+            android:id="@+id/game_details_releasedate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20sp"
+            android:textSize="16sp"
+            />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/game_details_label_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20sp"
+        android:layout_marginRight="20sp"
+        android:layout_marginTop="15sp"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:text="@string/list_item_description_label"
+        />
+
+    <TextView
+        android:id="@+id/game_details_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20sp"
+        android:layout_marginRight="20sp"
+        android:layout_marginBottom="15sp"
+        android:textSize="16sp"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="3sp"
+        >
+
+        <TextView
+            android:id="@+id/game_details_label_minplayers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20sp"
+            android:layout_marginRight="5dp"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:text="@string/game_details_page_label_minplayers"
+            />
+
+        <TextView
+            android:id="@+id/game_details_minplayers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20sp"
+            android:textSize="16sp"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="3sp"
+        >
+
+        <TextView
+            android:id="@+id/game_details_label_maxplayers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20sp"
+            android:layout_marginRight="5dp"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:text="@string/game_details_page_label_maxplayers"
+            />
+
+        <TextView
+            android:id="@+id/game_details_maxplayers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20sp"
+            android:textSize="16sp"
+            />
+
+    </LinearLayout>
 
 </LinearLayout>

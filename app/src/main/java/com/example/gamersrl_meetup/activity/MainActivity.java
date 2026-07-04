@@ -1,8 +1,8 @@
-package com.example.gamersrl_meetup;
+package com.example.gamersrl_meetup.activity;
+import com.example.gamersrl_meetup.R;
 import android.net.Uri;
 import androidx.appcompat.app.AppCompatActivity;
 import android.widget.Toast;
-import com.example.gamersrl_meetup.HeaderMenuActivity;
 // Sources for logging in Android Studio with Log.d:
 // https://stackoverflow.com/a/16783890
 // https://developer.android.com/studio/debug
@@ -126,19 +126,19 @@ public class MainActivity extends AppCompatActivity {
                     });
 
                 } catch (Exception e) {
-                Log.e(strLogTag, "Error starting Stripe verification", e);
+                    Log.e(strLogTag, "Error starting Stripe verification", e);
 
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(
-                                MainActivity.this,
-                                e.getMessage(),
-                                Toast.LENGTH_LONG
-                        ).show();
-                    }
-                });
-            }
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(
+                                    MainActivity.this,
+                                    e.getMessage(),
+                                    Toast.LENGTH_LONG
+                            ).show();
+                        }
+                    });
+                }
             }
         }).start();
     }
