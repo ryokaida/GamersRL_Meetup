@@ -12,14 +12,18 @@
     <!-- Strings for the Games List page -->
     <string name="games_list_page_activity_name">Games List</string>
     <string name="games_list_page_developer_label">Developer: </string>
+    <string name="games_list_page_addgamerequest_button_text">Request a Game to be Added</string>
 
-    <!-- Strings for the Games List page -->
+    <!-- Strings for the Game Details page -->
     <string name="game_details_page_activity_name">Game Details Page</string>
     <string name="game_details_page_label_developer">Developer: </string>
     <string name="game_details_page_label_publisher">Publisher: </string>
     <string name="game_details_page_label_releasedate">Release Date: </string>
     <string name="game_details_page_label_minplayers">Minimum # Players: </string>
     <string name="game_details_page_label_maxplayers">Maximum # Players: </string>
+
+    <!-- Strings for the Add Game Request page -->
+    <string name="add_game_request_page_activity_name">Request a Game to be Added</string>
 
     <!-- General strings for the list items -->
     <string name="list_item_description_label">Description: </string>

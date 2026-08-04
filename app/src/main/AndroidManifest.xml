@@ -46,8 +46,14 @@
             android:label="@string/game_details_page_activity_name"
             android:exported="false"
             android:parentActivityName=".activity.GamesListActivity"
-            >
-        </activity>
+            />
+
+        <activity
+            android:name=".activity.AddGameRequestActivity"
+            android:label="@string/add_game_request_page_activity_name"
+            android:exported="false"
+            android:parentActivityName=".activity.GamesListActivity"
+            />
 
         <activity
             android:name=".activity.SignupActivity"

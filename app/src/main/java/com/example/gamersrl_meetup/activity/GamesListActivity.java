@@ -1,8 +1,13 @@
 package com.example.gamersrl_meetup.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -33,6 +38,7 @@ public class GamesListActivity extends AppCompatActivity
     private Adapter_Game adapter;
     private View mStartOfRecyclerViewDivider;
     private View mEndOfRecyclerViewDivider;
+    private Button mAddGameRequestButton;
 
     /**
      * Create the list of Games and populate the list.
@@ -92,5 +98,49 @@ public class GamesListActivity extends AppCompatActivity
         Log.d(LOG_TAG, "Making linear layout manager");
         layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(layoutManager);
+
+        // Add the Request to Add Game button to the bottom of the screen
+        createAddGameRequestButton();
+    }
+
+    /**
+     * Set up the Request to Add Game button and add it to the page [7] [8] [9] [10] [11] [12] [13] [15].
+     */
+    private void createAddGameRequestButton()
+    {
+        // Assign the bottom region LinearLayout as a variable so the button can be added to the page [7] [8] [9] [10] [11] [12] [13].
+        LinearLayout bottomRegion = findViewById(R.id.layout_horizontal_bottom);
+        // Create the new button
+        mAddGameRequestButton = new Button(this);
+        // Set the text, elevation, gravity, background color, and text color of the button
+        mAddGameRequestButton.setText(R.string.games_list_page_addgamerequest_button_text);
+        mAddGameRequestButton.setElevation(20.0F);
+        mAddGameRequestButton.setGravity(Gravity.CENTER);
+        mAddGameRequestButton.setBackgroundColor(getColor(R.color.purple_500));
+        mAddGameRequestButton.setTextColor(getColor(R.color.white));
+        // Make a new LayoutParams to set the button width to MATCH_PARENT and WRAP_CONTENT and to set the margins
+        LinearLayout.LayoutParams paramsForButton = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        // Set the margins
+        paramsForButton.setMargins(60, 100, 60, 0);
+        // Assign the Layout Params to the button
+        mAddGameRequestButton.setLayoutParams(paramsForButton);
+        // Add the button to the page
+        bottomRegion.addView(mAddGameRequestButton);
+
+        // Set OnClick Listener on the Add Game Request button
+        mAddGameRequestButton.setOnClickListener(new View.OnClickListener()
+        {
+            /**
+             * Navigate to the Add Game Request page when the Add Game Request button is clicked.
+             *
+             * @param v The view that was clicked.
+             */
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent = new Intent(GamesListActivity.this, AddGameRequestActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }
