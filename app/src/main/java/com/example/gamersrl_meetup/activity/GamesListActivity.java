@@ -104,11 +104,11 @@ public class GamesListActivity extends AppCompatActivity
     }
 
     /**
-     * Set up the Request to Add Game button and add it to the page [7] [8] [9] [10] [11] [12] [13] [15].
+     * Set up the Request to Add Game button and add it to the page [27] [28] [29] [30] [31] [32] [33] [34].
      */
     private void createAddGameRequestButton()
     {
-        // Assign the bottom region LinearLayout as a variable so the button can be added to the page [7] [8] [9] [10] [11] [12] [13].
+        // Assign the bottom region LinearLayout as a variable so the button can be added to the page [27] [28] [29] [210] [31] [32] [33].
         LinearLayout bottomRegion = findViewById(R.id.layout_horizontal_bottom);
         // Create the new button
         mAddGameRequestButton = new Button(this);
@@ -127,7 +127,10 @@ public class GamesListActivity extends AppCompatActivity
         // Add the button to the page
         bottomRegion.addView(mAddGameRequestButton);
 
-        // Set OnClick Listener on the Add Game Request button
+        /**
+         * Set OnClick Listener on the Add Game Request button.
+         * The OnClick method is used for the button in an inline fashion since there is another button that also needs its own OnClick Listener.
+         */
         mAddGameRequestButton.setOnClickListener(new View.OnClickListener()
         {
             /**
