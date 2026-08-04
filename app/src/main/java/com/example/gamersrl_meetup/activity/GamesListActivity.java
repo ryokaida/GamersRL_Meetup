@@ -34,11 +34,13 @@ public class GamesListActivity extends AppCompatActivity
     // Initialize the UI elements
     private RecyclerView mRecyclerView;
     private LinearLayoutManager layoutManager;
-    private DatabaseHelper_Game dbHelper;
-    private Adapter_Game adapter;
     private View mStartOfRecyclerViewDivider;
     private View mEndOfRecyclerViewDivider;
     private Button mAddGameRequestButton;
+
+    // Initialize the database helper and the adapter
+    private DatabaseHelper_Game dbHelper;
+    private Adapter_Game adapter;
 
     /**
      * Create the list of Games and populate the list.
@@ -108,23 +110,27 @@ public class GamesListActivity extends AppCompatActivity
      */
     private void createAddGameRequestButton()
     {
+        Log.d(LOG_TAG, "Creating Add Game Request button");
         // Assign the bottom region LinearLayout as a variable so the button can be added to the page [27] [28] [29] [210] [31] [32] [33].
         LinearLayout bottomRegion = findViewById(R.id.layout_horizontal_bottom);
         // Create the new button
         mAddGameRequestButton = new Button(this);
         // Set the text, elevation, gravity, background color, and text color of the button
+        Log.d(LOG_TAG, "Setting attributes for Add Game Request button");
         mAddGameRequestButton.setText(R.string.games_list_page_addgamerequest_button_text);
         mAddGameRequestButton.setElevation(20.0F);
         mAddGameRequestButton.setGravity(Gravity.CENTER);
         mAddGameRequestButton.setBackgroundColor(getColor(R.color.purple_500));
         mAddGameRequestButton.setTextColor(getColor(R.color.white));
         // Make a new LayoutParams to set the button width to MATCH_PARENT and WRAP_CONTENT and to set the margins
+        Log.d(LOG_TAG, "Setting Layout Params for Add Game Request button");
         LinearLayout.LayoutParams paramsForButton = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         // Set the margins
         paramsForButton.setMargins(60, 100, 60, 0);
         // Assign the Layout Params to the button
         mAddGameRequestButton.setLayoutParams(paramsForButton);
         // Add the button to the page
+        Log.d(LOG_TAG, "Adding the Add Game Request button to the page");
         bottomRegion.addView(mAddGameRequestButton);
 
         /**
@@ -141,6 +147,7 @@ public class GamesListActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
+                Log.d(LOG_TAG, "Navigating to Add Game Request page");
                 Intent intent = new Intent(GamesListActivity.this, AddGameRequestActivity.class);
                 startActivity(intent);
             }

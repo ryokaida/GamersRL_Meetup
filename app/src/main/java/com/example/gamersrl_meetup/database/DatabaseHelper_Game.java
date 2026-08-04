@@ -175,51 +175,54 @@ public class DatabaseHelper_Game extends DatabaseHelper<Game>
         return getItemsFromDB(selectQuery, new String[]{"Y"});
     }
 
-//    /**
-//     * Add a new Game to the database [12].
-//     *
-//     * @param game The Game to add to the database
-//     */
-//    public void addToDatabase(Game game)
-//    {
-//        // Get the database so it can be accessed/written to
-//        SQLiteDatabase db = getWritableDatabase();
-//
-//        // Initialize the ContentValues
-//        ContentValues values = new ContentValues();
-//
-//        /** Set the data for the new Game */
-//        values.put(KEY_TITLE, game.getTitle());
-//        Log.d(LOG_TAG, "Using title: " + game.getTitle());
-//
-//        values.put(KEY_DESCRIPTION, game.getDescription());
-//        Log.d(LOG_TAG, "Using description: " + game.getDescription());
-//
-//        values.put(KEY_DEVELOPER, game.getDeveloper());
-//        Log.d(LOG_TAG, "Using developer: " + game.getDeveloper());
-//
-//        values.put(KEY_PUBLISHER, game.getPublisher());
-//        Log.d(LOG_TAG, "Using publisher: " + game.getPublisher());
-//
-//        values.put(KEY_RELEASE_DATE, game.getReleaseDate().getTime());
-//        Log.d(LOG_TAG, "Using release date: " + game.getReleaseDate().getTime());
-//
-//        values.put(KEY_MIN_PLAYERS, game.getMinPlayers());
-//        Log.d(LOG_TAG, "Using min players: " + String.valueOf(game.getMinPlayers()));
-//
-//        values.put(KEY_MAX_PLAYERS, game.getMaxPlayers());
-//        Log.d(LOG_TAG, "Using max players: " + String.valueOf(game.getMaxPlayers()));
-//
-//        values.put(KEY_PICTURE_URI, game.getPictureURI());
-//        Log.d(LOG_TAG, "Using picture URI: " + String.valueOf(game.getPictureURI()));
-//
-//        // Insert the values into the table
-//        Log.d(LOG_TAG, "Inserting new game into db");
-//        db.insert(TABLE_NAME, null, values);
-//
-//        // Close the database connection
-//       // db.close();
-//    }
+    /**
+     * Add a new Game to the database [12].
+     *
+     * @param game The Game to add to the database
+     */
+    public void addToDatabase(Game game)
+    {
+        // Get the database so it can be accessed/written to
+        SQLiteDatabase db = getWritableDatabase();
+
+        // Initialize the ContentValues
+        ContentValues values = new ContentValues();
+
+        /** Set the data for the new Game */
+        values.put(KEY_TITLE, game.getTitle());
+        Log.d(LOG_TAG, "Using title: " + game.getTitle());
+
+        values.put(KEY_DESCRIPTION, game.getDescription());
+        Log.d(LOG_TAG, "Using description: " + game.getDescription());
+
+        values.put(KEY_DEVELOPER, game.getDeveloper());
+        Log.d(LOG_TAG, "Using developer: " + game.getDeveloper());
+
+        values.put(KEY_PUBLISHER, game.getPublisher());
+        Log.d(LOG_TAG, "Using publisher: " + game.getPublisher());
+
+        values.put(KEY_RELEASE_DATE, game.getReleaseDate().getTime());
+        Log.d(LOG_TAG, "Using release date: " + game.getReleaseDate().getTime());
+
+        values.put(KEY_MIN_PLAYERS, game.getMinPlayers());
+        Log.d(LOG_TAG, "Using min players: " + String.valueOf(game.getMinPlayers()));
+
+        values.put(KEY_MAX_PLAYERS, game.getMaxPlayers());
+        Log.d(LOG_TAG, "Using max players: " + String.valueOf(game.getMaxPlayers()));
+
+        values.put(KEY_PICTURE_URI, game.getPictureURI());
+        Log.d(LOG_TAG, "Using picture URI: " + String.valueOf(game.getPictureURI()));
+
+        values.put(KEY_APPROVED, game.getApproved());
+        Log.d(LOG_TAG, "Using approved: " + String.valueOf(game.getApproved()));
+
+        // Insert the values into the table
+        Log.d(LOG_TAG, "Inserting new game into db");
+        db.insert(TABLE_NAME, null, values);
+
+        // Close the database connection
+       // db.close();
+    }
 
     /**
      * Retrieve the table name.
