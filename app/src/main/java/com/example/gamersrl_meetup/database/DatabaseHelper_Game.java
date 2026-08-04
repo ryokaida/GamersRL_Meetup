@@ -38,6 +38,7 @@ public class DatabaseHelper_Game extends DatabaseHelper<Game>
     private static final String KEY_MAX_PLAYERS = "max_players";
     // The picture is indicated via a URI so that the code can refer to its file location
     private static final String KEY_PICTURE_URI = "picture_uri";
+    private static final String KEY_APPROVED = "approved"; // Whether the game is visible to Gamers or not - Should be "Y" or "N"
 
     /**
      * Constructor to create the database helper, with the database name and version.
@@ -66,7 +67,8 @@ public class DatabaseHelper_Game extends DatabaseHelper<Game>
                 KEY_RELEASE_DATE + " DATETIME, " +
                 KEY_MIN_PLAYERS + " INTEGER, " +
                 KEY_MAX_PLAYERS + " INTEGER, " +
-                KEY_PICTURE_URI + " TEXT" +
+                KEY_PICTURE_URI + " TEXT, " +
+                KEY_APPROVED + " TEXT" +
                 ")";
         Log.d(LOG_TAG, "Created query to create table: " + QUERY_CREATE_TABLE);
         return QUERY_CREATE_TABLE;
@@ -140,7 +142,8 @@ public class DatabaseHelper_Game extends DatabaseHelper<Game>
                 new Date(in_Cursor.getLong(5)),
                 in_Cursor.getInt(6), // Get max players from current table row
                 in_Cursor.getInt(7), // Get min players from current table row
-                in_Cursor.getInt(8) // Get picture URI from current table row
+                in_Cursor.getInt(8), // Get picture URI from current table row
+                in_Cursor.getString(9) // Get the Approved status from the current table row
         );
     }
 
@@ -156,6 +159,20 @@ public class DatabaseHelper_Game extends DatabaseHelper<Game>
         Log.d(LOG_TAG, "Created query to get all games: " + selectQuery);
 
         return getItemsFromDB(selectQuery, null);
+    }
+
+    /**
+     * Wrapper method to retrieve all Games from the database that Gamers are allowed to see.
+     *
+     * @return All Games from the database that Gamers are allowed to see
+     */
+    public List<Game> getAllApprovedGames()
+    {
+        // Make the query to get data
+        String selectQuery = "SELECT * FROM " + TABLE_NAME + " WHERE " + KEY_APPROVED + " = ?";
+        Log.d(LOG_TAG, "Created query to get all approved games: " + selectQuery);
+
+        return getItemsFromDB(selectQuery, new String[]{"Y"});
     }
 
 //    /**
@@ -236,6 +253,7 @@ public class DatabaseHelper_Game extends DatabaseHelper<Game>
         values.put(KEY_MIN_PLAYERS, 1);
         values.put(KEY_MAX_PLAYERS, 4);
         values.put(KEY_PICTURE_URI, R.drawable.borderlands4);
+        values.put(KEY_APPROVED, "Y");
         // Insert the values into the table
         Log.d(LOG_TAG, "Inserting Borderlands 4 into db");
         database.insert(TABLE_NAME, null, values);
@@ -250,6 +268,7 @@ public class DatabaseHelper_Game extends DatabaseHelper<Game>
         values.put(KEY_MIN_PLAYERS, 1);
         values.put(KEY_MAX_PLAYERS, 4);
         values.put(KEY_PICTURE_URI, R.drawable.overcooked);
+        values.put(KEY_APPROVED, "Y");
         // Insert the values into the table
         Log.d(LOG_TAG, "Inserting Overcooked into db");
         database.insert(TABLE_NAME, null, values);
@@ -264,6 +283,7 @@ public class DatabaseHelper_Game extends DatabaseHelper<Game>
         values.put(KEY_MIN_PLAYERS, 1);
         values.put(KEY_MAX_PLAYERS, 1);
         values.put(KEY_PICTURE_URI, R.drawable.god_of_war);
+        values.put(KEY_APPROVED, "Y");
         // Insert the values into the table
         Log.d(LOG_TAG, "Inserting God of War into db");
         database.insert(TABLE_NAME, null, values);
@@ -278,6 +298,7 @@ public class DatabaseHelper_Game extends DatabaseHelper<Game>
         values.put(KEY_MIN_PLAYERS, 1);
         values.put(KEY_MAX_PLAYERS, 2);
         values.put(KEY_PICTURE_URI, R.drawable.lego_star_wars_the_skywalker_saga);
+        values.put(KEY_APPROVED, "Y");
         // Insert the values into the table
         Log.d(LOG_TAG, "Inserting Lego Star Wars: The Skywalker Saga into db");
         database.insert(TABLE_NAME, null, values);
@@ -292,6 +313,7 @@ public class DatabaseHelper_Game extends DatabaseHelper<Game>
         values.put(KEY_MIN_PLAYERS, 1);
         values.put(KEY_MAX_PLAYERS, 5);
         values.put(KEY_PICTURE_URI, R.drawable.dead_by_daylight);
+        values.put(KEY_APPROVED, "Y");
         // Insert the values into the table
         Log.d(LOG_TAG, "Inserting Dead by Daylight into db");
         database.insert(TABLE_NAME, null, values);

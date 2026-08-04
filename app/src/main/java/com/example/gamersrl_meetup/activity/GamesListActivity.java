@@ -81,7 +81,7 @@ public class GamesListActivity extends AppCompatActivity
 
         // Get all the items for the list
         Log.d(LOG_TAG, "Populating list");
-        games = dbHelper.getAllGames();
+        games = dbHelper.getAllApprovedGames();
 
         // Make the adapter and set it onto the RecyclerView
         Log.d(LOG_TAG, "Making adapter");

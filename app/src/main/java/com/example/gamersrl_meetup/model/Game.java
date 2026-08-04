@@ -30,6 +30,7 @@ public class Game implements Parcelable
     private int minPlayers;
     private int maxPlayers;
     private int pictureURI; // URI for an image of the Game
+    private String approved; // Whether the game is visible to Gamers or not - Should be "Y" or "N"
 
     /**
      * Construct a new Game with the incoming data.
@@ -43,8 +44,9 @@ public class Game implements Parcelable
      * @param minPlayers The minimum number of players that can play the Game
      * @param maxPlayers The maximum number of players that can play the Game
      * @param pictureURI The URI for an image of the Game
+     * @param approved Whether the game is visible to Gamers or not
      */
-    public Game(int id, String title, String description, String developer, String publisher, Date releaseDate, int minPlayers, int maxPlayers, int pictureURI)
+    public Game(int id, String title, String description, String developer, String publisher, Date releaseDate, int minPlayers, int maxPlayers, int pictureURI, String approved)
     {
         this.id = id;
         this.title = title;
@@ -55,6 +57,7 @@ public class Game implements Parcelable
         this.minPlayers = minPlayers;
         this.maxPlayers = maxPlayers;
         this.pictureURI = pictureURI;
+        this.approved = approved;
     }
 
     /**
@@ -94,6 +97,7 @@ public class Game implements Parcelable
         minPlayers = in.readInt();
         maxPlayers = in.readInt();
         pictureURI = in.readInt();
+        approved = in.readString();
 
 //        /**
 //         * Read in the Release Date as a string and try to parse it as a date,
@@ -190,12 +194,13 @@ public class Game implements Parcelable
         dest.writeInt(minPlayers);
         dest.writeInt(maxPlayers);
         dest.writeInt(pictureURI);
+        dest.writeString(approved);
     }
 
     /**
      * Getters for the Game attributes.
      *
-     * @return id, title, description, developer, publisher, releaseDate, minPlayers, maxPlayers, pictureURI
+     * @return id, title, description, developer, publisher, releaseDate, minPlayers, maxPlayers, pictureURI, approved
      */
     public int getId() { return id; }
     public String getTitle() { return title; }
@@ -206,10 +211,12 @@ public class Game implements Parcelable
     public int getMinPlayers() { return minPlayers; }
     public int getMaxPlayers() { return maxPlayers; }
     public int getPictureURI() { return pictureURI; }
+    public String getApproved() { return approved; }
 
     /**
      * Setters for the Game attributes.
-     * @param id, title, description, developer, publisher, releaseDate, minPlayers, maxPlayers, pictureURI
+     *
+     * @param id, title, description, developer, publisher, releaseDate, minPlayers, maxPlayers, pictureURI, approved
      */
     public void setId(int id) { this.id = id; }
     public void setTitle(String title) { this.title = title; }
@@ -220,4 +227,5 @@ public class Game implements Parcelable
     public void setMinPlayers(int minPlayers) { this.minPlayers = minPlayers; }
     public void setMaxPlayers(int maxPlayers) { this.maxPlayers = maxPlayers; }
     public void setPictureURI(int pictureURI) { this.pictureURI = pictureURI; }
+    public void setApproved(String approved) { this.approved = approved; }
 }
