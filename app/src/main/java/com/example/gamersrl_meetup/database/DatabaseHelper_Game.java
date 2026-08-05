@@ -249,6 +249,78 @@ public class DatabaseHelper_Game extends DatabaseHelper<Game>
     }
 
     /**
+     * Update one Game in the database (found by its ID) [39].
+     * If there is any attributes that don't need updated, pass in the empty string.
+     * If the attribute that doesn't need updating is an integer, pass in -1.
+     * If the attribute that doesn't need updating is a date, pass in null.
+     *
+     * @param id The ID of the Game
+     * @param title The Game's title
+     * @param description The game's description
+     * @param developer The game's developer
+     * @param publisher The game's publisher
+     * @param releaseDate The game's release date
+     * @param minPlayers The minimum number of players that can play the Game
+     * @param maxPlayers The maximum number of players that can play the Game
+     * @param pictureURI The URI for an image of the Game
+     * @param approved Whether the game is visible to Gamers or not
+     */
+    public void updateItemInDB(String id, String title, String description, String developer, String publisher, Date releaseDate, int minPlayers, int maxPlayers, int pictureURI, String approved)
+    {
+        // Get the database so it can be accessed/written to
+        SQLiteDatabase db = getWritableDatabase();
+
+        // Initialize the ContentValues
+        ContentValues values = new ContentValues();
+
+        /**
+         * Only add the attribute to be updated if it is populated and not the empty string or -1
+         */
+        if (title != null && !title.isEmpty())
+        {
+            values.put(KEY_TITLE, title);
+        }
+        if (description != null && !description.isEmpty())
+        {
+            values.put(KEY_DESCRIPTION, description);
+        }
+        if (developer != null && !developer.isEmpty())
+        {
+            values.put(KEY_DEVELOPER, developer);
+        }
+        if (publisher != null && !publisher.isEmpty())
+        {
+            values.put(KEY_PUBLISHER, publisher);
+        }
+        if (releaseDate != null)
+        {
+            values.put(KEY_RELEASE_DATE, releaseDate.getTime());
+        }
+        if (minPlayers == -1)
+        {
+            values.put(KEY_MIN_PLAYERS, minPlayers);
+        }
+        if (maxPlayers == -1)
+        {
+            values.put(KEY_MAX_PLAYERS, maxPlayers);
+        }
+        if (pictureURI == -1)
+        {
+            values.put(KEY_MAX_PLAYERS, pictureURI);
+        }
+        if (approved != null && !approved.isEmpty())
+        {
+            values.put(KEY_APPROVED, approved);
+        }
+
+        // Update the database with the new value(s)
+        db.update(TABLE_NAME, values, "id=?", new String[]{id});
+
+        // Close the database connection
+        // db.close();
+    }
+
+    /**
      * Populate the database with the pre-determined Games [13] [14] [15] [16] [17].
      */
     @Override

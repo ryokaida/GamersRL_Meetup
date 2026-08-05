@@ -21,6 +21,7 @@
     <string name="game_details_page_label_minplayers">Minimum # Players: </string>
     <string name="game_details_page_label_maxplayers">Maximum # Players: </string>
     <string name="game_details_page_label_approved">Approved: </string>
+    <string name="game_details_page_approvegamerequest_button_text">Approve Game Request</string>
 
     <!-- Strings for the Add Game Request page -->
     <string name="add_game_request_page_activity_name">Request a Game to be Added</string>

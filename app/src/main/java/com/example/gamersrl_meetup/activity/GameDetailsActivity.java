@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.gamersrl_meetup.R;
+import com.example.gamersrl_meetup.database.DatabaseHelper_Game;
 import com.example.gamersrl_meetup.model.Game;
 
 /**
@@ -40,6 +41,12 @@ public class GameDetailsActivity extends AppCompatActivity implements View.OnCli
 
     // Initialize the boolean to determine the user's role
     private Boolean isAdmin;
+
+    // Initialize the database helper
+    private DatabaseHelper_Game dbHelper;
+
+    // Initialize the selected Game
+    Game mGame;
 
     /**
      * Create the page for the Game details and populate the data.
@@ -70,9 +77,13 @@ public class GameDetailsActivity extends AppCompatActivity implements View.OnCli
         mGameDetailsApproved = findViewById(R.id.game_details_approved);
         mGameDetailsApprovedLabel = findViewById(R.id.game_details_label_approved);
 
+        // Make a Database Helper to manipulate the database
+        Log.d(LOG_TAG, "Making database helper");
+        dbHelper = new DatabaseHelper_Game(this);
+
         // Get item to display from the intent extras
         Log.d(LOG_TAG, "Retrieving the selected Game from the intent extras");
-        Game game = getIntent().getParcelableExtra("itemDetails");
+        mGame = getIntent().getParcelableExtra("itemDetails");
 
         // Get the user role from the intent extras to determine what UI elements and actions should be allowed
         isAdmin = getIntent().getBooleanExtra("isAdmin", false);
@@ -80,25 +91,25 @@ public class GameDetailsActivity extends AppCompatActivity implements View.OnCli
         /**
          * Set the text to the correct data
          */
-        Log.d(LOG_TAG, "Setting Game title: " + game.getTitle());
-        mGameDetailsTitle.setText(game.getTitle());
-        Log.d(LOG_TAG, "Setting Game ID: " + String.valueOf(game.getId()));
-        mGameDetailsId.setText(String.valueOf(game.getId()));
-        Log.d(LOG_TAG, "Setting Game developer: " + game.getDeveloper());
-        mGameDetailsDeveloper.setText(game.getDeveloper());
-        Log.d(LOG_TAG, "Setting Game publisher: " + game.getPublisher());
-        mGameDetailsPublisher.setText(game.getPublisher());
-        Log.d(LOG_TAG, "Setting Game release date: " + game.getReleaseDate().toString());
-        mGameDetailsReleaseDate.setText(game.getReleaseDate().toString());
-        Log.d(LOG_TAG, "Setting Game description: " + game.getDescription());
-        mGameDetailsDescription.setText(game.getDescription());
-        Log.d(LOG_TAG, "Setting Game min players: " + String.valueOf(game.getMinPlayers()));
-        mGameDetailsMinPlayers.setText(String.valueOf(game.getMinPlayers()));
-        Log.d(LOG_TAG, "Setting Game max players: " + String.valueOf(game.getMaxPlayers()));
-        mGameDetailsMaxPlayers.setText(String.valueOf(game.getMaxPlayers()));
+        Log.d(LOG_TAG, "Setting Game title: " + mGame.getTitle());
+        mGameDetailsTitle.setText(mGame.getTitle());
+        Log.d(LOG_TAG, "Setting Game ID: " + String.valueOf(mGame.getId()));
+        mGameDetailsId.setText(String.valueOf(mGame.getId()));
+        Log.d(LOG_TAG, "Setting Game developer: " + mGame.getDeveloper());
+        mGameDetailsDeveloper.setText(mGame.getDeveloper());
+        Log.d(LOG_TAG, "Setting Game publisher: " + mGame.getPublisher());
+        mGameDetailsPublisher.setText(mGame.getPublisher());
+        Log.d(LOG_TAG, "Setting Game release date: " + mGame.getReleaseDate().toString());
+        mGameDetailsReleaseDate.setText(mGame.getReleaseDate().toString());
+        Log.d(LOG_TAG, "Setting Game description: " + mGame.getDescription());
+        mGameDetailsDescription.setText(mGame.getDescription());
+        Log.d(LOG_TAG, "Setting Game min players: " + mGame.getMinPlayers());
+        mGameDetailsMinPlayers.setText(String.valueOf(mGame.getMinPlayers()));
+        Log.d(LOG_TAG, "Setting Game max players: " + mGame.getMaxPlayers());
+        mGameDetailsMaxPlayers.setText(String.valueOf(mGame.getMaxPlayers()));
         // Populate the image with the correct Product icon [22]
         Log.d(LOG_TAG, "Setting Game image");
-        mGameDetailsImage.setImageResource(game.getPictureURI());
+        mGameDetailsImage.setImageResource(mGame.getPictureURI());
 
         isAdmin = true;
         /**
@@ -108,9 +119,9 @@ public class GameDetailsActivity extends AppCompatActivity implements View.OnCli
         if (isAdmin)
         {
             // Show Game Approved status
-            Log.d(LOG_TAG, "Setting Game Approved status: " + game.getApproved());
+            Log.d(LOG_TAG, "Setting Game Approved status: " + mGame.getApproved());
             mGameDetailsApproved.setVisibility(View.VISIBLE);
-            mGameDetailsApproved.setText(game.getApproved());
+            mGameDetailsApproved.setText(mGame.getApproved());
 
             // Enable button and logic to approve the Game Request
             createApproveGameRequestButton();
@@ -129,14 +140,14 @@ public class GameDetailsActivity extends AppCompatActivity implements View.OnCli
      */
     private void createApproveGameRequestButton()
     {
-        Log.d(LOG_TAG, "Creating Add Game Request button");
+        Log.d(LOG_TAG, "Creating Approve Game Request button");
         // Assign the bottom region LinearLayout as a variable so the button can be added to the page [27] [28] [29] [210] [31] [32] [33].
         LinearLayout bottomRegion = findViewById(R.id.layout_horizontal_bottom);
         // Create the new button
         mApproveGameRequestButton = new Button(this);
         // Set the text, elevation, gravity, background color, and text color of the button
-        Log.d(LOG_TAG, "Setting attributes for Add Game Request button");
-        mApproveGameRequestButton.setText(R.string.games_list_page_addgamerequest_button_text);
+        Log.d(LOG_TAG, "Setting attributes for Approve Game Request button");
+        mApproveGameRequestButton.setText(R.string.game_details_page_approvegamerequest_button_text);
         mApproveGameRequestButton.setElevation(20.0F);
         mApproveGameRequestButton.setGravity(Gravity.CENTER);
         mApproveGameRequestButton.setBackgroundColor(getColor(R.color.purple_500));
@@ -164,6 +175,9 @@ public class GameDetailsActivity extends AppCompatActivity implements View.OnCli
     @Override
     public void onClick(View v)
     {
+        //
+        dbHelper.updateItemInDB(String.valueOf(mGame.getId()), "", "", "", "", null, -1, -1, -1, "Y");
+
         // Navigate back to the Games List page
         Log.d(LOG_TAG, "Navigating back to Games List page");
         Intent intent = new Intent(GameDetailsActivity.this, GamesListActivity.class);

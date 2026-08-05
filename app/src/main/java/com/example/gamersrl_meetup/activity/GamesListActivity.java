@@ -34,8 +34,6 @@ public class GamesListActivity extends AppCompatActivity
     // Initialize the UI elements
     private RecyclerView mRecyclerView;
     private LinearLayoutManager layoutManager;
-    private View mStartOfRecyclerViewDivider;
-    private View mEndOfRecyclerViewDivider;
     private Button mAddGameRequestButton;
 
     // Initialize the database helper and the adapter
@@ -43,7 +41,7 @@ public class GamesListActivity extends AppCompatActivity
     private Adapter_Game adapter;
 
     // Initialize the boolean to determine the user's role
-    private boolean isAdmin = true;
+    private boolean isAdmin = false;
 
     /**
      * Create the list of Games and populate the list.
@@ -63,8 +61,6 @@ public class GamesListActivity extends AppCompatActivity
         // Instantiate the RecyclerView, the dividers indicating the start and end the RecyclerView, and the Button
         Log.d(LOG_TAG, "Instantiating UI elements for the Games List page");
         mRecyclerView = findViewById(R.id.recycler_view);
-        mStartOfRecyclerViewDivider = findViewById(R.id.start_of_recyclerview_divider);
-        mEndOfRecyclerViewDivider = findViewById(R.id.end_of_recyclerview_divider);
 
         // Make a Database Helper to manipulate the database
         Log.d(LOG_TAG, "Making database helper");
