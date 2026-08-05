@@ -9,12 +9,14 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.gamersrl_meetup.R;
 import com.example.gamersrl_meetup.database.DatabaseHelper_Game;
 import com.example.gamersrl_meetup.model.Game;
+import com.google.android.material.snackbar.Snackbar;
 
 /**
  * GameDetailsActivity class
@@ -40,7 +42,7 @@ public class GameDetailsActivity extends AppCompatActivity implements View.OnCli
     private Button mApproveGameRequestButton;
 
     // Initialize the boolean to determine the user's role
-    private Boolean isAdmin;
+    private Boolean isAdmin = true;
 
     // Initialize the database helper
     private DatabaseHelper_Game dbHelper;
@@ -86,7 +88,7 @@ public class GameDetailsActivity extends AppCompatActivity implements View.OnCli
         mGame = getIntent().getParcelableExtra("itemDetails");
 
         // Get the user role from the intent extras to determine what UI elements and actions should be allowed
-        isAdmin = getIntent().getBooleanExtra("isAdmin", false);
+        //isAdmin = getIntent().getBooleanExtra("isAdmin", false);
 
         /**
          * Set the text to the correct data
@@ -111,7 +113,7 @@ public class GameDetailsActivity extends AppCompatActivity implements View.OnCli
         Log.d(LOG_TAG, "Setting Game image");
         mGameDetailsImage.setImageResource(mGame.getPictureURI());
 
-        isAdmin = true;
+        //isAdmin = true;
         /**
          * If the user is an admin, then show the Game Approved status.
          * Otherwise, do not show it.
@@ -175,8 +177,11 @@ public class GameDetailsActivity extends AppCompatActivity implements View.OnCli
     @Override
     public void onClick(View v)
     {
-        //
+        // Update the selected Game to be approved
         dbHelper.updateItemInDB(String.valueOf(mGame.getId()), "", "", "", "", null, -1, -1, -1, "Y");
+
+        // Display a success Toast
+        Toast.makeText(this, "Successfully approved game!", Toast.LENGTH_SHORT).show();
 
         // Navigate back to the Games List page
         Log.d(LOG_TAG, "Navigating back to Games List page");

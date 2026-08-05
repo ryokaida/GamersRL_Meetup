@@ -41,7 +41,7 @@ public class GamesListActivity extends AppCompatActivity
     private Adapter_Game adapter;
 
     // Initialize the boolean to determine the user's role
-    private boolean isAdmin = false;
+    private boolean isAdmin = true;
 
     /**
      * Create the list of Games and populate the list.
