@@ -15,6 +15,7 @@ import com.example.gamersrl_meetup.R;
 import com.example.gamersrl_meetup.adapter.Adapter_Game;
 import com.example.gamersrl_meetup.database.DatabaseHelper_Game;
 import com.example.gamersrl_meetup.model.Game;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -182,14 +183,14 @@ public class AddGameRequestActivity extends AppCompatActivity implements View.On
             // Create the new Game and add it to the database
             Game newGame = new Game(title, description, developer, publisher, dateRelaseDate, intMinPlayers, intMaxPlayers, R.drawable.neckdefender, "N");
             dbHelper.addToDatabase(newGame);
-            Toast.makeText(this, "Successfully sent request to add new game!", Toast.LENGTH_SHORT).show();
+            showSnackbar(mSubmitButton, "Successfully sent request to add new game!");
 
             // Reset the page for a new Game to be added
             clearFields();
         }
         catch (Exception e)
         {
-            Toast.makeText(this, "Error requesting for game to be added: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            showSnackbar(mSubmitButton, "Error requesting for game to be added: " + e.getMessage());
         }
     }
 
@@ -206,6 +207,18 @@ public class AddGameRequestActivity extends AppCompatActivity implements View.On
         mPublisherEditText.setText("");
         mMinPlayersEditText.setText("");
         mMaxPlayersEditText.setText("");
+    }
+
+    /**
+     * Helper method to display a snackbar [38].
+     *
+     * @param v The View to display the snackbar in
+     * @param message The message to display
+     */
+    private void showSnackbar(View v, String message)
+    {
+        Snackbar snackbar = Snackbar.make(v, message, Snackbar.LENGTH_SHORT);
+        snackbar.show();
     }
 }
 //        this.id = id;
