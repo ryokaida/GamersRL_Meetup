@@ -42,6 +42,9 @@ public class GamesListActivity extends AppCompatActivity
     private DatabaseHelper_Game dbHelper;
     private Adapter_Game adapter;
 
+    // Initialize the boolean to determine the user's role
+    private boolean isAdmin = true;
+
     /**
      * Create the list of Games and populate the list.
      *
@@ -87,9 +90,25 @@ public class GamesListActivity extends AppCompatActivity
             Log.d(LOG_TAG, "Game table is populated");
         }
 
-        // Get all the items for the list
-        Log.d(LOG_TAG, "Populating list");
-        games = dbHelper.getAllApprovedGames();
+        /**
+         * If the user is an admin, then show the unapproved games so that they can be approved.
+         * Otherwise, only show the approved games and the button to request that a new game be added.
+         */
+        if (isAdmin)
+        {
+            // Get all the items for the list
+            Log.d(LOG_TAG, "Populating list with all unapproved games");
+            games = dbHelper.getAllUnapprovedGames();
+        }
+        else
+        {
+            // Get all the items for the list
+            Log.d(LOG_TAG, "Populating list with only approved games");
+            games = dbHelper.getAllApprovedGames();
+
+            // Add the Request to Add Game button to the bottom of the screen
+            createAddGameRequestButton();
+        }
 
         // Make the adapter and set it onto the RecyclerView
         Log.d(LOG_TAG, "Making adapter");
@@ -100,9 +119,6 @@ public class GamesListActivity extends AppCompatActivity
         Log.d(LOG_TAG, "Making linear layout manager");
         layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(layoutManager);
-
-        // Add the Request to Add Game button to the bottom of the screen
-        createAddGameRequestButton();
     }
 
     /**

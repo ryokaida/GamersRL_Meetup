@@ -176,6 +176,20 @@ public class DatabaseHelper_Game extends DatabaseHelper<Game>
     }
 
     /**
+     * Wrapper method to retrieve all unapproved Games from the database so that admins can approve them.
+     *
+     * @return All Games from the database that unapproved Gamers
+     */
+    public List<Game> getAllUnapprovedGames()
+    {
+        // Make the query to get data
+        String selectQuery = "SELECT * FROM " + TABLE_NAME + " WHERE " + KEY_APPROVED + " = ?";
+        Log.d(LOG_TAG, "Created query to get all approved games: " + selectQuery);
+
+        return getItemsFromDB(selectQuery, new String[]{"N"});
+    }
+
+    /**
      * Add a new Game to the database [12].
      *
      * @param game The Game to add to the database

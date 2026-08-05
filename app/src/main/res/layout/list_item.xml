@@ -28,7 +28,6 @@
             android:layout_height="wrap_content"
             android:text="@string/list_item_view_button_text"
             android:textColor="@color/white"
-            android:layout_gravity="center_horizontal"
             />
 
     </LinearLayout>

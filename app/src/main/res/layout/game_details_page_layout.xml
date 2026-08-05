@@ -6,7 +6,6 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
     tools:context=".activity.GameDetailsActivity"
     >
 
@@ -21,6 +20,7 @@
         android:textSize="40sp"
         android:textStyle="bold"
         android:layout_marginBottom="3sp"
+        android:layout_marginTop="130dp"
         />
 
     <LinearLayout
@@ -28,6 +28,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="20dp"
         >
 
         <TextView
@@ -56,6 +57,7 @@
         android:layout_width="300dp"
         android:layout_height="200dp"
         android:layout_gravity="center"
+        android:layout_marginBottom="30dp"
         />
 
     <LinearLayout
@@ -195,7 +197,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginBottom="3sp"
+        android:layout_marginBottom="15sp"
         >
 
         <TextView
@@ -218,5 +220,41 @@
             />
 
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="3sp"
+        >
+
+        <TextView
+            android:id="@+id/game_details_label_approved"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20sp"
+            android:layout_marginRight="5dp"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:text="@string/game_details_page_label_approved"
+            />
+
+        <TextView
+            android:id="@+id/game_details_approved"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20sp"
+            android:textSize="16sp"
+            />
+
+    </LinearLayout>
+
+    <!-- LinearLayout to contain lower page content (TBD) -->
+    <LinearLayout
+        android:id="@+id/layout_horizontal_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        />
 
 </LinearLayout>

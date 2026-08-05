@@ -20,6 +20,7 @@
     <string name="game_details_page_label_releasedate">Release Date: </string>
     <string name="game_details_page_label_minplayers">Minimum # Players: </string>
     <string name="game_details_page_label_maxplayers">Maximum # Players: </string>
+    <string name="game_details_page_label_approved">Approved: </string>
 
     <!-- Strings for the Add Game Request page -->
     <string name="add_game_request_page_activity_name">Request a Game to be Added</string>
