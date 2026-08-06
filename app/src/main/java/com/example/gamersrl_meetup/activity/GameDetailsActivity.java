@@ -43,7 +43,7 @@ public class GameDetailsActivity extends AppCompatActivity implements View.OnCli
     private Button mApproveGameRequestButton;
 
     // Initialize the boolean to determine the user's role
-    private Boolean isAdmin = true;
+    private Boolean isAdmin;
 
     // Initialize the database helper
     private DatabaseHelper_Game dbHelper;
@@ -91,6 +91,7 @@ public class GameDetailsActivity extends AppCompatActivity implements View.OnCli
         // Get the user role from the intent extras to determine what UI elements and actions should be allowed
         //isAdmin = getIntent().getBooleanExtra("isAdmin", false);
         // TODO - Pass admin role in via intent
+        isAdmin = new TempAdminTester().getIsAdmin();
 
         /**
          * Set the text to the correct data

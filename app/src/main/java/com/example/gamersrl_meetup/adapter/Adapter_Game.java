@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.example.gamersrl_meetup.R;
 import com.example.gamersrl_meetup.activity.GameDetailsActivity;
+import com.example.gamersrl_meetup.activity.TempAdminTester;
 import com.example.gamersrl_meetup.model.Game;
 
 import java.util.List;
@@ -26,7 +27,7 @@ public class Adapter_Game extends Adapter
     private final String LOG_TAG = "GAME ADAPTER - ";
 
     // Initialize the boolean to determine the user's role
-    private Boolean isAdmin = true;
+    private Boolean isAdmin;
 
     // Initialize a List of items
     private List<Game> games;
@@ -42,6 +43,8 @@ public class Adapter_Game extends Adapter
     public Adapter_Game(List<Game> games) {
         super();
         this.games = games;
+        // TODO - Actually get admin role from user
+        isAdmin = new TempAdminTester().getIsAdmin();
     }
 
     /**

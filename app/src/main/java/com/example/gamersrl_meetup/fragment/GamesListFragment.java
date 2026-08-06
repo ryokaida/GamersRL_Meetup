@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gamersrl_meetup.R;
 import com.example.gamersrl_meetup.activity.AddGameRequestActivity;
+import com.example.gamersrl_meetup.activity.TempAdminTester;
 import com.example.gamersrl_meetup.adapter.Adapter_Game;
 import com.example.gamersrl_meetup.database.DatabaseHelper_Game;
 import com.example.gamersrl_meetup.model.Game;
@@ -47,7 +48,7 @@ public class GamesListFragment extends Fragment
     private Adapter_Game adapter;
 
     // Initialize the boolean to determine the user's role
-    private boolean isAdmin = true;
+    private boolean isAdmin;
 
     /**
      * Inflate the layout for the Games List Fragment.
@@ -67,6 +68,9 @@ public class GamesListFragment extends Fragment
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // Inflate the layout for this Fragment
         View view = inflater.inflate(R.layout.list_page_layout, container, false);
+
+        // TODO - Actually get admin role from user
+        isAdmin = new TempAdminTester().getIsAdmin();
 
         /**
          * Instantiate the RecyclerView, the dividers indicating the start and end the RecyclerView, and the Button.
