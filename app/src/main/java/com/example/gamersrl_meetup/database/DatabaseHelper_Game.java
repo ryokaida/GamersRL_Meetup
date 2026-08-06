@@ -38,6 +38,7 @@ public class DatabaseHelper_Game extends DatabaseHelper<Game>
     private static final String KEY_MAX_PLAYERS = "max_players";
     // The picture is indicated via a URI so that the code can refer to its file location
     private static final String KEY_PICTURE_URI = "picture_uri";
+    private static final String KEY_APPROVED = "approved"; // Whether the game is visible to Gamers or not - Should be "Y" or "N"
 
     /**
      * Constructor to create the database helper, with the database name and version.
@@ -66,7 +67,8 @@ public class DatabaseHelper_Game extends DatabaseHelper<Game>
                 KEY_RELEASE_DATE + " DATETIME, " +
                 KEY_MIN_PLAYERS + " INTEGER, " +
                 KEY_MAX_PLAYERS + " INTEGER, " +
-                KEY_PICTURE_URI + " TEXT" +
+                KEY_PICTURE_URI + " TEXT, " +
+                KEY_APPROVED + " TEXT" +
                 ")";
         Log.d(LOG_TAG, "Created query to create table: " + QUERY_CREATE_TABLE);
         return QUERY_CREATE_TABLE;
@@ -140,7 +142,8 @@ public class DatabaseHelper_Game extends DatabaseHelper<Game>
                 new Date(in_Cursor.getLong(5)),
                 in_Cursor.getInt(6), // Get max players from current table row
                 in_Cursor.getInt(7), // Get min players from current table row
-                in_Cursor.getInt(8) // Get picture URI from current table row
+                in_Cursor.getInt(8), // Get picture URI from current table row
+                in_Cursor.getString(9) // Get the Approved status from the current table row
         );
     }
 
@@ -158,51 +161,82 @@ public class DatabaseHelper_Game extends DatabaseHelper<Game>
         return getItemsFromDB(selectQuery, null);
     }
 
-//    /**
-//     * Add a new Game to the database [12].
-//     *
-//     * @param game The Game to add to the database
-//     */
-//    public void addToDatabase(Game game)
-//    {
-//        // Get the database so it can be accessed/written to
-//        SQLiteDatabase db = getWritableDatabase();
-//
-//        // Initialize the ContentValues
-//        ContentValues values = new ContentValues();
-//
-//        /** Set the data for the new Game */
-//        values.put(KEY_TITLE, game.getTitle());
-//        Log.d(LOG_TAG, "Using title: " + game.getTitle());
-//
-//        values.put(KEY_DESCRIPTION, game.getDescription());
-//        Log.d(LOG_TAG, "Using description: " + game.getDescription());
-//
-//        values.put(KEY_DEVELOPER, game.getDeveloper());
-//        Log.d(LOG_TAG, "Using developer: " + game.getDeveloper());
-//
-//        values.put(KEY_PUBLISHER, game.getPublisher());
-//        Log.d(LOG_TAG, "Using publisher: " + game.getPublisher());
-//
-//        values.put(KEY_RELEASE_DATE, game.getReleaseDate().getTime());
-//        Log.d(LOG_TAG, "Using release date: " + game.getReleaseDate().getTime());
-//
-//        values.put(KEY_MIN_PLAYERS, game.getMinPlayers());
-//        Log.d(LOG_TAG, "Using min players: " + String.valueOf(game.getMinPlayers()));
-//
-//        values.put(KEY_MAX_PLAYERS, game.getMaxPlayers());
-//        Log.d(LOG_TAG, "Using max players: " + String.valueOf(game.getMaxPlayers()));
-//
-//        values.put(KEY_PICTURE_URI, game.getPictureURI());
-//        Log.d(LOG_TAG, "Using picture URI: " + String.valueOf(game.getPictureURI()));
-//
-//        // Insert the values into the table
-//        Log.d(LOG_TAG, "Inserting new game into db");
-//        db.insert(TABLE_NAME, null, values);
-//
-//        // Close the database connection
-//       // db.close();
-//    }
+    /**
+     * Wrapper method to retrieve all Games from the database that Gamers are allowed to see.
+     *
+     * @return All Games from the database that Gamers are allowed to see
+     */
+    public List<Game> getAllApprovedGames()
+    {
+        // Make the query to get data
+        String selectQuery = "SELECT * FROM " + TABLE_NAME + " WHERE " + KEY_APPROVED + " = ?";
+        Log.d(LOG_TAG, "Created query to get all approved games: " + selectQuery);
+
+        return getItemsFromDB(selectQuery, new String[]{"Y"});
+    }
+
+    /**
+     * Wrapper method to retrieve all unapproved Games from the database so that admins can approve them.
+     *
+     * @return All Games from the database that unapproved Gamers
+     */
+    public List<Game> getAllUnapprovedGames()
+    {
+        // Make the query to get data
+        String selectQuery = "SELECT * FROM " + TABLE_NAME + " WHERE " + KEY_APPROVED + " = ?";
+        Log.d(LOG_TAG, "Created query to get all approved games: " + selectQuery);
+
+        return getItemsFromDB(selectQuery, new String[]{"N"});
+    }
+
+    /**
+     * Add a new Game to the database [12].
+     *
+     * @param game The Game to add to the database
+     */
+    public void addToDatabase(Game game)
+    {
+        // Get the database so it can be accessed/written to
+        SQLiteDatabase db = getWritableDatabase();
+
+        // Initialize the ContentValues
+        ContentValues values = new ContentValues();
+
+        /** Set the data for the new Game */
+        values.put(KEY_TITLE, game.getTitle());
+        Log.d(LOG_TAG, "Using title: " + game.getTitle());
+
+        values.put(KEY_DESCRIPTION, game.getDescription());
+        Log.d(LOG_TAG, "Using description: " + game.getDescription());
+
+        values.put(KEY_DEVELOPER, game.getDeveloper());
+        Log.d(LOG_TAG, "Using developer: " + game.getDeveloper());
+
+        values.put(KEY_PUBLISHER, game.getPublisher());
+        Log.d(LOG_TAG, "Using publisher: " + game.getPublisher());
+
+        values.put(KEY_RELEASE_DATE, game.getReleaseDate().getTime());
+        Log.d(LOG_TAG, "Using release date: " + game.getReleaseDate().getTime());
+
+        values.put(KEY_MIN_PLAYERS, game.getMinPlayers());
+        Log.d(LOG_TAG, "Using min players: " + String.valueOf(game.getMinPlayers()));
+
+        values.put(KEY_MAX_PLAYERS, game.getMaxPlayers());
+        Log.d(LOG_TAG, "Using max players: " + String.valueOf(game.getMaxPlayers()));
+
+        values.put(KEY_PICTURE_URI, game.getPictureURI());
+        Log.d(LOG_TAG, "Using picture URI: " + String.valueOf(game.getPictureURI()));
+
+        values.put(KEY_APPROVED, game.getApproved());
+        Log.d(LOG_TAG, "Using approved: " + String.valueOf(game.getApproved()));
+
+        // Insert the values into the table
+        Log.d(LOG_TAG, "Inserting new game into db");
+        db.insert(TABLE_NAME, null, values);
+
+        // Close the database connection
+       // db.close();
+    }
 
     /**
      * Retrieve the table name.
@@ -212,6 +246,78 @@ public class DatabaseHelper_Game extends DatabaseHelper<Game>
     public String getTableName()
     {
         return TABLE_NAME;
+    }
+
+    /**
+     * Update one Game in the database (found by its ID) [39].
+     * If there is any attributes that don't need updated, pass in the empty string.
+     * If the attribute that doesn't need updating is an integer, pass in -1.
+     * If the attribute that doesn't need updating is a date, pass in null.
+     *
+     * @param id The ID of the Game
+     * @param title The Game's title
+     * @param description The game's description
+     * @param developer The game's developer
+     * @param publisher The game's publisher
+     * @param releaseDate The game's release date
+     * @param minPlayers The minimum number of players that can play the Game
+     * @param maxPlayers The maximum number of players that can play the Game
+     * @param pictureURI The URI for an image of the Game
+     * @param approved Whether the game is visible to Gamers or not
+     */
+    public void updateItemInDB(String id, String title, String description, String developer, String publisher, Date releaseDate, int minPlayers, int maxPlayers, int pictureURI, String approved)
+    {
+        // Get the database so it can be accessed/written to
+        SQLiteDatabase db = getWritableDatabase();
+
+        // Initialize the ContentValues
+        ContentValues values = new ContentValues();
+
+        /**
+         * Only add the attribute to be updated if it is populated and not the empty string or -1
+         */
+        if (title != null && !title.isEmpty())
+        {
+            values.put(KEY_TITLE, title);
+        }
+        if (description != null && !description.isEmpty())
+        {
+            values.put(KEY_DESCRIPTION, description);
+        }
+        if (developer != null && !developer.isEmpty())
+        {
+            values.put(KEY_DEVELOPER, developer);
+        }
+        if (publisher != null && !publisher.isEmpty())
+        {
+            values.put(KEY_PUBLISHER, publisher);
+        }
+        if (releaseDate != null)
+        {
+            values.put(KEY_RELEASE_DATE, releaseDate.getTime());
+        }
+        if (minPlayers == -1)
+        {
+            values.put(KEY_MIN_PLAYERS, minPlayers);
+        }
+        if (maxPlayers == -1)
+        {
+            values.put(KEY_MAX_PLAYERS, maxPlayers);
+        }
+        if (pictureURI == -1)
+        {
+            values.put(KEY_MAX_PLAYERS, pictureURI);
+        }
+        if (approved != null && !approved.isEmpty())
+        {
+            values.put(KEY_APPROVED, approved);
+        }
+
+        // Update the database with the new value(s)
+        db.update(TABLE_NAME, values, "id=?", new String[]{id});
+
+        // Close the database connection
+        // db.close();
     }
 
     /**
@@ -236,6 +342,7 @@ public class DatabaseHelper_Game extends DatabaseHelper<Game>
         values.put(KEY_MIN_PLAYERS, 1);
         values.put(KEY_MAX_PLAYERS, 4);
         values.put(KEY_PICTURE_URI, R.drawable.borderlands4);
+        values.put(KEY_APPROVED, "Y");
         // Insert the values into the table
         Log.d(LOG_TAG, "Inserting Borderlands 4 into db");
         database.insert(TABLE_NAME, null, values);
@@ -250,6 +357,7 @@ public class DatabaseHelper_Game extends DatabaseHelper<Game>
         values.put(KEY_MIN_PLAYERS, 1);
         values.put(KEY_MAX_PLAYERS, 4);
         values.put(KEY_PICTURE_URI, R.drawable.overcooked);
+        values.put(KEY_APPROVED, "Y");
         // Insert the values into the table
         Log.d(LOG_TAG, "Inserting Overcooked into db");
         database.insert(TABLE_NAME, null, values);
@@ -264,6 +372,7 @@ public class DatabaseHelper_Game extends DatabaseHelper<Game>
         values.put(KEY_MIN_PLAYERS, 1);
         values.put(KEY_MAX_PLAYERS, 1);
         values.put(KEY_PICTURE_URI, R.drawable.god_of_war);
+        values.put(KEY_APPROVED, "Y");
         // Insert the values into the table
         Log.d(LOG_TAG, "Inserting God of War into db");
         database.insert(TABLE_NAME, null, values);
@@ -278,6 +387,7 @@ public class DatabaseHelper_Game extends DatabaseHelper<Game>
         values.put(KEY_MIN_PLAYERS, 1);
         values.put(KEY_MAX_PLAYERS, 2);
         values.put(KEY_PICTURE_URI, R.drawable.lego_star_wars_the_skywalker_saga);
+        values.put(KEY_APPROVED, "Y");
         // Insert the values into the table
         Log.d(LOG_TAG, "Inserting Lego Star Wars: The Skywalker Saga into db");
         database.insert(TABLE_NAME, null, values);
@@ -292,6 +402,7 @@ public class DatabaseHelper_Game extends DatabaseHelper<Game>
         values.put(KEY_MIN_PLAYERS, 1);
         values.put(KEY_MAX_PLAYERS, 5);
         values.put(KEY_PICTURE_URI, R.drawable.dead_by_daylight);
+        values.put(KEY_APPROVED, "Y");
         // Insert the values into the table
         Log.d(LOG_TAG, "Inserting Dead by Daylight into db");
         database.insert(TABLE_NAME, null, values);
