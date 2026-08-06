@@ -250,11 +250,9 @@ public class DatabaseHelper_Game extends DatabaseHelper<Game>
 
     /**
      * Update one Game in the database (found by its ID) [39].
-     * If there is any attributes that don't need updated, pass in the empty string.
-     * If the attribute that doesn't need updating is an integer, pass in -1.
-     * If the attribute that doesn't need updating is a date, pass in null.
+     * If there are any attributes that don't need updated, pass in what the Game already has for that value (e.g. by passing in game.getTitle()).
      *
-     * @param id The ID of the Game
+     * @param id The ID of the Game - This comes in as a string instead of an integer because SQL Lite requires a string array for the where args
      * @param title The Game's title
      * @param description The game's description
      * @param developer The game's developer
@@ -314,10 +312,33 @@ public class DatabaseHelper_Game extends DatabaseHelper<Game>
         }
 
         // Update the database with the new value(s)
+        Log.d(LOG_TAG, "Updating item with ID: " + id);
         db.update(TABLE_NAME, values, "id=?", new String[]{id});
 
         // Close the database connection
         // db.close();
+    }
+
+    /**
+     * Wrapper method to delete a Game from the database.
+     *
+     * @param id The ID of the Game - This comes in as a string instead of an integer because SQL Lite requires a string array for the where args
+     */
+    public void deleteGameFromDB(String id)
+    {
+        deleteItemFromDB(TABLE_NAME, id);
+    }
+
+    /**
+     * Delete one item in the database (found by its ID) [44].
+     *
+     * @param tableName The name of the table to delete from
+     * @param id The ID of the Game - This comes in as a string instead of an integer because SQL Lite requires a string array for the where args
+     */
+    @Override
+    public void deleteItemFromDB(String tableName, String id)
+    {
+        super.deleteItemFromDB(tableName, id);
     }
 
     /**

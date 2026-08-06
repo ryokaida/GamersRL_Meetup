@@ -202,14 +202,28 @@ public class GameDetailsActivity extends AppCompatActivity implements View.OnCli
             // Display a success Toast
             Toast.makeText(this, "Successfully approved game!", Toast.LENGTH_SHORT).show();
 
-            // Navigate back to the Games List page
-            Log.d(LOG_TAG, "Navigating back to Games List page");
-            Intent intent = new Intent(GameDetailsActivity.this, AppContentActivity.class);
-            startActivity(intent);
+            navigateBackToGamesList();
+
         }
         else if (id == R.id.deletegame_button)
         {
-            Toast.makeText(this, "delete", Toast.LENGTH_SHORT).show();
+            // Delete the selected Game
+            dbHelper.deleteGameFromDB(String.valueOf(mGame.getId()));
+
+            // Display a success Toast
+            Toast.makeText(this, "Successfully removed game!", Toast.LENGTH_SHORT).show();
+
+            navigateBackToGamesList();
         }
+    }
+
+    /**
+     * Helper method to navigate back to the Games List page.
+     */
+    private void navigateBackToGamesList()
+    {
+        Log.d(LOG_TAG, "Navigating back to Games List page");
+        Intent intent = new Intent(GameDetailsActivity.this, AppContentActivity.class);
+        startActivity(intent);
     }
 }
