@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -126,6 +127,8 @@ public abstract class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>
         // Populate the image with the correct Product icon [22]
         Log.d(LOG_TAG, "Setting ImageView");
         holder.imageView.setImageResource(getImage(position2));
+        // Create any extra list information if needed
+        createExtraListInformation(holder.extraInfoRegion, position2);
 
         // Set the onClick listener on the View buttons
         holder.viewButton.setOnClickListener(new View.OnClickListener()
@@ -184,6 +187,16 @@ public abstract class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>
     public abstract Parcelable getItemToDisplayDetailsFor(int in_Position);
 
     /**
+     * Create any extra information for the list item after the default data pieces if needed.
+     * e.g. adding min/max number of players for Games for basic users, adding the Approved attribute for Games for admins, etc.
+     * If you do not need this method, please just use "return;" in the method when implementing it in the Specific Adapter class.
+     *
+     * @param v The View to make the UI elements in
+     * @param position The position of the selected item in the list
+     */
+    public abstract void createExtraListInformation(View v, int position);
+
+    /**
      * ViewHolder class
      *
      * Holds the Views for the list item's data and icon.
@@ -201,6 +214,9 @@ public abstract class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>
 
         // Initialize the ImageView for the list item's image [22]
         public ImageView imageView;
+
+        // Initialize the region for any Extra Info
+        public LinearLayout extraInfoRegion;
 
         /**
          * Construct a new ViewHolder with the views needed for the item's data, icon, and View button.
@@ -225,6 +241,9 @@ public abstract class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>
             imageView = itemView.findViewById(R.id.list_item_icon);
             listItemDivider = itemView.findViewById(R.id.list_item_divider_bottom);
             viewButton = itemView.findViewById(R.id.viewButton);
+
+            // Assign the Extra Info LinearLayout as a variable so the UI elements can be added to the page [27] [28] [29] [210] [31] [32] [33].
+            extraInfoRegion = itemView.findViewById(R.id.extra_listitem_information);
         }
     }
 }

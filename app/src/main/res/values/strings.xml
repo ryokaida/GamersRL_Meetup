@@ -15,11 +15,6 @@
 
     <!-- Strings for the Game Details page -->
     <string name="activity_gamedetails_header">Game Details Page</string>
-    <string name="activity_gamedetails_label_publisher">Publisher: </string>
-    <string name="activity_gamedetails_label_releasedate">Release Date: </string>
-    <string name="activity_gamedetails_label_minplayers">Minimum # Players: </string>
-    <string name="activity_gamedetails_label_maxplayers">Maximum # Players: </string>
-    <string name="activity_gamedetails_label_approved">Approved: </string>
     <string name="activity_gamedetails_approvegamerequest_button_text">Approve Game Request</string>
 
     <!-- Strings for the Add Game Request page -->
@@ -37,10 +32,18 @@
     <string name="frag_events_header">Events</string>
 
     <!-- General strings for the list items -->
-    <string name="list_item_description_label">Description: </string>
-    <string name="list_item_id_label">ID: </string>
-    <string name="list_item_developer_label">Developer: </string>
     <string name="list_item_view_button_text">View</string>
+
+    <!-- General Strings for the Games -->
+    <string name="game_label_id">ID: </string>
+    <string name="game_label_description">Description: </string>
+    <string name="game_label_developer">Developer: </string>
+    <string name="game_label_publisher">Publisher: </string>
+    <string name="game_label_releasedate">Release Date: </string>
+    <string name="game_label_minplayers">Minimum # Players: </string>
+    <string name="game_label_maxplayers">Maximum # Players: </string>
+    <string name="game_label_approved">Approved: </string>
+
 
     <!-- General Strings for buttons -->
     <string name="back_button_text">Back</string>

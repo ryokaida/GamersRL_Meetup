@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:text="@string/list_item_id_label"
+            android:text="@string/game_label_id"
             android:layout_marginRight="5dp"
             android:textAlignment="center"
             />
@@ -75,7 +75,7 @@
             android:layout_marginLeft="20sp"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:text="@string/list_item_developer_label"
+            android:text="@string/game_label_developer"
             />
 
         <TextView
@@ -103,7 +103,7 @@
             android:layout_marginRight="5dp"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:text="@string/activity_gamedetails_label_publisher"
+            android:text="@string/game_label_publisher"
             />
 
         <TextView
@@ -130,7 +130,7 @@
             android:layout_marginRight="5dp"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:text="@string/activity_gamedetails_label_releasedate"
+            android:text="@string/game_label_releasedate"
             />
 
         <TextView
@@ -152,7 +152,7 @@
         android:layout_marginTop="15sp"
         android:textSize="16sp"
         android:textStyle="bold"
-        android:text="@string/list_item_description_label"
+        android:text="@string/game_label_description"
         />
 
     <TextView
@@ -180,7 +180,7 @@
             android:layout_marginRight="5dp"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:text="@string/activity_gamedetails_label_minplayers"
+            android:text="@string/game_label_minplayers"
             />
 
         <TextView
@@ -208,7 +208,7 @@
             android:layout_marginRight="5dp"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:text="@string/activity_gamedetails_label_maxplayers"
+            android:text="@string/game_label_maxplayers"
             />
 
         <TextView
@@ -236,7 +236,7 @@
             android:layout_marginRight="5dp"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:text="@string/activity_gamedetails_label_approved"
+            android:text="@string/game_label_approved"
             />
 
         <TextView

@@ -43,7 +43,7 @@ public class GameDetailsActivity extends AppCompatActivity implements View.OnCli
     private Button mApproveGameRequestButton;
 
     // Initialize the boolean to determine the user's role
-    private Boolean isAdmin = false;
+    private Boolean isAdmin = true;
 
     // Initialize the database helper
     private DatabaseHelper_Game dbHelper;

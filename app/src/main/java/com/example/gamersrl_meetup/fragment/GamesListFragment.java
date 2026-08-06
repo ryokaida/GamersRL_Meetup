@@ -47,7 +47,7 @@ public class GamesListFragment extends Fragment
     private Adapter_Game adapter;
 
     // Initialize the boolean to determine the user's role
-    private boolean isAdmin = false;
+    private boolean isAdmin = true;
 
     /**
      * Inflate the layout for the Games List Fragment.
@@ -111,7 +111,8 @@ public class GamesListFragment extends Fragment
         {
             // Get all the items for the list
             Log.d(LOG_TAG, "Populating list with all unapproved games");
-            games = dbHelper.getAllUnapprovedGames();
+            //games = dbHelper.getAllUnapprovedGames();
+            games = dbHelper.getAllGames();
         }
         else
         {
