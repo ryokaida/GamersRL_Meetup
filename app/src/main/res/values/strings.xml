@@ -16,6 +16,7 @@
     <!-- Strings for the Game Details page -->
     <string name="activity_gamedetails_header">Game Details Page</string>
     <string name="activity_gamedetails_approvegamerequest_button_text">Approve Game Request</string>
+    <string name="activity_gamedetails_deletegame_button_text">Delete Game</string>
 
     <!-- Strings for the Add Game Request page -->
     <string name="activity_addgamerequest_header">Request a Game to be Added</string>

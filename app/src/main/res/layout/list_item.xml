@@ -164,13 +164,13 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/game_extra_minplayers"
+                    android:id="@+id/game_extra_minmaxplayers"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     >
                     <LinearLayout
-                        android:id="@+id/extra_listitem_information"
+                        android:id="@+id/game_extra_minplayers"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"

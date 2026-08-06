@@ -40,7 +40,7 @@ public class GameDetailsActivity extends AppCompatActivity implements View.OnCli
     private TextView mGameDetailsMaxPlayers;
     private ImageView mGameDetailsImage;
     private TextView mGameDetailsApproved, mGameDetailsApprovedLabel;
-    private Button mApproveGameRequestButton;
+    private Button mApproveGameRequestButton, mDeleteGameButton;
 
     // Initialize the boolean to determine the user's role
     private Boolean isAdmin;
@@ -79,6 +79,8 @@ public class GameDetailsActivity extends AppCompatActivity implements View.OnCli
         mGameDetailsImage = findViewById(R.id.game_details_image);
         mGameDetailsApproved = findViewById(R.id.game_details_approved);
         mGameDetailsApprovedLabel = findViewById(R.id.game_details_label_approved);
+        mApproveGameRequestButton = findViewById(R.id.approvegame_button);
+        mDeleteGameButton = findViewById(R.id.deletegame_button);
 
         // Make a Database Helper to manipulate the database
         Log.d(LOG_TAG, "Making database helper");
@@ -133,8 +135,29 @@ public class GameDetailsActivity extends AppCompatActivity implements View.OnCli
             mGameDetailsApproved.setVisibility(View.VISIBLE);
             mGameDetailsApproved.setText(mGame.getApproved());
 
-            // Enable button and logic to approve the Game Request
-            createApproveGameRequestButton();
+            /**
+             * If the game is not approved yet, then enable button and logic to approve the Game Request
+             * Otherwise, do nothing.
+             */
+            if (mGame.getApproved().equals("N"))
+            {
+                Log.d(LOG_TAG, "Admin needs to approve the game");
+                // Set the Approve Game Request button to be visible and clickable
+                mApproveGameRequestButton.setVisibility(View.VISIBLE);
+                mApproveGameRequestButton.setClickable(true);
+                // Set OnClick Listener on the Approve Game Request button.
+                mApproveGameRequestButton.setOnClickListener(this);
+            }
+            else
+            {
+                Log.d(LOG_TAG, "Game already approved");
+            }
+
+            // Set the Delete button to be visible and clickable
+            mDeleteGameButton.setVisibility(View.VISIBLE);
+            mDeleteGameButton.setClickable(true);
+            // Set OnClick Listener on the Approve Game Request button.
+            mDeleteGameButton.setOnClickListener(this);
         }
         else
         {
@@ -142,61 +165,51 @@ public class GameDetailsActivity extends AppCompatActivity implements View.OnCli
             Log.d(LOG_TAG, "Setting Game Approved to invisible");
             mGameDetailsApproved.setVisibility(View.GONE);
             mGameDetailsApprovedLabel.setVisibility(View.GONE);
+
+            // Hide the Approve Game Request button and prevent clicking
+            mApproveGameRequestButton.setVisibility(View.GONE);
+            mApproveGameRequestButton.setClickable(false);
+
+            // Hide the Delete button and prevent clicking
+            mDeleteGameButton.setVisibility(View.GONE);
+            mDeleteGameButton.setClickable(false);
         }
     }
 
     /**
-     * Set up the Approve Game Request button and add it to the page [27] [28] [29] [30] [31] [32] [33] [34].
-     */
-    private void createApproveGameRequestButton()
-    {
-        Log.d(LOG_TAG, "Creating Approve Game Request button");
-        // Assign the bottom region LinearLayout as a variable so the button can be added to the page [27] [28] [29] [210] [31] [32] [33].
-        LinearLayout bottomRegion = findViewById(R.id.layout_horizontal_bottom);
-        // Create the new button
-        mApproveGameRequestButton = new Button(this);
-        // Set the text, elevation, gravity, background color, and text color of the button
-        Log.d(LOG_TAG, "Setting attributes for Approve Game Request button");
-        mApproveGameRequestButton.setText(R.string.activity_gamedetails_approvegamerequest_button_text);
-        mApproveGameRequestButton.setElevation(20.0F);
-        mApproveGameRequestButton.setGravity(Gravity.CENTER);
-        mApproveGameRequestButton.setBackgroundColor(getColor(R.color.purple_500));
-        mApproveGameRequestButton.setTextColor(getColor(R.color.white));
-        // Make a new LayoutParams to set the button width to MATCH_PARENT and WRAP_CONTENT and to set the margins
-        Log.d(LOG_TAG, "Setting Layout Params for Approve Game Request button");
-        LinearLayout.LayoutParams paramsForButton = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        // Set the margins
-        paramsForButton.setMargins(60, 100, 60, 0);
-        // Assign the Layout Params to the button
-        mApproveGameRequestButton.setLayoutParams(paramsForButton);
-        // Add the button to the page
-        Log.d(LOG_TAG, "Adding the Approve Game Request button to the page");
-        bottomRegion.addView(mApproveGameRequestButton);
-
-        // Set OnClick Listener on the Approve Game Request button.
-        mApproveGameRequestButton.setOnClickListener(this);
-    }
-
-    /**
-     * Handle the logic to approve the Game Request when the Approve Game Request button is clicked.
+     * Handle the logic to approving/deleting the game when the pertinent buttons are clicked.
      *
      * @param v The view that was clicked.
      */
     @Override
     public void onClick(View v)
     {
+        // Get the ID of the selected button
+        int id = v.getId();
+
         /**
-         * Update the selected Game to be approved
-         * Pass in the data that the Game already has to ensure that only the Approved attribute changes.
+         * If the user clicked the Approve Game button, then approve the game.
+         * If the user clicked the Delete Game button, then delete the game.
          */
-        dbHelper.updateItemInDB(String.valueOf(mGame.getId()), mGame.getTitle(), mGame.getDescription(), mGame.getDeveloper(), mGame.getPublisher(), mGame.getReleaseDate(), mGame.getMinPlayers(), mGame.getMaxPlayers(), mGame.getPictureURI(), "Y");
+        if (id == R.id.approvegame_button)
+        {
+            /**
+             * Update the selected Game to be approved
+             * Pass in the data that the Game already has to ensure that only the Approved attribute changes.
+             */
+            dbHelper.updateItemInDB(String.valueOf(mGame.getId()), mGame.getTitle(), mGame.getDescription(), mGame.getDeveloper(), mGame.getPublisher(), mGame.getReleaseDate(), mGame.getMinPlayers(), mGame.getMaxPlayers(), mGame.getPictureURI(), "Y");
 
-        // Display a success Toast
-        Toast.makeText(this, "Successfully approved game!", Toast.LENGTH_SHORT).show();
+            // Display a success Toast
+            Toast.makeText(this, "Successfully approved game!", Toast.LENGTH_SHORT).show();
 
-        // Navigate back to the Games List page
-        Log.d(LOG_TAG, "Navigating back to Games List page");
-        Intent intent = new Intent(GameDetailsActivity.this, AppContentActivity.class);
-        startActivity(intent);
+            // Navigate back to the Games List page
+            Log.d(LOG_TAG, "Navigating back to Games List page");
+            Intent intent = new Intent(GameDetailsActivity.this, AppContentActivity.class);
+            startActivity(intent);
+        }
+        else if (id == R.id.deletegame_button)
+        {
+            Toast.makeText(this, "delete", Toast.LENGTH_SHORT).show();
+        }
     }
 }

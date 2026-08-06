@@ -32,7 +32,7 @@ import java.util.List;
  * Displays a RecyclerView with Games.
  * The user can select a Game to go to its details page by clicking its View button.
  */
-public class GamesListFragment extends Fragment
+public class GamesListFragment extends Fragment implements View.OnClickListener
 {
     // Set up the Log tag [26]
     private final String LOG_TAG = "GAMES LIST ACTIVITY - ";
@@ -153,6 +153,8 @@ public class GamesListFragment extends Fragment
         LinearLayout bottomRegion = v.findViewById(R.id.layout_horizontal_bottom);
         // Create the new button
         mAddGameRequestButton = new Button(this.getContext());
+        // Set the ID of the button [42] [43]
+        mAddGameRequestButton.setId(R.id.addgamerequest_button);
         // Set the text, elevation, gravity, background color, and text color of the button
         Log.d(LOG_TAG, "Setting attributes for Add Game Request button");
         mAddGameRequestButton.setText(R.string.frag_gameslist_addgamerequest_button_text);
@@ -171,25 +173,26 @@ public class GamesListFragment extends Fragment
         Log.d(LOG_TAG, "Adding the Add Game Request button to the page");
         bottomRegion.addView(mAddGameRequestButton);
 
-        /**
-         * Set OnClick Listener on the Add Game Request button.
-         * The OnClick method is used for the button in an inline fashion since there is another button that also needs its own OnClick Listener.
-         */
-        mAddGameRequestButton.setOnClickListener(new View.OnClickListener()
-        {
-            /**
-             * Navigate to the Add Game Request page when the Add Game Request button is clicked.
-             * Use the host activity as the context [41]
-             *
-             * @param v The view that was clicked.
-             */
-            @Override
-            public void onClick(View v)
-            {
-                Log.d(LOG_TAG, "Navigating to Add Game Request page");
-                Intent intent = new Intent(getActivity(), AddGameRequestActivity.class);
-                startActivity(intent);
-            }
-        });
+        // Set OnClick Listener on the Add Game Request button.
+        mAddGameRequestButton.setOnClickListener(this);
+    }
+
+    /**
+     * Navigate to the Add Game Request page when the Add Game Request button is clicked.
+     * Use the host activity as the context [41]
+     *
+     * @param v The view that was clicked.
+     */
+    @Override
+    public void onClick(View v)
+    {
+        // Get the ID of the button that was clicked
+        int id = v.getId();
+
+        if (id == R.id.addgamerequest_button) {
+            Log.d(LOG_TAG, "Navigating to Add Game Request page");
+            Intent intent = new Intent(getActivity(), AddGameRequestActivity.class);
+            startActivity(intent);
+        }
     }
 }

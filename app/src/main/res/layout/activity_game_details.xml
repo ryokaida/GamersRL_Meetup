@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="15dp"
         >
 
         <TextView
@@ -57,7 +57,7 @@
         android:layout_width="300dp"
         android:layout_height="200dp"
         android:layout_gravity="center"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="15dp"
         />
 
     <LinearLayout
@@ -249,12 +249,44 @@
 
     </LinearLayout>
 
-    <!-- LinearLayout to contain lower page content that is dynamically generated in the code -->
+    <!-- LinearLayout to contain the admin buttons that will be dynamically shown based on the user's role -->
     <LinearLayout
-        android:id="@+id/layout_horizontal_bottom"
+        android:id="@+id/admin_buttons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        />
+        android:orientation="vertical"
+        >
+
+        <Button
+            android:id="@+id/approvegame_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elevation="20dp"
+            android:gravity="center"
+            android:layout_marginTop="50dp"
+            android:layout_marginLeft="60dp"
+            android:layout_marginRight="60dp"
+            android:layout_marginBottom="0dp"
+            android:text="@string/activity_gamedetails_approvegamerequest_button_text"
+            android:visibility="gone"
+            android:clickable="false"
+            />
+
+        <Button
+            android:id="@+id/deletegame_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elevation="20dp"
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="60dp"
+            android:layout_marginRight="60dp"
+            android:layout_marginBottom="0dp"
+            android:text="@string/activity_gamedetails_deletegame_button_text"
+            android:visibility="gone"
+            android:clickable="false"
+            />
+
+    </LinearLayout>
 
 </LinearLayout>

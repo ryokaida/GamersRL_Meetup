@@ -6,8 +6,5 @@ public class TempAdminTester
 
     public TempAdminTester() {}
 
-    public Boolean getIsAdmin()
-    {
-        return isAdmin;
-    }
+    public Boolean getIsAdmin() { return isAdmin; }
 }
