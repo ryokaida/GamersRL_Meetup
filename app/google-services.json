@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "592148826065",
+    "project_id": "gamerrl-meetup",
+    "storage_bucket": "gamerrl-meetup.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:592148826065:android:40646b75010376777f82f0",
+        "android_client_info": {
+          "package_name": "com.example.gamersrl_meetup"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAJMprFcyqvNw3eK03i1TnxFo8IC0y4mS0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
