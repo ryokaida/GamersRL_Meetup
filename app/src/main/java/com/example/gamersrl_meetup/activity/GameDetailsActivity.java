@@ -16,7 +16,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.gamersrl_meetup.R;
 import com.example.gamersrl_meetup.database.DatabaseHelper_Game;
 import com.example.gamersrl_meetup.model.Game;
-import com.google.android.material.snackbar.Snackbar;
+
+import java.text.SimpleDateFormat;
 
 /**
  * GameDetailsActivity class
@@ -101,8 +102,13 @@ public class GameDetailsActivity extends AppCompatActivity implements View.OnCli
         mGameDetailsDeveloper.setText(mGame.getDeveloper());
         Log.d(LOG_TAG, "Setting Game publisher: " + mGame.getPublisher());
         mGameDetailsPublisher.setText(mGame.getPublisher());
-        Log.d(LOG_TAG, "Setting Game release date: " + mGame.getReleaseDate().toString());
-        mGameDetailsReleaseDate.setText(mGame.getReleaseDate().toString());
+
+        // Format the Release Date to a nicer format for display and then set the text [40]
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        String strReleaseDateForDisplay = dateFormat.format(mGame.getReleaseDate());
+        Log.d(LOG_TAG, "Setting Game release date: " + strReleaseDateForDisplay);
+        mGameDetailsReleaseDate.setText(strReleaseDateForDisplay);
+
         Log.d(LOG_TAG, "Setting Game description: " + mGame.getDescription());
         mGameDetailsDescription.setText(mGame.getDescription());
         Log.d(LOG_TAG, "Setting Game min players: " + mGame.getMinPlayers());
