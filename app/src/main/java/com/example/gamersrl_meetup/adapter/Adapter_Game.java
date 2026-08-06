@@ -47,7 +47,7 @@ public class Adapter_Game extends Adapter
     public String getLabel1(Context context)
     {
         // Retrieve the Developer Label from the String resources [23]
-        String label1 = context.getResources().getString(R.string.games_list_page_developer_label);
+        String label1 = context.getResources().getString(R.string.list_item_developer_label);
         Log.d(LOG_TAG, "Retrieved Label1: " + label1);
         return label1;
     }

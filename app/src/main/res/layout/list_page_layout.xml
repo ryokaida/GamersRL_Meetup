@@ -8,11 +8,20 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
-    tools:context=".activity.GamesListActivity"
+    tools:context=".activity.AppContentActivity"
     >
 
-    <!-- LinearLayout to contain upper page content (TBD) -->
+    <TextView
+        android:id="@+id/list_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="24sp"
+        android:layout_marginTop="130dp"
+        android:layout_gravity="center_horizontal"
+        />
+
+    <!-- LinearLayout to contain upper page content that is dynamically generated in the code -->
     <LinearLayout
         android:id="@+id/layout_horizontal_top"
         android:layout_width="match_parent"
@@ -45,7 +54,7 @@
         android:background="?android:attr/listDivider"
         />
 
-    <!-- LinearLayout to contain lower page content (TBD) -->
+    <!-- LinearLayout to contain lower page content that is dynamically generated in the code -->
     <LinearLayout
         android:id="@+id/layout_horizontal_bottom"
         android:layout_width="match_parent"

@@ -9,30 +9,29 @@
 
 
     <!-- Strings for the Games List page -->
-    <string name="games_list_page_activity_name">Games List</string>
-    <string name="games_list_page_developer_label">Developer: </string>
-    <string name="games_list_page_addgamerequest_button_text">Request a Game to be Added</string>
+    <string name="frag_gameslist_header">Games List</string>
+    <string name="frag_gameslist_developer_label">Developer: </string>
+    <string name="frag_gameslist_addgamerequest_button_text">Request a Game to be Added</string>
 
     <!-- Strings for the Game Details page -->
-    <string name="game_details_page_activity_name">Game Details Page</string>
-    <string name="game_details_page_label_developer">Developer: </string>
-    <string name="game_details_page_label_publisher">Publisher: </string>
-    <string name="game_details_page_label_releasedate">Release Date: </string>
-    <string name="game_details_page_label_minplayers">Minimum # Players: </string>
-    <string name="game_details_page_label_maxplayers">Maximum # Players: </string>
-    <string name="game_details_page_label_approved">Approved: </string>
-    <string name="game_details_page_approvegamerequest_button_text">Approve Game Request</string>
+    <string name="activity_gamedetails_header">Game Details Page</string>
+    <string name="activity_gamedetails_label_publisher">Publisher: </string>
+    <string name="activity_gamedetails_label_releasedate">Release Date: </string>
+    <string name="activity_gamedetails_label_minplayers">Minimum # Players: </string>
+    <string name="activity_gamedetails_label_maxplayers">Maximum # Players: </string>
+    <string name="activity_gamedetails_label_approved">Approved: </string>
+    <string name="activity_gamedetails_approvegamerequest_button_text">Approve Game Request</string>
 
     <!-- Strings for the Add Game Request page -->
-    <string name="add_game_request_page_activity_name">Request a Game to be Added</string>
-    <string name="add_game_request_page_activity_instructions">Enter Game Details</string>
-    <string name="add_game_request_page_input_hint_title">Enter the title</string>
-    <string name="add_game_request_page_input_hint_description">Enter the description</string>
-    <string name="add_game_request_page_input_hint_releasedate">Enter the release date as MM/DD/YYYY</string>
-    <string name="add_game_request_page_input_hint_developer">Enter the developer</string>
-    <string name="add_game_request_page_input_hint_publisher">Enter the publisher</string>
-    <string name="add_game_request_page_input_hint_minplayers">Enter the minimum number of players</string>
-    <string name="add_game_request_page_input_hint_maxplayers">Enter the maximum number of players</string>
+    <string name="activity_addgamerequest_header">Request a Game to be Added</string>
+    <string name="activity_addgamerequest_instructions">Enter Game Details</string>
+    <string name="activity_addgamerequest_input_hint_title">Enter the title</string>
+    <string name="activity_addgamerequest_input_hint_description">Enter the description</string>
+    <string name="activity_addgamerequest_input_hint_releasedate">Enter the release date as MM/DD/YYYY</string>
+    <string name="activity_addgamerequest_input_hint_developer">Enter the developer</string>
+    <string name="activity_addgamerequest_input_hint_publisher">Enter the publisher</string>
+    <string name="activity_addgamerequest_input_hint_minplayers">Enter the minimum number of players</string>
+    <string name="activity_addgamerequest_input_hint_maxplayers">Enter the maximum number of players</string>
 
     <!-- Strings for the Events page -->
     <string name="frag_events_header">Events</string>
@@ -40,6 +39,7 @@
     <!-- General strings for the list items -->
     <string name="list_item_description_label">Description: </string>
     <string name="list_item_id_label">ID: </string>
+    <string name="list_item_developer_label">Developer: </string>
     <string name="list_item_view_button_text">View</string>
 
     <!-- General Strings for buttons -->

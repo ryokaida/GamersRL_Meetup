@@ -75,7 +75,7 @@
             android:layout_marginLeft="20sp"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:text="@string/game_details_page_label_developer"
+            android:text="@string/list_item_developer_label"
             />
 
         <TextView
@@ -103,7 +103,7 @@
             android:layout_marginRight="5dp"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:text="@string/game_details_page_label_publisher"
+            android:text="@string/activity_gamedetails_label_publisher"
             />
 
         <TextView
@@ -130,7 +130,7 @@
             android:layout_marginRight="5dp"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:text="@string/game_details_page_label_releasedate"
+            android:text="@string/activity_gamedetails_label_releasedate"
             />
 
         <TextView
@@ -180,7 +180,7 @@
             android:layout_marginRight="5dp"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:text="@string/game_details_page_label_minplayers"
+            android:text="@string/activity_gamedetails_label_minplayers"
             />
 
         <TextView
@@ -208,7 +208,7 @@
             android:layout_marginRight="5dp"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:text="@string/game_details_page_label_maxplayers"
+            android:text="@string/activity_gamedetails_label_maxplayers"
             />
 
         <TextView
@@ -236,7 +236,7 @@
             android:layout_marginRight="5dp"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:text="@string/game_details_page_label_approved"
+            android:text="@string/activity_gamedetails_label_approved"
             />
 
         <TextView
@@ -249,7 +249,7 @@
 
     </LinearLayout>
 
-    <!-- LinearLayout to contain lower page content (TBD) -->
+    <!-- LinearLayout to contain lower page content that is dynamically generated in the code -->
     <LinearLayout
         android:id="@+id/layout_horizontal_bottom"
         android:layout_width="match_parent"

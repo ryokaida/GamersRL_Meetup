@@ -1,24 +1,23 @@
 package com.example.gamersrl_meetup.activity;
 
-import android.content.Intent;
+//import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
+//import android.widget.TextView;
+//import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.gamersrl_meetup.R;
-import com.example.gamersrl_meetup.adapter.Adapter_Game;
 import com.example.gamersrl_meetup.database.DatabaseHelper_Game;
 import com.example.gamersrl_meetup.model.Game;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
+//import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -33,7 +32,6 @@ public class AddGameRequestActivity extends AppCompatActivity implements View.On
     private final String LOG_TAG = "ADD GAME REQUEST ACTIVITY - ";
 
     // Initialize the UI elements
-    private TextView mAddGameInstructions;
     private EditText mTitleEditText, mDescriptionEditText, mReleaseDateEditText, mDeveloperEditText, mPublisherEditText, mMinPlayersEditText, mMaxPlayersEditText;
     private Button mSubmitButton;
 
@@ -53,11 +51,10 @@ public class AddGameRequestActivity extends AppCompatActivity implements View.On
     {
         // Load the Saved Instance State and set the layout
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.add_game_request_page);
+        setContentView(R.layout.activity_add_game_request);
 
         // Instantiate the UI elements
         Log.d(LOG_TAG, "Instantiating UI elements for the Add Game Request page");
-        mAddGameInstructions = findViewById(R.id.addgame_instructions);
         mTitleEditText = findViewById(R.id.input_title);
         mDescriptionEditText = findViewById(R.id.input_description);
         mReleaseDateEditText = findViewById(R.id.input_releasedate);
@@ -149,7 +146,7 @@ public class AddGameRequestActivity extends AppCompatActivity implements View.On
 
             /**
              * Verify that the max number of players is not less than the min number of players.
-             * If the max number of players is less than the min number of players, then inform the user to put a max numnber of players that is greater than the min number of players.
+             * If the max number of players is less than the min number of players, then inform the user to put a max number of players that is greater than the min number of players.
              */
             if (intMinPlayers > intMaxPlayers)
             {
@@ -233,13 +230,3 @@ public class AddGameRequestActivity extends AppCompatActivity implements View.On
         snackbar.show();
     }
 }
-//        this.id = id;
-//        this.title = title;
-//        this.description = description;
-//        this.developer = developer;
-//        this.publisher = publisher;
-//        this.releaseDate = releaseDate;
-//        this.minPlayers = minPlayers;
-//        this.maxPlayers = maxPlayers;
-//        this.pictureURI = pictureURI;
-//        this.approved = approved;

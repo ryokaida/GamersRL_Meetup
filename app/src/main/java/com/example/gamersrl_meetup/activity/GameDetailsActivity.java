@@ -65,7 +65,7 @@ public class GameDetailsActivity extends AppCompatActivity implements View.OnCli
         // Set the view
         Log.d(LOG_TAG, "Creating the Game Details view");
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.game_details_page_layout);
+        setContentView(R.layout.activity_game_details);
 
         // Instantiate the UI elements
         mGameDetailsTitle = findViewById(R.id.game_details_title);
@@ -156,7 +156,7 @@ public class GameDetailsActivity extends AppCompatActivity implements View.OnCli
         mApproveGameRequestButton = new Button(this);
         // Set the text, elevation, gravity, background color, and text color of the button
         Log.d(LOG_TAG, "Setting attributes for Approve Game Request button");
-        mApproveGameRequestButton.setText(R.string.game_details_page_approvegamerequest_button_text);
+        mApproveGameRequestButton.setText(R.string.activity_gamedetails_approvegamerequest_button_text);
         mApproveGameRequestButton.setElevation(20.0F);
         mApproveGameRequestButton.setGravity(Gravity.CENTER);
         mApproveGameRequestButton.setBackgroundColor(getColor(R.color.purple_500));
@@ -195,7 +195,7 @@ public class GameDetailsActivity extends AppCompatActivity implements View.OnCli
 
         // Navigate back to the Games List page
         Log.d(LOG_TAG, "Navigating back to Games List page");
-        Intent intent = new Intent(GameDetailsActivity.this, GamesListActivity.class);
+        Intent intent = new Intent(GameDetailsActivity.this, AppContentActivity.class);
         startActivity(intent);
     }
 }
