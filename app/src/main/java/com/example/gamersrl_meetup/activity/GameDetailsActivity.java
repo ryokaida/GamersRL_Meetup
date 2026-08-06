@@ -42,7 +42,7 @@ public class GameDetailsActivity extends AppCompatActivity implements View.OnCli
     private Button mApproveGameRequestButton;
 
     // Initialize the boolean to determine the user's role
-    private Boolean isAdmin = true;
+    private Boolean isAdmin = false;
 
     // Initialize the database helper
     private DatabaseHelper_Game dbHelper;
@@ -177,8 +177,11 @@ public class GameDetailsActivity extends AppCompatActivity implements View.OnCli
     @Override
     public void onClick(View v)
     {
-        // Update the selected Game to be approved
-        dbHelper.updateItemInDB(String.valueOf(mGame.getId()), "", "", "", "", null, -1, -1, -1, "Y");
+        /**
+         * Update the selected Game to be approved
+         * Pass in the data that the Game already has to ensure that only the Approved attribute changes.
+         */
+        dbHelper.updateItemInDB(String.valueOf(mGame.getId()), mGame.getTitle(), mGame.getDescription(), mGame.getDeveloper(), mGame.getPublisher(), mGame.getReleaseDate(), mGame.getMinPlayers(), mGame.getMaxPlayers(), mGame.getPictureURI(), "Y");
 
         // Display a success Toast
         Toast.makeText(this, "Successfully approved game!", Toast.LENGTH_SHORT).show();

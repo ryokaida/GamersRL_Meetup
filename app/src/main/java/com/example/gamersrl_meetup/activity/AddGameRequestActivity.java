@@ -145,6 +145,18 @@ public class AddGameRequestActivity extends AppCompatActivity implements View.On
                 throw new Exception("Please enter at least 1 player for the minimum and maximum number of players!");
             }
 
+            Log.d(LOG_TAG, "Min and max number of players are at least 1");
+
+            /**
+             * Verify that the max number of players is not less than the min number of players.
+             * If the max number of players is less than the min number of players, then inform the user to put a max numnber of players that is greater than the min number of players.
+             */
+            if (intMinPlayers > intMaxPlayers)
+            {
+                Log.e(LOG_TAG, "max players is greater than min players");
+                throw new Exception("Please ensure that the maximum number of players is greater than minimum number of players!");
+            }
+
             Log.d(LOG_TAG, "Valid min and max number of players");
 
             /**
@@ -180,7 +192,7 @@ public class AddGameRequestActivity extends AppCompatActivity implements View.On
 
             Log.d(LOG_TAG, "Release date is in a valid timeframe");
 
-            // Create the new Game and add it to the database
+            // Create the new Game and add it to the database.
             Game newGame = new Game(title, description, developer, publisher, dateRelaseDate, intMinPlayers, intMaxPlayers, R.drawable.neckdefender, "N");
             dbHelper.addToDatabase(newGame);
             showSnackbar(mSubmitButton, "Successfully sent request to add new game!");
