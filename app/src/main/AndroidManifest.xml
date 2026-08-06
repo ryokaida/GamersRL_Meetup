@@ -25,9 +25,15 @@
         </activity>
 
         <activity
-            android:name=".HeaderMenuActivity"
+            android:name=".activity.AppContentActivity"
             android:exported="true"
             >
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
         </activity>
 
         <activity
@@ -35,10 +41,6 @@
             android:exported="true"
             android:label="@string/games_list_page_activity_name"
             >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <activity

@@ -177,7 +177,7 @@ public abstract class DatabaseHelper<T> extends SQLiteOpenHelper
         db.close();
 
         // Return the list of items retrieved from the db
-        Log.d(LOG_TAG, "Retrieved " + String.valueOf(items.size()) + " items from db");
+        Log.d(LOG_TAG, "Retrieved " + items.size() + " items from db");
         return items;
     }
 

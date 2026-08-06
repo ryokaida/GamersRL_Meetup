@@ -34,6 +34,9 @@
     <string name="add_game_request_page_input_hint_minplayers">Enter the minimum number of players</string>
     <string name="add_game_request_page_input_hint_maxplayers">Enter the maximum number of players</string>
 
+    <!-- Strings for the Events page -->
+    <string name="frag_events_header">Events</string>
+
     <!-- General strings for the list items -->
     <string name="list_item_description_label">Description: </string>
     <string name="list_item_id_label">ID: </string>
@@ -42,14 +45,11 @@
     <!-- General Strings for buttons -->
     <string name="back_button_text">Back</string>
     <string name="submit_button_text">Submit</string>
+
+    <!-- Strings for the Navigation Drawer -->
+    <string name="navigation_drawer_header_subtitle">Find Gaming Events IRL</string>
+    <string name="navigation_drawer_open">Open</string>
+    <string name="navigation_drawer_close">Close</string>
+    <string name="nav_drawer_item_events">Events</string>
+    <string name="nav_drawer_item_gameslist">Games List</string>
 </resources>
-<!--    this.id = id;-->
-<!--    this.title = title;-->
-<!--    this.description = description;-->
-<!--    this.developer = developer;-->
-<!--    this.publisher = publisher;-->
-<!--    this.releaseDate = releaseDate;-->
-<!--    this.minPlayers = minPlayers;-->
-<!--    this.maxPlayers = maxPlayers;-->
-<!--    this.pictureURI = pictureURI;-->
-<!--    this.approved = approved;-->

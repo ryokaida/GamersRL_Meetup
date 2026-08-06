@@ -90,6 +90,7 @@ public class GameDetailsActivity extends AppCompatActivity implements View.OnCli
 
         // Get the user role from the intent extras to determine what UI elements and actions should be allowed
         //isAdmin = getIntent().getBooleanExtra("isAdmin", false);
+        // TODO - Pass admin role in via intent
 
         /**
          * Set the text to the correct data
