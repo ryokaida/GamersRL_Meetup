@@ -199,6 +199,7 @@ public class GameDetailsActivity extends AppCompatActivity implements View.OnCli
          */
         if (id == R.id.approvegame_button)
         {
+            Log.d(LOG_TAG, "Approving Game Request");
             /**
              * Update the selected Game to be approved
              * Pass in the data that the Game already has to ensure that only the Approved attribute changes.
@@ -213,6 +214,7 @@ public class GameDetailsActivity extends AppCompatActivity implements View.OnCli
         }
         else if (id == R.id.deletegame_button)
         {
+            Log.d(LOG_TAG, "Deleting game");
             // Delete the selected Game
             dbHelper.deleteGameFromDB(String.valueOf(mGame.getId()));
 
@@ -223,7 +225,11 @@ public class GameDetailsActivity extends AppCompatActivity implements View.OnCli
         }
         else if (id == R.id.updategame_button)
         {
-            Toast.makeText(this, "UPDATE", Toast.LENGTH_SHORT).show();
+            Log.d(LOG_TAG, "Updating game");
+            // Navigate to the Update Game page
+            Intent intent = new Intent(GameDetailsActivity.this, UpdateGameActivity.class);
+            intent.putExtra("gameToUpdate", mGame);
+            startActivity(intent);
         }
     }
 

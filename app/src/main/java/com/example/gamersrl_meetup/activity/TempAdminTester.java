@@ -2,7 +2,7 @@ package com.example.gamersrl_meetup.activity;
 
 public class TempAdminTester
 {
-    private Boolean isAdmin = true;
+    private Boolean isAdmin = false;
 
     public TempAdminTester() {}
 

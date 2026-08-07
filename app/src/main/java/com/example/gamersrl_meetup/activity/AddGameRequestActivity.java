@@ -3,18 +3,9 @@ package com.example.gamersrl_meetup.activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.gamersrl_meetup.R;
-import com.example.gamersrl_meetup.database.DatabaseHelper_Game;
 import com.example.gamersrl_meetup.model.Game;
-import com.google.android.material.snackbar.Snackbar;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * AddGameRequestActivity class
@@ -22,17 +13,12 @@ import java.util.Date;
  * Enables the user to enter information for a Game and request that it be added to the System.
  * The game is technically added to the database but in the hidden mode (approved = "N").  The Admins must set it to the approved mode (approved = "Y").
  */
-public class AddGameRequestActivity extends AppCompatActivity implements View.OnClickListener
+public class AddGameRequestActivity extends AbstractAddUpdateGameActivity  implements View.OnClickListener
 {
     // Set up the Log tag [26]
     private final String LOG_TAG = "ADD GAME REQUEST ACTIVITY - ";
 
-    // Initialize the UI elements
-    private EditText mTitleEditText, mDescriptionEditText, mReleaseDateEditText, mDeveloperEditText, mPublisherEditText, mMinPlayersEditText, mMaxPlayersEditText;
-    private Button mSubmitButton;
-
-    // Initialize the database helper
-    private DatabaseHelper_Game dbHelper;
+    // Use the parent AbstractAddUpdateGameActivity's logic to initialize UI elements
 
     /**
      * Create the page for the Add Game Request page.
@@ -47,9 +33,9 @@ public class AddGameRequestActivity extends AppCompatActivity implements View.On
     {
         // Load the Saved Instance State and set the layout
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_game_request);
+        setContentView(R.layout.activity_add_update_game);
 
-        // Instantiate the UI elements
+        // Use the parent AbstractAddUpdateGameActivity's logic to instantiate UI elements
         Log.d(LOG_TAG, "Instantiating UI elements for the Add Game Request page");
         mTitleEditText = findViewById(R.id.input_title);
         mDescriptionEditText = findViewById(R.id.input_description);
@@ -62,10 +48,6 @@ public class AddGameRequestActivity extends AppCompatActivity implements View.On
 
         // Set the OnClick Listener for the Submit button
         mSubmitButton.setOnClickListener(this);
-
-        // Make a Database Helper to manipulate the database
-        Log.d(LOG_TAG, "Making database helper");
-        dbHelper = new DatabaseHelper_Game(this);
     }
 
     /**
@@ -92,13 +74,6 @@ public class AddGameRequestActivity extends AppCompatActivity implements View.On
             String minPlayers = mMinPlayersEditText.getText().toString().trim();
             String maxPlayers = mMaxPlayersEditText.getText().toString().trim();
 
-            // Initialize min and max players as integers
-            int intMinPlayers;
-            int intMaxPlayers;
-
-            // Initialize release date as a date
-            Date dateRelaseDate = new Date();
-
             /**
              * Verify that the fields are not empty.
              * If they are, inform the user to fill in the fields.
@@ -111,82 +86,15 @@ public class AddGameRequestActivity extends AppCompatActivity implements View.On
 
             Log.d(LOG_TAG, "All fields are populated");
 
-            /**
-             * Verify that the number of players entries are numbers by attempting to parse them into integers.
-             * If this fails, catch the NumberFormatException and inform the user to use numbers.
-             */
-            try
-            {
-                intMinPlayers = Integer.parseInt(minPlayers);
-                intMaxPlayers = Integer.parseInt(maxPlayers);
-            }
-            catch (NumberFormatException e)
-            {
-                Log.e(LOG_TAG, "Error parsing integer from min/max players: " + e.getMessage());
-                throw new Exception("Please enter a number for the minimum and maximum number of players!");
-            }
-
-            Log.d(LOG_TAG, "Min and max number of players are numbers");
+            // Validate the entered data
+            validateEnteredData(minPlayers, maxPlayers, releaseDate);
+            Log.d(LOG_TAG, "Entered data is valid");
 
             /**
-             * Verify that the min and max number of players are at least 1.
-             * If either is less than 1, then inform the user to put in at least 1 for the min and max number of players.
+             * Create the new Game and add it to the database.
+             * Ensure that Release Date is converted to Date before processing in the database [2] [35]
              */
-            if (intMinPlayers < 1 || intMaxPlayers < 1)
-            {
-                Log.e(LOG_TAG, "Invalid amount of min/max players");
-                throw new Exception("Please enter at least 1 player for the minimum and maximum number of players!");
-            }
-
-            Log.d(LOG_TAG, "Min and max number of players are at least 1");
-
-            /**
-             * Verify that the max number of players is not less than the min number of players.
-             * If the max number of players is less than the min number of players, then inform the user to put a max number of players that is greater than the min number of players.
-             */
-            if (intMinPlayers > intMaxPlayers)
-            {
-                Log.e(LOG_TAG, "max players is greater than min players");
-                throw new Exception("Please ensure that the maximum number of players is greater than minimum number of players!");
-            }
-
-            Log.d(LOG_TAG, "Valid min and max number of players");
-
-            /**
-             * Try to convert birthdate to date [2] [35].
-             * If this fails, inform the user that they need to use the correct date format.
-             */
-            try
-            {
-                SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
-                dateRelaseDate = dateFormat.parse(releaseDate);
-            }
-            catch (Exception e)
-            {
-                Log.e(LOG_TAG, "Error parsing release date: " + e.getMessage());
-                throw new Exception("Please use format 'MM/DD/YYYY' for the release date!");
-            }
-
-            Log.d(LOG_TAG, "Valid release date format");
-
-            // Get the current date
-            Date currentDate = new Date();
-            Log.d(LOG_TAG, "Current date: " + currentDate);
-
-            /**
-             * Verify that the Game being entered has actually been released [37].
-             * If not, then inform the user that the date must not be in the future.
-             */
-            if (dateRelaseDate.after(currentDate))
-            {
-                Log.d(LOG_TAG, "Game is not released yet");
-                throw new Exception("Please enter a release date that is not in the future!");
-            }
-
-            Log.d(LOG_TAG, "Release date is in a valid timeframe");
-
-            // Create the new Game and add it to the database.
-            Game newGame = new Game(title, description, developer, publisher, dateRelaseDate, intMinPlayers, intMaxPlayers, R.drawable.neckdefender, "N");
+            Game newGame = new Game(title, description, developer, publisher, DATE_FORMAT.parse(releaseDate), Integer.parseInt(minPlayers), Integer.parseInt(maxPlayers), R.drawable.neckdefender, "N");
             dbHelper.addToDatabase(newGame);
             showSnackbar(mSubmitButton, "Successfully sent request to add new game!");
 
@@ -202,16 +110,10 @@ public class AddGameRequestActivity extends AppCompatActivity implements View.On
     /**
      * Clear the input fields to refresh the page for new information to be entered.
      */
-    private void clearFields()
+    @Override
+    public void clearFields()
     {
-        Log.d(LOG_TAG, "Clearing fields for Add Game Request page");
-        mTitleEditText.setText("");
-        mDescriptionEditText.setText("");
-        mReleaseDateEditText.setText("");
-        mDeveloperEditText.setText("");
-        mPublisherEditText.setText("");
-        mMinPlayersEditText.setText("");
-        mMaxPlayersEditText.setText("");
+        super.clearFields();
     }
 
     /**
@@ -220,9 +122,22 @@ public class AddGameRequestActivity extends AppCompatActivity implements View.On
      * @param v The View to display the snackbar in
      * @param message The message to display
      */
-    private void showSnackbar(View v, String message)
+    @Override
+    public void showSnackbar(View v, String message)
     {
-        Snackbar snackbar = Snackbar.make(v, message, Snackbar.LENGTH_SHORT);
-        snackbar.show();
+        super.showSnackbar(v, message);
+    }
+
+    /**
+     * Validate that the entered data fulfills the requirements for the Game to be added.
+     *
+     * @param minPlayers The minimum number of players for the Game
+     * @param maxPlayers The maximum number of players for the Game
+     * @param releaseDate The release date for the Game
+     */
+    @Override
+    public void validateEnteredData(String minPlayers, String maxPlayers, String releaseDate)
+    {
+        super.validateEnteredData(minPlayers, maxPlayers, releaseDate);
     }
 }
