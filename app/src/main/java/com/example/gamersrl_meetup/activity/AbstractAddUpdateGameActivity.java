@@ -28,8 +28,8 @@ public abstract class AbstractAddUpdateGameActivity extends AppCompatActivity
     private final String LOG_TAG = "ABSTRACT ADD/UPDATE GAME ACTIVITY - ";
 
     // Initialize the UI elements
-    public EditText mTitleEditText, mDescriptionEditText, mReleaseDateEditText, mDeveloperEditText, mPublisherEditText, mMinPlayersEditText, mMaxPlayersEditText;
-    public Button mSubmitButton;
+    public EditText mTitleEditText, mDescriptionEditText, mReleaseDateEditText, mDeveloperEditText, mPublisherEditText, mMinPlayersEditText, mMaxPlayersEditText, mApprovedEditText;
+    public Button mSubmitButton, mResetButton, mBackButton;
 
     // Initialize the database helper
     public DatabaseHelper_Game dbHelper;
@@ -51,8 +51,7 @@ public abstract class AbstractAddUpdateGameActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_update_game);
 
-        // Instantiate the UI elements
-        //Log.d(LOG_TAG, "Instantiating UI elements for the Add Game Request/Update Game page");
+        // Instantiating the UI elements is done by the concrete inheritors of this abstract class
 
         // Make a Database Helper to manipulate the database
         Log.d(LOG_TAG, "Making database helper");
@@ -87,13 +86,11 @@ public abstract class AbstractAddUpdateGameActivity extends AppCompatActivity
     }
 
     /**
-     * Validate that the entered data fulfills the requirements for the Game to be added/updated.
+     * Verify that Min/Max Players has a valid format.
      *
-     * @param minPlayers The minimum number of players for the Game
-     * @param maxPlayers The maximum number of players for the Game
-     * @param releaseDate The release date for the Game
+     * @param numberOfPlayers Min/Max Players
      */
-    public void validateEnteredData(String minPlayers, String maxPlayers, String releaseDate)
+    public void validateNumberOfPlayers(String numberOfPlayers)
     {
         /**
          * The logic for retrieving the entered data and validating it is in a TryCatch, so the code can be cleaner (not having a bunch of nested If Statements).
@@ -102,12 +99,8 @@ public abstract class AbstractAddUpdateGameActivity extends AppCompatActivity
          */
         try
         {
-            // Initialize min and max players as integers
-            int intMinPlayers;
-            int intMaxPlayers;
-
-            // Initialize release date as a date
-            Date dateRelaseDate = new Date();
+            // Initialize min/max players as integers
+            int intNumberOfPlayers;
 
             /**
              * Verify that the number of players entries are numbers by attempting to parse them into integers.
@@ -115,8 +108,7 @@ public abstract class AbstractAddUpdateGameActivity extends AppCompatActivity
              */
             try
             {
-                intMinPlayers = Integer.parseInt(minPlayers);
-                intMaxPlayers = Integer.parseInt(maxPlayers);
+                intNumberOfPlayers = Integer.parseInt(numberOfPlayers);
             }
             catch (NumberFormatException e)
             {
@@ -130,7 +122,7 @@ public abstract class AbstractAddUpdateGameActivity extends AppCompatActivity
              * Verify that the min and max number of players are at least 1.
              * If either is less than 1, then inform the user to put in at least 1 for the min and max number of players.
              */
-            if (intMinPlayers < 1 || intMaxPlayers < 1)
+            if (intNumberOfPlayers < 1)
             {
                 Log.e(LOG_TAG, "Invalid amount of min/max players");
                 throw new Exception("Please enter at least 1 player for the minimum and maximum number of players!");
@@ -138,6 +130,26 @@ public abstract class AbstractAddUpdateGameActivity extends AppCompatActivity
 
             Log.d(LOG_TAG, "Min and max number of players are at least 1");
 
+            Log.d(LOG_TAG, "Valid format for min/max players");
+        }
+        catch (Exception e)
+        {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Verify that max players is not less than min players.
+     */
+    public void validateMinAndMaxPlayers(int intMinPlayers, int intMaxPlayers)
+    {
+        /**
+         * The logic for retrieving the entered data and validating it is in a TryCatch, so the code can be cleaner (not having a bunch of nested If Statements).
+         * Inside the TryCatch, if there is invalid data, an exception is thrown.
+         * The exception is then handled by rethrowing it to the calling method.
+         */
+        try
+        {
             /**
              * Verify that the max number of players is not less than the min number of players.
              * If the max number of players is less than the min number of players, then inform the user to put a max number of players that is greater than the min number of players.
@@ -147,8 +159,29 @@ public abstract class AbstractAddUpdateGameActivity extends AppCompatActivity
                 Log.e(LOG_TAG, "max players is greater than min players");
                 throw new Exception("Please ensure that the maximum number of players is greater than minimum number of players!");
             }
+        }
+        catch (Exception e)
+        {
+            throw new RuntimeException(e);
+        }
+    }
 
-            Log.d(LOG_TAG, "Valid min and max number of players");
+    /**
+     * Validate that the release date has a valid format and is not in the future.
+     *
+     * @param releaseDate The release date for the Game
+     */
+    public void validateReleaseDate(String releaseDate)
+    {
+        /**
+         * The logic for retrieving the entered data and validating it is in a TryCatch, so the code can be cleaner (not having a bunch of nested If Statements).
+         * Inside the TryCatch, if there is invalid data, an exception is thrown.
+         * The exception is then handled by rethrowing it to the calling method.
+         */
+        try
+        {
+            // Initialize release date as a date
+            Date dateRelaseDate = new Date();
 
             /**
              * Try to convert birthdate to date [2] [35].

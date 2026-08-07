@@ -80,7 +80,27 @@ public class GameDetailsActivity extends AppCompatActivity implements View.OnCli
 
         // Get item to display from the intent extras
         Log.d(LOG_TAG, "Retrieving the selected Game from the intent extras");
-        mGame = getIntent().getParcelableExtra("itemDetails");
+
+        /**
+         * Figure out the parent activity that led to the Game Details page.
+         * This is done to make getting the correct Game out of the intent extras easier.
+         */
+        String parentActivity = getIntent().getStringExtra("parentActivity");
+        Log.d(LOG_TAG, "Determined the parent activity: " + parentActivity);
+
+
+        /**
+         * If the user arrived at the Game Details page from the Games List page, then use the itemDetails Game from the intent extras.
+         * If the user arrived at the Game Details page from the Update Game page, then use the updatedGame Game from the intent extras.
+         */
+        if (parentActivity.equals("GamesListFragment"))
+        {
+            mGame = getIntent().getParcelableExtra("itemDetails");
+        }
+        if (parentActivity.equals("UpdateGameActivity"))
+        {
+            mGame = getIntent().getParcelableExtra("updatedGame");
+        }
 
         // Get the user role from the intent extras to determine what UI elements and actions should be allowed
         //isAdmin = getIntent().getBooleanExtra("isAdmin", false);
@@ -92,7 +112,7 @@ public class GameDetailsActivity extends AppCompatActivity implements View.OnCli
          */
         Log.d(LOG_TAG, "Setting Game title: " + mGame.getTitle());
         mGameDetailsTitle.setText(mGame.getTitle());
-        Log.d(LOG_TAG, "Setting Game ID: " + String.valueOf(mGame.getId()));
+        Log.d(LOG_TAG, "Setting Game ID: " + mGame.getId());
         mGameDetailsId.setText(String.valueOf(mGame.getId()));
         Log.d(LOG_TAG, "Setting Game developer: " + mGame.getDeveloper());
         mGameDetailsDeveloper.setText(mGame.getDeveloper());
@@ -157,7 +177,7 @@ public class GameDetailsActivity extends AppCompatActivity implements View.OnCli
             {
                 Log.d(LOG_TAG, "Game already approved");
                 // Make Approve Game Request button unclickable and gray it out
-                mApproveGameRequestButton.setBackgroundColor(R.color.black);
+                mApproveGameRequestButton.setBackgroundColor(getColor(R.color.black));
                 mApproveGameRequestButton.setClickable(false);
             }
         }

@@ -47,7 +47,12 @@
             android:name=".activity.AddGameRequestActivity"
             android:label="@string/activity_addgamerequest_header"
             android:exported="false"
-            android:parentActivityName=".activity.AppContentActivity"
+            />
+
+        <activity
+            android:name=".activity.UpdateGameActivity"
+            android:label="@string/activity_updategame_header"
+            android:exported="false"
             />
 
         <activity

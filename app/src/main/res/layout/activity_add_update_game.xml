@@ -75,7 +75,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginBottom="90dp"
         >
 
         <EditText
@@ -95,12 +94,46 @@
 
     </LinearLayout>
 
+    <EditText
+        android:id="@+id/input_approved"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/activity_add_update_game_input_hint_approved"
+        android:visibility="gone"
+        />
+
     <Button
         android:id="@+id/submit_button"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:text="@string/submit_button_text"
+        android:layout_marginBottom="20dp"
+        android:layout_marginRight="80dp"
+        android:layout_marginLeft="80dp"
+        android:layout_marginTop="50dp"
+        />
+
+    <Button
+        android:id="@+id/reset_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/reset_button_text"
+        android:layout_marginBottom="20dp"
+        android:layout_marginRight="80dp"
+        android:layout_marginLeft="80dp"
+        />
+
+    <Button
+        android:id="@+id/back_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/back_button_text"
+        android:layout_marginBottom="20dp"
+        android:layout_marginRight="80dp"
+        android:layout_marginLeft="80dp"
         />
 
 </LinearLayout>

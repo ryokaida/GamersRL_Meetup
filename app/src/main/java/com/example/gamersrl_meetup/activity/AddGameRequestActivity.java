@@ -1,5 +1,6 @@
 package com.example.gamersrl_meetup.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -31,11 +32,10 @@ public class AddGameRequestActivity extends AbstractAddUpdateGameActivity  imple
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
-        // Load the Saved Instance State and set the layout
+        // Use the parent AbstractAddUpdateGameActivity's logic to Load the Saved Instance State and set the layout
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_update_game);
 
-        // Use the parent AbstractAddUpdateGameActivity's logic to instantiate UI elements
+        // Instantiate UI elements
         Log.d(LOG_TAG, "Instantiating UI elements for the Add Game Request page");
         mTitleEditText = findViewById(R.id.input_title);
         mDescriptionEditText = findViewById(R.id.input_description);
@@ -45,9 +45,13 @@ public class AddGameRequestActivity extends AbstractAddUpdateGameActivity  imple
         mMinPlayersEditText = findViewById(R.id.input_minplayers);
         mMaxPlayersEditText = findViewById(R.id.input_maxplayers);
         mSubmitButton = findViewById(R.id.submit_button);
+        mResetButton = findViewById(R.id.reset_button);
+        mBackButton = findViewById(R.id.back_button);
 
-        // Set the OnClick Listener for the Submit button
+        // Set the OnClick Listener for the buttons
         mSubmitButton.setOnClickListener(this);
+        mResetButton.setOnClickListener(this);
+        mBackButton.setOnClickListener(this);
     }
 
     /**
@@ -57,6 +61,35 @@ public class AddGameRequestActivity extends AbstractAddUpdateGameActivity  imple
      */
     @Override
     public void onClick(View v)
+    {
+        // Get the ID of the clicked button
+        int id = v.getId();
+
+        /**
+         * If the user clicked the Submit button, then handle submitting the Add Game Request.
+         * If the user clicked the Reset button, then clear the fields.
+         * If the user clicked the Back button, then navigate back to the Games List page.
+         */
+        if (id == R.id.submit_button)
+        {
+            handleSubmittingAddGameRequest();
+        }
+        else if (id == R.id.reset_button)
+        {
+            clearFields();
+        }
+        else if (id == R.id.back_button)
+        {
+            Intent intent = new Intent(AddGameRequestActivity.this, AppContentActivity.class);
+            intent.putExtra("fragmentToLoad", "GamesList");
+            startActivity(intent);
+        }
+    }
+
+    /**
+     * Do the logic to validate the input and submit the Add Game Request.
+     */
+    private void handleSubmittingAddGameRequest()
     {
         /**
          * The logic for retrieving the entered data and validating it is in a TryCatch, so the code can be cleaner (not having a bunch of nested If Statements).
@@ -87,7 +120,10 @@ public class AddGameRequestActivity extends AbstractAddUpdateGameActivity  imple
             Log.d(LOG_TAG, "All fields are populated");
 
             // Validate the entered data
-            validateEnteredData(minPlayers, maxPlayers, releaseDate);
+            validateReleaseDate(releaseDate);
+            validateNumberOfPlayers(minPlayers);
+            validateNumberOfPlayers(maxPlayers);
+            validateMinAndMaxPlayers(Integer.parseInt(minPlayers), Integer.parseInt(maxPlayers));
             Log.d(LOG_TAG, "Entered data is valid");
 
             /**
@@ -103,41 +139,8 @@ public class AddGameRequestActivity extends AbstractAddUpdateGameActivity  imple
         }
         catch (Exception e)
         {
-            showSnackbar(mSubmitButton, "Error requesting for game to be added: " + e.getMessage());
+            Log.e(LOG_TAG, "Error requesting for game to be added: " + e.getMessage());
+            showSnackbar(mSubmitButton, e.getMessage());
         }
-    }
-
-    /**
-     * Clear the input fields to refresh the page for new information to be entered.
-     */
-    @Override
-    public void clearFields()
-    {
-        super.clearFields();
-    }
-
-    /**
-     * Helper method to display a snackbar [38].
-     *
-     * @param v The View to display the snackbar in
-     * @param message The message to display
-     */
-    @Override
-    public void showSnackbar(View v, String message)
-    {
-        super.showSnackbar(v, message);
-    }
-
-    /**
-     * Validate that the entered data fulfills the requirements for the Game to be added.
-     *
-     * @param minPlayers The minimum number of players for the Game
-     * @param maxPlayers The maximum number of players for the Game
-     * @param releaseDate The release date for the Game
-     */
-    @Override
-    public void validateEnteredData(String minPlayers, String maxPlayers, String releaseDate)
-    {
-        super.validateEnteredData(minPlayers, maxPlayers, releaseDate);
     }
 }

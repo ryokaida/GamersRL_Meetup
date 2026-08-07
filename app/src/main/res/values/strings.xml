@@ -28,7 +28,7 @@
     <string name="activity_addgamerequest_header">Request a Game to be Added</string>
 
     <!-- Strings for the Update Game page -->
-    <string name="activity_updategame_header">Request a Game to be Added</string>
+    <string name="activity_updategame_header">Update Game</string>
 
     <!-- Strings for the Add Game Request/Update Game pages -->
     <string name="activity_add_update_game_instructions">Enter Game Details</string>
@@ -39,6 +39,7 @@
     <string name="activity_add_update_game_input_hint_publisher">Enter the publisher</string>
     <string name="activity_add_update_game_input_hint_minplayers">Enter the minimum number of players</string>
     <string name="activity_add_update_game_input_hint_maxplayers">Enter the maximum number of players</string>
+    <string name="activity_add_update_game_input_hint_approved">Enter the Approved status</string>
 
     <!-- Strings for the Events page -->
     <string name="frag_events_header">Events</string>
@@ -46,7 +47,6 @@
     <!-- General strings for the list page -->
     <string name="list_item_view_button_text">View</string>
     <string name="list_page_filter_button">Filter</string>
-    <string name="list_page_reset_button">Reset</string>
 
     <!-- General Strings for the Games -->
     <string name="game_label_id">ID: </string>
@@ -61,6 +61,7 @@
     <!-- General Strings for buttons -->
     <string name="back_button_text">Back</string>
     <string name="submit_button_text">Submit</string>
+    <string name="reset_button_text">Reset</string>
 
     <!-- Strings for the Navigation Drawer -->
     <string name="navigation_drawer_header_subtitle">Find Gaming Events IRL</string>

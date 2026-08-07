@@ -152,6 +152,7 @@ public abstract class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>
                 Log.d(LOG_TAG, "Constructing intent and navigating to the new page");
                 Intent intent = new Intent(v.getContext(), activityToGoTo);
                 intent.putExtra("itemDetails", itemToDisplayDetailsFor);
+                intent.putExtra("parentActivity", "GamesListFragment");
 
                 // Navigate to the correct details page from the RecyclerView [25]
                 v.getContext().startActivity(intent);
