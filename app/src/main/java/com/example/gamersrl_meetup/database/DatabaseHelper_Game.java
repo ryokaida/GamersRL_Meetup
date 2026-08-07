@@ -9,7 +9,6 @@ import android.util.Log;
 import com.example.gamersrl_meetup.R;
 import com.example.gamersrl_meetup.model.Game;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 

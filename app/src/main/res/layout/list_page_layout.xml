@@ -53,14 +53,13 @@
             android:spinnerMode="dropdown"
             />
 
+        <!-- UI elements for the Number of Players filters -->
         <LinearLayout
-            android:id="@+id/minmax_players_filters"
+            android:id="@+id/number_of_players_filters"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:visibility="gone"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="50dp"
             >
 
             <!-- UI elements for Min Players filter -->
@@ -68,23 +67,23 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:gravity="end"
-                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="15dp"
                 >
 
                 <TextView
                     android:id="@+id/minplayers_filter_header"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textStyle="bold"
                     android:textSize="12sp"
-                    android:text="Min Players"
+                    android:text="@string/activity_gamedetails_filter_minplayers_header"
                     />
 
                 <!-- Dropdown spinner for the Min Players [12] -->
                 <Spinner
                     android:id="@+id/spinner_filter_minplayers"
-                    android:layout_width="55dp"
+                    android:layout_width="83dp"
                     android:layout_height="48dp"
 
                     android:entries="@array/number_of_players"
@@ -94,32 +93,31 @@
 
             </LinearLayout>
 
-            <!-- UI elements for Min Players filter -->
+            <!-- UI elements for Max Players filter -->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:gravity="end"
+                android:layout_marginRight="20dp"
                 >
 
                 <TextView
                     android:id="@+id/maxplayers_filter_header"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textStyle="bold"
                     android:textSize="12sp"
-                    android:text="@string/activity_gamedetails_filter_minplayers_header"
-                    android:textAlignment="center"
+                    android:text="@string/activity_gamedetails_filter_maxplayers_header"
                     />
 
                 <!-- Dropdown spinner for the Max Players [12] -->
                 <Spinner
                     android:id="@+id/spinner_filter_maxplayers"
-                    android:layout_width="55dp"
+                    android:layout_width="83dp"
                     android:layout_height="48dp"
 
                     android:entries="@array/number_of_players"
-                    android:prompt="@string/activity_gamedetails_filter_maxplayers_header"
+                    android:prompt="@string/activity_gamedetails_filter_minmaxplayers_prompt"
                     android:spinnerMode="dropdown"
                     />
 

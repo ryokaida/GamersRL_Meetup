@@ -11,7 +11,6 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,6 +24,7 @@ import com.example.gamersrl_meetup.activity.TempAdminTester;
 import com.example.gamersrl_meetup.adapter.Adapter_Game;
 import com.example.gamersrl_meetup.database.DatabaseHelper_Game;
 import com.example.gamersrl_meetup.model.Game;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,11 +46,15 @@ public class GamesListFragment extends Fragment implements View.OnClickListener
     private LinearLayoutManager layoutManager;
     private Button mAddGameRequestButton, mFilterButton, mResetButton;
 
-    // Initialize variables for the Approved attribute and Min/Max Players Spinners [12]
+    // Initialize variables for the Approved attribute and Number of Players Spinners [12]
     private Spinner mSpinnerApproved, mSpinnerMinPlayers, mSpinnerMaxPlayers;
-    private String FILTER_OPTION = "option_selected";
+    private String FILTER_OPTION_APPROVED = "option_selected";
     private final String DEFAULT_SPINNER_OPTION = "---";
-    private LinearLayout mGroupForMinMaxPlayersSPinners;
+    private LinearLayout mGroupForNumberOfPlayersSPinners;
+    private String FILTER_OPTION_MINPLAYERS = "option_selected";
+    private String FILTER_OPTION_MAXPLAYERS = "option_selected";
+    private final String MIN_PLAYERS_QUERY_CLAUSE = "<minPlayersClause>";
+    private final String MAX_PLAYERS_QUERY_CLAUSE = "<maxPlayersClause>";
 
     // Initialize the database helper and the adapter
     private DatabaseHelper_Game dbHelper;
@@ -97,9 +101,9 @@ public class GamesListFragment extends Fragment implements View.OnClickListener
         mSpinnerApproved = view.findViewById(R.id.spinner_filter_approved); // For filtering by Approved attribute
         mResetButton = view.findViewById(R.id.reset_button);
         mFilterButton = view.findViewById(R.id.filter_button);
-        mGroupForMinMaxPlayersSPinners = view.findViewById(R.id.minmax_players_filters); // For filtering by Min/Max Players
-        mSpinnerMinPlayers = view.findViewById(R.id.spinner_filter_minplayers); // For filtering by Min/Max Players
-        mSpinnerMaxPlayers = view.findViewById(R.id.spinner_filter_maxplayers); // For filtering by Min/Max Players
+        mGroupForNumberOfPlayersSPinners = view.findViewById(R.id.number_of_players_filters); // For filtering by Number of Players
+        mSpinnerMinPlayers = view.findViewById(R.id.spinner_filter_minplayers); // For filtering by Number of Players
+        mSpinnerMaxPlayers = view.findViewById(R.id.spinner_filter_maxplayers); // For filtering by Number of Players
 
         // Set the OnClick Listener for the filter buttons
         mFilterButton.setOnClickListener(this);
@@ -144,8 +148,8 @@ public class GamesListFragment extends Fragment implements View.OnClickListener
             // Show the spinner to filter by the Approved attribute
             mFilterHeader.setText(R.string.activity_gamedetails_filter_approved_header);
             mSpinnerApproved.setVisibility(View.VISIBLE);
-            // Hide the Min/Max Players spinners
-            mGroupForMinMaxPlayersSPinners.setVisibility(View.GONE);
+            // Hide the Number of Players spinners
+            mGroupForNumberOfPlayersSPinners.setVisibility(View.GONE);
         }
         else
         {
@@ -156,10 +160,10 @@ public class GamesListFragment extends Fragment implements View.OnClickListener
             // Add the Request to Add Game button to the bottom of the screen
             createAddGameRequestButton(view);
 
-            Log.d(LOG_TAG, "Creating Min/Max Players filter spinners");
-            // Show the spinner to filter by the Min/Max Players
-            mFilterHeader.setText(R.string.activity_gamedetails_filter_minmaxplayers_header);
-            mGroupForMinMaxPlayersSPinners.setVisibility(View.VISIBLE);
+            Log.d(LOG_TAG, "Creating Number of Players filter spinners");
+            // Show the spinner to filter by the Number of Players
+            mFilterHeader.setText(R.string.activity_gamedetails_filter_numberofplayers_header);
+            mGroupForNumberOfPlayersSPinners.setVisibility(View.VISIBLE);
             // Hide the Approved attribute spinners
             mSpinnerApproved.setVisibility(View.GONE);
         }
@@ -239,7 +243,7 @@ public class GamesListFragment extends Fragment implements View.OnClickListener
         {
             /**
              * If the user is an admin, then filter based on Approved status.
-             * Otherwise, filter based on Min/Max Players.
+             * Otherwise, filter based on Number of Players.
              */
             if (isAdmin)
             {
@@ -247,7 +251,7 @@ public class GamesListFragment extends Fragment implements View.OnClickListener
             }
             else
             {
-                //handleMinMaxPlayersFilter();
+                handleMinMaxPlayersFilter();
             }
         }
         else if (id == R.id.reset_button)
@@ -273,11 +277,15 @@ public class GamesListFragment extends Fragment implements View.OnClickListener
     private void handleAdminFilter()
     {
         // Retrieve the selected filter option [12]
-        FILTER_OPTION = mSpinnerApproved.getSelectedItem().toString();
+        FILTER_OPTION_APPROVED = mSpinnerApproved.getSelectedItem().toString();
 
-        if (FILTER_OPTION.equals(DEFAULT_SPINNER_OPTION))
+        /**
+         * If the filter option is the default blank one, then inform the user to select a valid option.
+         * Otherwise, continue.
+         */
+        if (FILTER_OPTION_APPROVED.equals(DEFAULT_SPINNER_OPTION))
         {
-            Toast.makeText(getContext(), "Select a valid Approved status!", Toast.LENGTH_SHORT).show();
+            showSnackbar(mFilterButton, "Select a valid Approved status!");
         }
         else
         {
@@ -291,19 +299,160 @@ public class GamesListFragment extends Fragment implements View.OnClickListener
             updateRecyclerView(games);
 
             /** Filter the database by category to find the items that match the selected filter option */
-            Log.d(LOG_TAG, "Filtering to get all games with Approved status: " + FILTER_OPTION);
+            Log.d(LOG_TAG, "Filtering to get all games with Approved status: " + FILTER_OPTION_APPROVED);
             // Make the query to get data
             String selectQuery = "SELECT * FROM " + dbHelper.getTableName() + " WHERE approved = ?";
-            games = dbHelper.getItemsFromDB(selectQuery, new String[]{FILTER_OPTION});
+            games = dbHelper.getItemsFromDB(selectQuery, new String[]{FILTER_OPTION_APPROVED});
 
             // Reset the RecyclerView with the resulting list of Games
             updateRecyclerView(games);
         }
     }
 
+    private void handleMinMaxPlayersFilter()
+    {
+        // Retrieve the selected filter options [12]
+        FILTER_OPTION_MINPLAYERS = mSpinnerMinPlayers.getSelectedItem().toString();
+        FILTER_OPTION_MAXPLAYERS = mSpinnerMaxPlayers.getSelectedItem().toString();
+
+        /**
+         * The logic for retrieving the entered data and validating it is in a TryCatch, so the code can be cleaner (not having a bunch of nested If Statements).
+         * Inside the TryCatch, if there is invalid data, an exception is thrown.
+         * The exception is then handled by showing a Toast to the user about the error.
+         */
+        try
+        {
+            /**
+             * Verify that a valid option was selected for the Min Players filter.
+             * If the default blank option was selected, then inform the user to select a valid option.
+             */
+            if (FILTER_OPTION_MINPLAYERS.equals(DEFAULT_SPINNER_OPTION))
+            {
+                throw new Exception("Select a valid Approved option for Min Players!");
+            }
+
+            /**
+             * Verify that a valid option was selected for the Max Players filter.
+             * If the default blank option was selected, then inform the user to select a valid option.
+             */
+            if (FILTER_OPTION_MAXPLAYERS.equals(DEFAULT_SPINNER_OPTION))
+            {
+                throw new Exception("Select a valid Approved option for Max Players!");
+            }
+
+            // Remove the "+" from the selected number of players if it is present to make input validations and querying the database easier
+            FILTER_OPTION_MINPLAYERS = FILTER_OPTION_MINPLAYERS.replace("+", "");
+            FILTER_OPTION_MAXPLAYERS = FILTER_OPTION_MAXPLAYERS.replace("+", "");
+
+            // Initialize Min and Max Players as integers
+            int intMinPlayers;
+            int intMaxPlayers;
+
+            // Retrieve the selected Min and Max Players as integers
+            intMinPlayers = Integer.parseInt(FILTER_OPTION_MINPLAYERS);
+            intMaxPlayers = Integer.parseInt(FILTER_OPTION_MAXPLAYERS);
+
+            /**
+             * Verify that the number of Min Players is not greater than the number of Max Players.
+             * If this is the case, then inform the user of the error.
+             */
+            if (intMinPlayers > intMaxPlayers)
+            {
+                throw new Exception("The number of Min Players should not be greater than the number of Max Players!");
+            }
+
+            Log.d(LOG_TAG, "Valid options chosen for the Number of Players filters");
+
+            // Make an empty list of Games
+            List<Game> games = new ArrayList<>();
+
+            /**
+             * Set the list of Games to empty before doing the filter.
+             * This is done so that the app shows an empty list if are no Games in a certain category.
+             */
+            updateRecyclerView(games);
+
+            /** Filter the database by category to find the items that match the selected filter option */
+            Log.d(LOG_TAG, "Filtering to get all games with with a Number of Players within the range: " + FILTER_OPTION_MINPLAYERS + "-" + FILTER_OPTION_MAXPLAYERS);
+
+            // Construct the filter query
+            String selectQuery = getNumberOfPlayersFilterQuery(intMinPlayers, intMaxPlayers);
+            //showSnackbar(mFilterButton, selectQuery);
+            // Run the query
+            games = dbHelper.getItemsFromDB(selectQuery, new String[]{FILTER_OPTION_MINPLAYERS, FILTER_OPTION_MAXPLAYERS});
+
+            // Reset the RecyclerView with the resulting list of Games
+            updateRecyclerView(games);
+        }
+        catch (Exception e)
+        {
+            showSnackbar(mFilterButton, e.getMessage());
+        }
+    }
+
+    /**
+     * Helper method to construct the filter query for Number of Players based on what the user selects for the Min/Max Players spinners.
+     *
+     * @param intMinPlayers
+     * @param intMaxPlayers
+     * @return The query to filter by Number of Players
+     */
+    @NonNull
+    private String getNumberOfPlayersFilterQuery(int intMinPlayers, int intMaxPlayers)
+    {
+        // Initialize and start constructing the query
+        String selectQuery = "SELECT * FROM " + dbHelper.getTableName() + " WHERE " + MIN_PLAYERS_QUERY_CLAUSE + " AND " + MAX_PLAYERS_QUERY_CLAUSE;
+
+        /**
+         * If the user selected the 5+ option, set the query to pull Games where min_players is greater than or equal to the 5.
+         * Otherwise, set the query to pull Games where the min_players is equal to the selected number.
+         */
+        if (intMinPlayers == 5)
+        {
+            selectQuery = selectQuery.replace(MIN_PLAYERS_QUERY_CLAUSE, "min_players >= ?");
+        }
+        else
+        {
+            selectQuery = selectQuery.replace(MIN_PLAYERS_QUERY_CLAUSE, "min_players = ?");
+        }
+
+        /**
+         * If the user selected the 5+ option, set the query to pull Games where max_players is greater than or equal to the 5.
+         * Otherwise, set the query to pull Games where the max_players is equal to the selected number.
+         */
+        if (intMaxPlayers == 5)
+        {
+            selectQuery = selectQuery.replace(MAX_PLAYERS_QUERY_CLAUSE, "max_players <= ?");
+        }
+        else
+        {
+            selectQuery = selectQuery.replace(MAX_PLAYERS_QUERY_CLAUSE, "max_players = ?");
+        }
+
+        return selectQuery;
+    }
+
+    /**
+     * Update the RecyclerView with the current list of Games.
+     * Used to change the list whenever the user filters or resets the list.
+     *
+     * @param games The list of Games to display
+     */
     private void updateRecyclerView(@Nullable List<Game> games)
     {
         adapter = new Adapter_Game(games);
         mRecyclerView.setAdapter(adapter);
+    }
+
+    /**
+     * Helper method to display a snackbar [38].
+     *
+     * @param v The View to display the snackbar in
+     * @param message The message to display
+     */
+    private void showSnackbar(View v, String message)
+    {
+        Snackbar snackbar = Snackbar.make(v, message, Snackbar.LENGTH_SHORT);
+        snackbar.show();
     }
 }
