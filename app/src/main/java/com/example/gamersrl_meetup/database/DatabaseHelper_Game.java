@@ -220,7 +220,7 @@ public class DatabaseHelper_Game extends DatabaseHelper<Game>
         db.insert(TABLE_NAME, null, values);
 
         // Close the database connection
-       // db.close();
+        db.close();
     }
 
     /**
@@ -279,17 +279,17 @@ public class DatabaseHelper_Game extends DatabaseHelper<Game>
         {
             values.put(KEY_RELEASE_DATE, releaseDate.getTime());
         }
-        if (minPlayers == -1)
+        if (minPlayers > 0)
         {
             values.put(KEY_MIN_PLAYERS, minPlayers);
         }
-        if (maxPlayers == -1)
+        if (maxPlayers > 0)
         {
             values.put(KEY_MAX_PLAYERS, maxPlayers);
         }
-        if (pictureURI == -1)
+        if (pictureURI > -1)
         {
-            values.put(KEY_MAX_PLAYERS, pictureURI);
+            values.put(KEY_PICTURE_URI, pictureURI);
         }
         if (approved != null && !approved.isEmpty())
         {
@@ -301,7 +301,7 @@ public class DatabaseHelper_Game extends DatabaseHelper<Game>
         db.update(TABLE_NAME, values, "id=?", new String[]{id});
 
         // Close the database connection
-        // db.close();
+        db.close();
     }
 
     /**

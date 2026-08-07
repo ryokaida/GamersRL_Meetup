@@ -206,6 +206,6 @@ public abstract class DatabaseHelper<T> extends SQLiteOpenHelper
         db.delete(tableName, "id=?", new String[]{id});
 
         // Close the database connection
-        // db.close();
+        db.close();
     }
 }

@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import com.example.gamersrl_meetup.R;
 import com.example.gamersrl_meetup.model.Game;
@@ -214,8 +213,7 @@ public class UpdateGameActivity extends AbstractAddUpdateGameActivity implements
              * Update the selected Game to be approved
              * Ensure that Release Date is converted to Date before processing in the database [2] [35]
              */
-            dbHelper.updateItemInDB(String.valueOf(mGame.getId()), title, description, developer, publisher, DATE_FORMAT.parse(releaseDate), 1, 1, mGame.getPictureURI(), approved);
-            Toast.makeText(this, "min: " + minPlayers + " | max: " + maxPlayers, Toast.LENGTH_SHORT).show();
+            dbHelper.updateItemInDB(String.valueOf(mGame.getId()), title, description, developer, publisher, DATE_FORMAT.parse(releaseDate), Integer.parseInt(minPlayers), Integer.parseInt(maxPlayers), mGame.getPictureURI(), approved);
 
             // Get the updated Game from the database, so it can be passed back to the Game Details page when the user clicks the Back button
             mGame = getUpdatedGameFromDB(String.valueOf(mGame.getId()));

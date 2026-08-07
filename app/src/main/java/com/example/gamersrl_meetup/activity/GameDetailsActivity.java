@@ -177,7 +177,7 @@ public class GameDetailsActivity extends AppCompatActivity implements View.OnCli
             {
                 Log.d(LOG_TAG, "Game already approved");
                 // Make Approve Game Request button unclickable and gray it out
-                mApproveGameRequestButton.setBackgroundColor(getColor(R.color.black));
+                mApproveGameRequestButton.setBackgroundColor(getColor(R.color.light_purple));
                 mApproveGameRequestButton.setClickable(false);
             }
         }

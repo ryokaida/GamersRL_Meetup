@@ -46,6 +46,7 @@
             android:layout_marginLeft="40dp"
             android:layout_marginRight="50dp"
             android:visibility="gone"
+            android:layout_marginBottom="15dp"
 
             android:entries="@array/approved_statuses"
             android:prompt="@string/activity_gameslist_filter_approved_prompt"
