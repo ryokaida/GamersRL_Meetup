@@ -225,37 +225,85 @@ public class GamesListFragment extends Fragment implements View.OnClickListener
         // Get the ID of the button that was clicked
         int id = v.getId();
 
+        /**
+         * If the basic user clicked the Add Game Request button, then navigate to the Add Game Request page.
+         * If the user clicked the filter button, then handle the Approved/Number of Players filters based on user role.
+         * If the user clicked the reset button, then reset the list of Games based on user role.
+         */
         if (id == R.id.addgamerequest_button) {
             Log.d(LOG_TAG, "Navigating to Add Game Request page");
             Intent intent = new Intent(getActivity(), AddGameRequestActivity.class);
             startActivity(intent);
         }
-        if (id == R.id.filter_button)
+        else if (id == R.id.filter_button)
         {
+            /**
+             * If the user is an admin, then filter based on Approved status.
+             * Otherwise, filter based on Min/Max Players.
+             */
             if (isAdmin)
             {
-                Log.d(LOG_TAG, "Navigating to Add Game Request page");
-                //handleAdminFilter();
+                handleAdminFilter();
+            }
+            else
+            {
+                //handleMinMaxPlayersFilter();
+            }
+        }
+        else if (id == R.id.reset_button)
+        {
+            /**
+             * If the user is an admin, then reset the list to all Games.
+             * Otherwise, reset the list to only approved Games.
+             */
+            if (isAdmin)
+            {
+                updateRecyclerView(dbHelper.getAllGames());
+            }
+            else
+            {
+                updateRecyclerView(dbHelper.getAllApprovedGames());
             }
         }
     }
 
-//    private void handleAdminFilter()
-//    {
-//        // Retrieve the selected filter option [12]
-//        FILTER_OPTION = mSpinnerApproved.getSelectedItem().toString();
-//
-//        if (FILTER_OPTION.equals(DEFAULT_SPINNER_OPTION))
-//        {
-//            Toast.makeText(getContext(), "Select a valid Approved status!", Toast.LENGTH_SHORT).show();
-//        }
-//        else
-//        {
-//            // Make an empty list of Games
-//            List<Game> games = new ArrayList<>();
-//
-//            // Filter the database by category to find the items that match the selected filter option
-//            dbHelper.
-//        }
-//    }
+    /**
+     * Handle filtering on Approved status by admins.
+     */
+    private void handleAdminFilter()
+    {
+        // Retrieve the selected filter option [12]
+        FILTER_OPTION = mSpinnerApproved.getSelectedItem().toString();
+
+        if (FILTER_OPTION.equals(DEFAULT_SPINNER_OPTION))
+        {
+            Toast.makeText(getContext(), "Select a valid Approved status!", Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            // Make an empty list of Games
+            List<Game> games = new ArrayList<>();
+
+            /**
+             * Set the list of Games to empty before doing the filter.
+             * This is done so that the app shows an empty list if are no Games in a certain category.
+             */
+            updateRecyclerView(games);
+
+            /** Filter the database by category to find the items that match the selected filter option */
+            Log.d(LOG_TAG, "Filtering to get all games with Approved status: " + FILTER_OPTION);
+            // Make the query to get data
+            String selectQuery = "SELECT * FROM " + dbHelper.getTableName() + " WHERE approved = ?";
+            games = dbHelper.getItemsFromDB(selectQuery, new String[]{FILTER_OPTION});
+
+            // Reset the RecyclerView with the resulting list of Games
+            updateRecyclerView(games);
+        }
+    }
+
+    private void updateRecyclerView(@Nullable List<Game> games)
+    {
+        adapter = new Adapter_Game(games);
+        mRecyclerView.setAdapter(adapter);
+    }
 }
