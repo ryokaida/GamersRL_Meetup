@@ -48,7 +48,7 @@
             android:visibility="gone"
 
             android:entries="@array/approved_statuses"
-            android:prompt="@string/activity_gamedetails_filter_approved_prompt"
+            android:prompt="@string/activity_gameslist_filter_approved_prompt"
             android:spinnerMode="dropdown"
             />
 
@@ -76,7 +76,7 @@
                     android:layout_height="wrap_content"
                     android:textStyle="bold"
                     android:textSize="12sp"
-                    android:text="@string/activity_gamedetails_filter_minplayers_header"
+                    android:text="@string/activity_gameslist_filter_minplayers_header"
                     />
 
                 <!-- Dropdown spinner for the Min Players [12] -->
@@ -86,7 +86,7 @@
                     android:layout_height="48dp"
 
                     android:entries="@array/number_of_players"
-                    android:prompt="@string/activity_gamedetails_filter_minmaxplayers_prompt"
+                    android:prompt="@string/activity_gameslist_filter_minmaxplayers_prompt"
                     android:spinnerMode="dropdown"
                     />
 
@@ -106,7 +106,7 @@
                     android:layout_height="wrap_content"
                     android:textStyle="bold"
                     android:textSize="12sp"
-                    android:text="@string/activity_gamedetails_filter_maxplayers_header"
+                    android:text="@string/activity_gameslist_filter_maxplayers_header"
                     />
 
                 <!-- Dropdown spinner for the Max Players [12] -->
@@ -116,7 +116,7 @@
                     android:layout_height="48dp"
 
                     android:entries="@array/number_of_players"
-                    android:prompt="@string/activity_gamedetails_filter_minmaxplayers_prompt"
+                    android:prompt="@string/activity_gameslist_filter_minmaxplayers_prompt"
                     android:spinnerMode="dropdown"
                     />
 

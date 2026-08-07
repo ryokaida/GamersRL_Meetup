@@ -6,14 +6,18 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.gamersrl_meetup.R;
 import com.example.gamersrl_meetup.database.DatabaseHelper_Game;
 import com.example.gamersrl_meetup.model.Game;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.SimpleDateFormat;
 
@@ -28,17 +32,10 @@ public class GameDetailsActivity extends AppCompatActivity implements View.OnCli
     final String LOG_TAG = "GAME DETAILS PAGE - ";
 
     // Initialize the UI elements
-    private TextView mGameDetailsTitle;
-    private TextView mGameDetailsId;
-    private TextView mGameDetailsDeveloper;
-    private TextView mGameDetailsPublisher;
-    private TextView mGameDetailsReleaseDate;
-    private TextView mGameDetailsDescription;
-    private TextView mGameDetailsMinPlayers;
-    private TextView mGameDetailsMaxPlayers;
+    private TextView mGameDetailsTitle, mGameDetailsId, mGameDetailsDeveloper, mGameDetailsPublisher, mGameDetailsReleaseDate, mGameDetailsDescription, mGameDetailsMinPlayers, mGameDetailsMaxPlayers;
     private ImageView mGameDetailsImage;
     private TextView mGameDetailsApproved, mGameDetailsApprovedLabel;
-    private Button mApproveGameRequestButton, mDeleteGameButton;
+    private Button mApproveGameRequestButton, mDeleteGameButton, mUpdateGameButton;
 
     // Initialize the boolean to determine the user's role
     private Boolean isAdmin;
@@ -79,6 +76,7 @@ public class GameDetailsActivity extends AppCompatActivity implements View.OnCli
         mGameDetailsApprovedLabel = findViewById(R.id.game_details_label_approved);
         mApproveGameRequestButton = findViewById(R.id.approvegame_button);
         mDeleteGameButton = findViewById(R.id.deletegame_button);
+        mUpdateGameButton = findViewById(R.id.updategame_button);
 
         // Make a Database Helper to manipulate the database
         Log.d(LOG_TAG, "Making database helper");
@@ -121,7 +119,6 @@ public class GameDetailsActivity extends AppCompatActivity implements View.OnCli
         Log.d(LOG_TAG, "Setting Game image");
         mGameDetailsImage.setImageResource(mGame.getPictureURI());
 
-        //isAdmin = true;
         /**
          * If the user is an admin, then show the Game Approved status.
          * Otherwise, do not show it.
@@ -133,6 +130,21 @@ public class GameDetailsActivity extends AppCompatActivity implements View.OnCli
             mGameDetailsApproved.setVisibility(View.VISIBLE);
             mGameDetailsApproved.setText(mGame.getApproved());
 
+            // Set the Delete button to be visible and clickable
+            mApproveGameRequestButton.setVisibility(View.VISIBLE);
+
+            // Set the Delete button to be visible and clickable
+            mDeleteGameButton.setVisibility(View.VISIBLE);
+            mDeleteGameButton.setClickable(true);
+            // Set OnClick Listener on the Approve Game Request button.
+            mDeleteGameButton.setOnClickListener(this);
+
+            // Set the Update button to be visible and clickable
+            mUpdateGameButton.setVisibility(View.VISIBLE);
+            mUpdateGameButton.setClickable(true);
+            // Set OnClick Listener on the Approve Game Request button.
+            mUpdateGameButton.setOnClickListener(this);
+
             /**
              * If the game is not approved yet, then enable button and logic to approve the Game Request
              * Otherwise, do nothing.
@@ -140,8 +152,8 @@ public class GameDetailsActivity extends AppCompatActivity implements View.OnCli
             if (mGame.getApproved().equals("N"))
             {
                 Log.d(LOG_TAG, "Admin needs to approve the game");
-                // Set the Approve Game Request button to be visible and clickable
-                mApproveGameRequestButton.setVisibility(View.VISIBLE);
+                // Set the Approve Game Request button to be clickable
+                mApproveGameRequestButton.setBackgroundColor(R.color.purple_500);
                 mApproveGameRequestButton.setClickable(true);
                 // Set OnClick Listener on the Approve Game Request button.
                 mApproveGameRequestButton.setOnClickListener(this);
@@ -149,13 +161,10 @@ public class GameDetailsActivity extends AppCompatActivity implements View.OnCli
             else
             {
                 Log.d(LOG_TAG, "Game already approved");
+                // Make Approve Game Request button unclickable
+                mApproveGameRequestButton.setBackgroundColor(R.color.black);
+                mApproveGameRequestButton.setClickable(false);
             }
-
-            // Set the Delete button to be visible and clickable
-            mDeleteGameButton.setVisibility(View.VISIBLE);
-            mDeleteGameButton.setClickable(true);
-            // Set OnClick Listener on the Approve Game Request button.
-            mDeleteGameButton.setOnClickListener(this);
         }
         else
         {
@@ -171,6 +180,10 @@ public class GameDetailsActivity extends AppCompatActivity implements View.OnCli
             // Hide the Delete button and prevent clicking
             mDeleteGameButton.setVisibility(View.GONE);
             mDeleteGameButton.setClickable(false);
+
+            // Hide the Update button and prevent clicking
+            mUpdateGameButton.setVisibility(View.GONE);
+            mUpdateGameButton.setClickable(false);
         }
     }
 
@@ -206,12 +219,16 @@ public class GameDetailsActivity extends AppCompatActivity implements View.OnCli
         else if (id == R.id.deletegame_button)
         {
             // Delete the selected Game
-            dbHelper.deleteGameFromDB(String.valueOf(mGame.getId()));
+            //dbHelper.deleteGameFromDB(String.valueOf(mGame.getId()));
 
             // Display a success Toast
             Toast.makeText(this, "Successfully removed game!", Toast.LENGTH_SHORT).show();
 
             navigateBackToGamesList();
+        }
+        else if (id == R.id.updategame_button)
+        {
+            Toast.makeText(this, "UPDATE", Toast.LENGTH_SHORT).show();
         }
     }
 

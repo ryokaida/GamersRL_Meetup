@@ -146,7 +146,7 @@ public class GamesListFragment extends Fragment implements View.OnClickListener
 
             Log.d(LOG_TAG, "Creating Approved attribute filter spinner");
             // Show the spinner to filter by the Approved attribute
-            mFilterHeader.setText(R.string.activity_gamedetails_filter_approved_header);
+            mFilterHeader.setText(R.string.activity_gameslist_filter_approved_header);
             mSpinnerApproved.setVisibility(View.VISIBLE);
             // Hide the Number of Players spinners
             mGroupForNumberOfPlayersSPinners.setVisibility(View.GONE);
@@ -162,7 +162,7 @@ public class GamesListFragment extends Fragment implements View.OnClickListener
 
             Log.d(LOG_TAG, "Creating Number of Players filter spinners");
             // Show the spinner to filter by the Number of Players
-            mFilterHeader.setText(R.string.activity_gamedetails_filter_numberofplayers_header);
+            mFilterHeader.setText(R.string.activity_gameslist_filter_numberofplayers_header);
             mGroupForNumberOfPlayersSPinners.setVisibility(View.VISIBLE);
             // Hide the Approved attribute spinners
             mSpinnerApproved.setVisibility(View.GONE);
