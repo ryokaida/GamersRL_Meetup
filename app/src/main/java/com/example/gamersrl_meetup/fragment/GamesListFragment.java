@@ -400,7 +400,7 @@ public class GamesListFragment extends Fragment implements View.OnClickListener
     @NonNull
     private String getNumberOfPlayersFilterQuery(int intMinPlayers, int intMaxPlayers)
     {
-        // Initialize and start constructing the query
+        // Initialize and start constructing the query with 2 where clauses [45]
         String selectQuery = "SELECT * FROM " + dbHelper.getTableName() + " WHERE " + MIN_PLAYERS_QUERY_CLAUSE + " AND " + MAX_PLAYERS_QUERY_CLAUSE;
 
         /**
