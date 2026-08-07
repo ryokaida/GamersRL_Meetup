@@ -9,7 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,6 +26,7 @@ import com.example.gamersrl_meetup.adapter.Adapter_Game;
 import com.example.gamersrl_meetup.database.DatabaseHelper_Game;
 import com.example.gamersrl_meetup.model.Game;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -38,10 +41,16 @@ public class GamesListFragment extends Fragment implements View.OnClickListener
     private final String LOG_TAG = "GAMES LIST ACTIVITY - ";
 
     // Initialize the UI elements
-    private TextView mHeader;
+    private TextView mHeader, mFilterHeader;
     private RecyclerView mRecyclerView;
     private LinearLayoutManager layoutManager;
-    private Button mAddGameRequestButton;
+    private Button mAddGameRequestButton, mFilterButton, mResetButton;
+
+    // Initialize variables for the Approved attribute and Min/Max Players Spinners [12]
+    private Spinner mSpinnerApproved, mSpinnerMinPlayers, mSpinnerMaxPlayers;
+    private String FILTER_OPTION = "option_selected";
+    private final String DEFAULT_SPINNER_OPTION = "---";
+    private LinearLayout mGroupForMinMaxPlayersSPinners;
 
     // Initialize the database helper and the adapter
     private DatabaseHelper_Game dbHelper;
@@ -83,6 +92,19 @@ public class GamesListFragment extends Fragment implements View.OnClickListener
         mHeader = view.findViewById(R.id.list_header);
         mHeader.setText(R.string.frag_gameslist_header);
 
+        // Initialize UI elements for filtering
+        mFilterHeader = view.findViewById(R.id.filter_header);
+        mSpinnerApproved = view.findViewById(R.id.spinner_filter_approved); // For filtering by Approved attribute
+        mResetButton = view.findViewById(R.id.reset_button);
+        mFilterButton = view.findViewById(R.id.filter_button);
+        mGroupForMinMaxPlayersSPinners = view.findViewById(R.id.minmax_players_filters); // For filtering by Min/Max Players
+        mSpinnerMinPlayers = view.findViewById(R.id.spinner_filter_minplayers); // For filtering by Min/Max Players
+        mSpinnerMaxPlayers = view.findViewById(R.id.spinner_filter_maxplayers); // For filtering by Min/Max Players
+
+        // Set the OnClick Listener for the filter buttons
+        mFilterButton.setOnClickListener(this);
+        mResetButton.setOnClickListener(this);
+
         // Make a Database Helper to manipulate the database
         Log.d(LOG_TAG, "Making database helper");
         dbHelper = new DatabaseHelper_Game(this.getContext());
@@ -117,6 +139,13 @@ public class GamesListFragment extends Fragment implements View.OnClickListener
             Log.d(LOG_TAG, "Populating list with all unapproved games");
             //games = dbHelper.getAllUnapprovedGames();
             games = dbHelper.getAllGames();
+
+            Log.d(LOG_TAG, "Creating Approved attribute filter spinner");
+            // Show the spinner to filter by the Approved attribute
+            mFilterHeader.setText(R.string.activity_gamedetails_filter_approved_header);
+            mSpinnerApproved.setVisibility(View.VISIBLE);
+            // Hide the Min/Max Players spinners
+            mGroupForMinMaxPlayersSPinners.setVisibility(View.GONE);
         }
         else
         {
@@ -126,6 +155,13 @@ public class GamesListFragment extends Fragment implements View.OnClickListener
 
             // Add the Request to Add Game button to the bottom of the screen
             createAddGameRequestButton(view);
+
+            Log.d(LOG_TAG, "Creating Min/Max Players filter spinners");
+            // Show the spinner to filter by the Min/Max Players
+            mFilterHeader.setText(R.string.activity_gamedetails_filter_minmaxplayers_header);
+            mGroupForMinMaxPlayersSPinners.setVisibility(View.VISIBLE);
+            // Hide the Approved attribute spinners
+            mSpinnerApproved.setVisibility(View.GONE);
         }
 
         // Make the adapter and set it onto the RecyclerView
@@ -194,5 +230,32 @@ public class GamesListFragment extends Fragment implements View.OnClickListener
             Intent intent = new Intent(getActivity(), AddGameRequestActivity.class);
             startActivity(intent);
         }
+        if (id == R.id.filter_button)
+        {
+            if (isAdmin)
+            {
+                Log.d(LOG_TAG, "Navigating to Add Game Request page");
+                //handleAdminFilter();
+            }
+        }
     }
+
+//    private void handleAdminFilter()
+//    {
+//        // Retrieve the selected filter option [12]
+//        FILTER_OPTION = mSpinnerApproved.getSelectedItem().toString();
+//
+//        if (FILTER_OPTION.equals(DEFAULT_SPINNER_OPTION))
+//        {
+//            Toast.makeText(getContext(), "Select a valid Approved status!", Toast.LENGTH_SHORT).show();
+//        }
+//        else
+//        {
+//            // Make an empty list of Games
+//            List<Game> games = new ArrayList<>();
+//
+//            // Filter the database by category to find the items that match the selected filter option
+//            dbHelper.
+//        }
+//    }
 }

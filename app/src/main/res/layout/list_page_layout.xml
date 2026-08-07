@@ -17,9 +17,133 @@
         android:layout_height="wrap_content"
         android:textStyle="bold"
         android:textSize="24sp"
-        android:layout_marginTop="130dp"
+        android:layout_marginTop="120dp"
+        android:layout_marginBottom="5dp"
         android:layout_gravity="center_horizontal"
         />
+
+    <TextView
+        android:id="@+id/filter_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="5dp"
+        >
+
+        <!-- Dropdown spinner for the Approved attribute [12] -->
+        <Spinner
+            android:id="@+id/spinner_filter_approved"
+            android:layout_width="130dp"
+            android:layout_height="48dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="50dp"
+            android:visibility="gone"
+
+            android:entries="@array/approved_statuses"
+            android:prompt="@string/activity_gamedetails_filter_approved_prompt"
+            android:spinnerMode="dropdown"
+            />
+
+        <LinearLayout
+            android:id="@+id/minmax_players_filters"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="50dp"
+            >
+
+            <!-- UI elements for Min Players filter -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="end"
+                android:layout_marginRight="20dp"
+                >
+
+                <TextView
+                    android:id="@+id/minplayers_filter_header"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textSize="12sp"
+                    android:text="Min Players"
+                    />
+
+                <!-- Dropdown spinner for the Min Players [12] -->
+                <Spinner
+                    android:id="@+id/spinner_filter_minplayers"
+                    android:layout_width="55dp"
+                    android:layout_height="48dp"
+
+                    android:entries="@array/number_of_players"
+                    android:prompt="@string/activity_gamedetails_filter_minmaxplayers_prompt"
+                    android:spinnerMode="dropdown"
+                    />
+
+            </LinearLayout>
+
+            <!-- UI elements for Min Players filter -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="end"
+                >
+
+                <TextView
+                    android:id="@+id/maxplayers_filter_header"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textSize="12sp"
+                    android:text="@string/activity_gamedetails_filter_minplayers_header"
+                    android:textAlignment="center"
+                    />
+
+                <!-- Dropdown spinner for the Max Players [12] -->
+                <Spinner
+                    android:id="@+id/spinner_filter_maxplayers"
+                    android:layout_width="55dp"
+                    android:layout_height="48dp"
+
+                    android:entries="@array/number_of_players"
+                    android:prompt="@string/activity_gamedetails_filter_maxplayers_header"
+                    android:spinnerMode="dropdown"
+                    />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/filter_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/list_page_filter_button"
+            android:layout_marginRight="10dp"
+            />
+
+        <Button
+            android:id="@+id/reset_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/list_page_reset_button"
+            android:layout_marginRight="10dp"
+            />
+
+    </LinearLayout>
 
     <!-- LinearLayout to contain upper page content that is dynamically generated in the code -->
     <LinearLayout

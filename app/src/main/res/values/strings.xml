@@ -17,6 +17,12 @@
     <string name="activity_gamedetails_header">Game Details Page</string>
     <string name="activity_gamedetails_approvegamerequest_button_text">Approve Game Request</string>
     <string name="activity_gamedetails_deletegame_button_text">Remove Game</string>
+    <string name="activity_gamedetails_filter_approved_header">Filter Games by Approved Status</string>
+    <string name="activity_gamedetails_filter_approved_prompt">Select Approved status</string>
+    <string name="activity_gamedetails_filter_minmaxplayers_header">Filter Games by Min/Max Players</string>
+    <string name="activity_gamedetails_filter_minmaxplayers_prompt">Select number of players</string>
+    <string name="activity_gamedetails_filter_minplayers_header">Max Players</string>
+    <string name="activity_gamedetails_filter_maxplayers_header">Max Players</string>
 
     <!-- Strings for the Add Game Request page -->
     <string name="activity_addgamerequest_header">Request a Game to be Added</string>
@@ -32,8 +38,10 @@
     <!-- Strings for the Events page -->
     <string name="frag_events_header">Events</string>
 
-    <!-- General strings for the list items -->
+    <!-- General strings for the list page -->
     <string name="list_item_view_button_text">View</string>
+    <string name="list_page_filter_button">Filter</string>
+    <string name="list_page_reset_button">Reset</string>
 
     <!-- General Strings for the Games -->
     <string name="game_label_id">ID: </string>

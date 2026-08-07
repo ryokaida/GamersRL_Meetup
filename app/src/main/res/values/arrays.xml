@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Array for the Approved status filter for admins on the Game Details page -->
+    <string-array name="approved_statuses">
+        <item>---</item>
+        <item>N</item>
+        <item>Y</item>
+    </string-array>
+
+    <!-- Array for the Min/Max Players filter for basic users on the Game Details page -->
+    <string-array name="number_of_players">
+        <item>---</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5+</item>
+    </string-array>
+</resources>
