@@ -206,7 +206,7 @@ public class GamesListFragment extends Fragment implements View.OnClickListener
         Log.d(LOG_TAG, "Setting Layout Params for Add Game Request button");
         LinearLayout.LayoutParams paramsForButton = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         // Set the margins
-        paramsForButton.setMargins(60, 100, 60, 0);
+        paramsForButton.setMargins(60, 60, 60, 0);
         // Assign the Layout Params to the button
         mAddGameRequestButton.setLayoutParams(paramsForButton);
         // Add the button to the page

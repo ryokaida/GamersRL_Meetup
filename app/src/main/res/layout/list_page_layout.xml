@@ -36,7 +36,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginBottom="5dp"
         >
 
         <!-- Dropdown spinner for the Approved attribute [12] -->
@@ -162,7 +161,7 @@
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="540dp"
-        android:layout_marginBottom="40dp"
+        android:layout_marginBottom="7dp"
         android:orientation="vertical"
         android:elevation="0dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

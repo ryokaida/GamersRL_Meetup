@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="10dp"
+    android:layout_margin="5dp"
     >
 
     <LinearLayout
@@ -126,11 +126,9 @@
             </LinearLayout>
 
             <!--
-                LinearLayout to contain the the extra information content for the list item
+                LinearLayout to contain the extra information content for the list item
                 In this section is a bunch of UI elements that are set to invisible and turned visible when they are needed.
             -->
-
-
             <LinearLayout
                 android:id="@+id/extra_listitem_information"
                 android:layout_width="match_parent"
@@ -221,34 +219,6 @@
 
             </LinearLayout>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!--            <LinearLayout-->
-<!--                android:id="@+id/extra_listitem_information"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:orientation="horizontal"-->
-<!--                >-->
-
-<!--                &lt;!&ndash; The Approved attribute for Games - seen by basic users in the Games List &ndash;&gt;-->
-
-
-
-<!--                -->
-
-<!--            </LinearLayout>-->
-
         </LinearLayout>
 
     </LinearLayout>
@@ -258,7 +228,7 @@
         android:layout_width="match_parent"
         android:layout_height="5dp"
         android:background="?android:attr/listDivider"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         />
 
 </LinearLayout>
