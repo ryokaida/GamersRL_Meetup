@@ -6,18 +6,14 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.gamersrl_meetup.R;
 import com.example.gamersrl_meetup.database.DatabaseHelper_Game;
 import com.example.gamersrl_meetup.model.Game;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.SimpleDateFormat;
 
@@ -153,7 +149,6 @@ public class GameDetailsActivity extends AppCompatActivity implements View.OnCli
             {
                 Log.d(LOG_TAG, "Admin needs to approve the game");
                 // Set the Approve Game Request button to be clickable
-                mApproveGameRequestButton.setBackgroundColor(R.color.purple_500);
                 mApproveGameRequestButton.setClickable(true);
                 // Set OnClick Listener on the Approve Game Request button.
                 mApproveGameRequestButton.setOnClickListener(this);
@@ -161,7 +156,7 @@ public class GameDetailsActivity extends AppCompatActivity implements View.OnCli
             else
             {
                 Log.d(LOG_TAG, "Game already approved");
-                // Make Approve Game Request button unclickable
+                // Make Approve Game Request button unclickable and gray it out
                 mApproveGameRequestButton.setBackgroundColor(R.color.black);
                 mApproveGameRequestButton.setClickable(false);
             }
@@ -219,7 +214,7 @@ public class GameDetailsActivity extends AppCompatActivity implements View.OnCli
         else if (id == R.id.deletegame_button)
         {
             // Delete the selected Game
-            //dbHelper.deleteGameFromDB(String.valueOf(mGame.getId()));
+            dbHelper.deleteGameFromDB(String.valueOf(mGame.getId()));
 
             // Display a success Toast
             Toast.makeText(this, "Successfully removed game!", Toast.LENGTH_SHORT).show();
