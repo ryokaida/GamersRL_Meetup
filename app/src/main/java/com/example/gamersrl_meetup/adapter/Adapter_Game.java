@@ -3,11 +3,14 @@ package com.example.gamersrl_meetup.adapter;
 import android.content.Context;
 import android.os.Parcelable;
 import android.util.Log;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 
 import com.example.gamersrl_meetup.R;
 import com.example.gamersrl_meetup.activity.GameDetailsActivity;
+import com.example.gamersrl_meetup.activity.TempAdminTester;
 import com.example.gamersrl_meetup.model.Game;
 
 import java.util.List;
@@ -23,8 +26,14 @@ public class Adapter_Game extends Adapter
     // Set up the Log tag [26]
     private final String LOG_TAG = "GAME ADAPTER - ";
 
+    // Initialize the boolean to determine the user's role
+    private Boolean isAdmin;
+
     // Initialize a List of items
     private List<Game> games;
+
+    // Initialize the UI elements for the Extra Info section
+    TextView mApprovedLabel, mApprovedTextView, mMinPlayersLabel, mMinPlayersTextView, mMaxPlayersLabel, mMaxPlayersTextView;
 
     /**
      * Construct a new Adapter with the list of items to display.
@@ -34,6 +43,8 @@ public class Adapter_Game extends Adapter
     public Adapter_Game(List<Game> games) {
         super();
         this.games = games;
+        // TODO - Actually get admin role from user
+        isAdmin = new TempAdminTester().getIsAdmin();
     }
 
     /**
@@ -47,7 +58,7 @@ public class Adapter_Game extends Adapter
     public String getLabel1(Context context)
     {
         // Retrieve the Developer Label from the String resources [23]
-        String label1 = context.getResources().getString(R.string.games_list_page_developer_label);
+        String label1 = context.getResources().getString(R.string.game_label_developer);
         Log.d(LOG_TAG, "Retrieved Label1: " + label1);
         return label1;
     }
@@ -55,7 +66,7 @@ public class Adapter_Game extends Adapter
     public String getLabel2(Context context)
     {
         // Retrieve the Description Label from the String resources [23]
-        String label2 = context.getResources().getString(R.string.list_item_description_label);
+        String label2 = context.getResources().getString(R.string.game_label_description);
         Log.d(LOG_TAG, "Retrieved Label2: " + label2);
         return label2;
     }
@@ -63,7 +74,7 @@ public class Adapter_Game extends Adapter
     public String getIdLabel(Context context)
     {
         // Retrieve the ID Label from the String resources [23]
-        String idLabel = context.getResources().getString(R.string.list_item_id_label);
+        String idLabel = context.getResources().getString(R.string.game_label_id);
         Log.d(LOG_TAG, "Retrieved ID Label: " + idLabel);
         return idLabel;
     }
@@ -109,6 +120,31 @@ public class Adapter_Game extends Adapter
         int imageID = games.get(position).getPictureURI();
         Log.d(LOG_TAG, "Retrieved image ID: " + String.valueOf(imageID));
         return imageID;
+    }
+
+    /**
+     * Private helper methods to retrieve the extra attributes to be displayed in the list item
+     *
+     * @param position The position of the current item in the list
+     * @return The Game's approved attribute, min players, max players
+     */
+    private String getApproved(int position)
+    {
+        String approved = games.get(position).getApproved();
+        Log.d(LOG_TAG, "Retrieved Approved attribute: " + approved);
+        return approved;
+    }
+    private int getMinPlayers(int position)
+    {
+        int minPlayers = games.get(position).getMinPlayers();
+        Log.d(LOG_TAG, "Retrieved Min Players: " + minPlayers);
+        return minPlayers;
+    }
+    private int getMaxPlayers(int position)
+    {
+        int maxPlayers = games.get(position).getMaxPlayers();
+        Log.d(LOG_TAG, "Retrieved Max Players: " + maxPlayers);
+        return maxPlayers;
     }
 
     /**
@@ -178,5 +214,48 @@ public class Adapter_Game extends Adapter
     public Parcelable getItemToDisplayDetailsFor(int in_Position)
     {
         return games.get(in_Position);
+    }
+
+    /**
+     * Show the Approved attribute or Min/Max Players UI elements depending on the user's role
+     *
+     * @param v The View to make the UI elements in
+     * @param position The position of the selected item in the list
+     */
+    @Override
+    public void createExtraListInformation(View v, int position)
+    {
+        /**
+         * If the user is an admin, then show the Approved attribute UI elements.
+         * Otherwise, show the Min/Max Players UI elements
+         */
+        if (isAdmin)
+        {
+            // Show the Approved attribute label
+            mApprovedLabel = v.findViewById(R.id.approved_label);
+            mApprovedLabel.setVisibility(View.VISIBLE);
+            // Set the text for the Approved TextView and show it
+            mApprovedTextView = v.findViewById(R.id.approved_textview);
+            mApprovedTextView.setText(getApproved(position));
+            mApprovedTextView.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            // Show the Min Players label
+            mMinPlayersLabel = v.findViewById(R.id.minplayers_label);
+            mMinPlayersLabel.setVisibility(View.VISIBLE);
+            // Set the text for the Min Players TextView and show it
+            mMinPlayersTextView = v.findViewById(R.id.minplayers_textview);
+            mMinPlayersTextView.setText(String.valueOf(getMinPlayers(position)));
+            mMinPlayersTextView.setVisibility(View.VISIBLE);
+
+            // Show the Max Players label
+            mMaxPlayersLabel = v.findViewById(R.id.maxplayers_label);
+            mMaxPlayersLabel.setVisibility(View.VISIBLE);
+            // Set the text for the Max Players TextView and show it
+            mMaxPlayersTextView = v.findViewById(R.id.maxplayers_textview);
+            mMaxPlayersTextView.setText(String.valueOf(getMaxPlayers(position)));
+            mMaxPlayersTextView.setVisibility(View.VISIBLE);
+        }
     }
 }

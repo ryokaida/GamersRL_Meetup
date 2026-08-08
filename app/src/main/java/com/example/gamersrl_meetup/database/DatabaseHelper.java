@@ -189,4 +189,23 @@ public abstract class DatabaseHelper<T> extends SQLiteOpenHelper
      * @return The item created from the db row
      */
     public abstract T constructItemFromDBRow(Cursor in_Cursor);
+
+    /**
+     * Delete one item in the database (found by its ID) [44].
+     *
+     * @param tableName The name of the table to delete from
+     * @param id The ID of the Game - This comes in as a string instead of an integer because SQL Lite requires a string array for the where args
+     */
+    public void deleteItemFromDB(String tableName, String id)
+    {
+        // Get the database so it can be accessed/written to
+        SQLiteDatabase db = getWritableDatabase();
+
+        // Run the query to delete an item from the database based on its ID
+        Log.d(LOG_TAG, "Deleting item with ID: " + id);
+        db.delete(tableName, "id=?", new String[]{id});
+
+        // Close the database connection
+        db.close();
+    }
 }

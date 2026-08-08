@@ -7,4 +7,7 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- Color gotten using W3School's HTML Color Picker [47] -->
+    <color name="light_purple">#8d83e2</color>
 </resources>

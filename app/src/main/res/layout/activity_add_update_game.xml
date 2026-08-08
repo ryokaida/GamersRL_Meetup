@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.AddGameRequestActivity"
+    android:layout_marginRight="20dp"
+    android:layout_marginLeft="20dp"
+    >
+
+    <TextView
+        android:id="@+id/addgame_instructions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="30sp"
+        android:layout_marginTop="130dp"
+        android:layout_marginBottom="40dp"
+        android:textAlignment="center"
+        android:text="@string/activity_add_update_game_instructions"
+        />
+
+    <EditText
+        android:id="@+id/input_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/activity_add_update_game_input_hint_title"
+        android:layout_marginBottom="20dp"
+        />
+
+    <EditText
+        android:id="@+id/input_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/activity_add_update_game_input_hint_description"
+        android:layout_marginBottom="20dp"
+        />
+
+    <EditText
+        android:id="@+id/input_releasedate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/activity_add_update_game_input_hint_releasedate"
+        android:layout_marginBottom="20dp"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="20dp"
+        >
+
+        <EditText
+            android:id="@+id/input_developer"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/activity_add_update_game_input_hint_developer"
+            android:layout_marginRight="10dp"
+            />
+
+        <EditText
+            android:id="@+id/input_publisher"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/activity_add_update_game_input_hint_publisher"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+        <EditText
+            android:id="@+id/input_minplayers"
+            android:layout_width="170dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/activity_add_update_game_input_hint_minplayers"
+            android:layout_marginRight="10dp"
+            />
+
+        <EditText
+            android:id="@+id/input_maxplayers"
+            android:layout_width="220dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/activity_add_update_game_input_hint_maxplayers"
+            />
+
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/input_approved"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/activity_add_update_game_input_hint_approved"
+        android:visibility="gone"
+        android:layout_marginTop="20dp"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="80dp"
+        android:layout_marginRight="80dp"
+        android:orientation="vertical"
+        android:gravity="center_vertical"
+        >
+
+        <Button
+            android:id="@+id/submit_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/submit_button_text"
+            android:layout_marginBottom="10dp"
+            />
+
+        <Button
+            android:id="@+id/reset_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/reset_button_text"
+            android:layout_marginBottom="10dp"
+            />
+
+        <Button
+            android:id="@+id/back_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/back_button_text"
+            android:layout_marginBottom="10dp"
+            />
+
+    </LinearLayout>
+
+<!--    <Button-->
+<!--        android:id="@+id/submit_button"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_gravity="center_horizontal"-->
+<!--        android:text="@string/submit_button_text"-->
+<!--        android:layout_marginBottom="10dp"-->
+<!--        android:layout_marginRight="80dp"-->
+<!--        android:layout_marginLeft="80dp"-->
+<!--        android:layout_marginTop="50dp"-->
+<!--        />-->
+
+<!--    <Button-->
+<!--        android:id="@+id/reset_button"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_gravity="center_horizontal"-->
+<!--        android:text="@string/reset_button_text"-->
+<!--        android:layout_marginBottom="10dp"-->
+<!--        android:layout_marginRight="80dp"-->
+<!--        android:layout_marginLeft="80dp"-->
+<!--        />-->
+
+<!--    <Button-->
+<!--        android:id="@+id/back_button"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_gravity="center_horizontal"-->
+<!--        android:text="@string/back_button_text"-->
+<!--        android:layout_marginBottom="10dp"-->
+<!--        android:layout_marginRight="80dp"-->
+<!--        android:layout_marginLeft="80dp"-->
+<!--        />-->
+
+</LinearLayout>

@@ -43,24 +43,22 @@
         </activity>
 
         <activity
-            android:name=".activity.GamesListActivity"
-            android:exported="true"
-            android:label="@string/games_list_page_activity_name"
-            >
-        </activity>
-
-        <activity
             android:name=".activity.GameDetailsActivity"
-            android:label="@string/game_details_page_activity_name"
+            android:label="@string/activity_gamedetails_header"
             android:exported="false"
-            android:parentActivityName=".activity.GamesListActivity"
+            android:parentActivityName=".activity.AppContentActivity"
             />
 
         <activity
             android:name=".activity.AddGameRequestActivity"
-            android:label="@string/add_game_request_page_activity_name"
+            android:label="@string/activity_addgamerequest_header"
             android:exported="false"
-            android:parentActivityName=".activity.GamesListActivity"
+            />
+
+        <activity
+            android:name=".activity.UpdateGameActivity"
+            android:label="@string/activity_updategame_header"
+            android:exported="false"
             />
 
         <activity

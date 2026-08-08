@@ -8,11 +8,142 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
-    tools:context=".activity.GamesListActivity"
+    tools:context=".activity.AppContentActivity"
     >
 
-    <!-- LinearLayout to contain upper page content (TBD) -->
+    <TextView
+        android:id="@+id/list_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="24sp"
+        android:layout_marginTop="120dp"
+        android:layout_marginBottom="5dp"
+        android:layout_gravity="center_horizontal"
+        />
+
+    <TextView
+        android:id="@+id/filter_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+        <!-- Dropdown spinner for the Approved attribute [12] -->
+        <Spinner
+            android:id="@+id/spinner_filter_approved"
+            android:layout_width="130dp"
+            android:layout_height="48dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="50dp"
+            android:visibility="gone"
+            android:layout_marginBottom="15dp"
+
+            android:entries="@array/approved_statuses"
+            android:prompt="@string/activity_gameslist_filter_approved_prompt"
+            android:spinnerMode="dropdown"
+            />
+
+        <!-- UI elements for the Number of Players filters -->
+        <LinearLayout
+            android:id="@+id/number_of_players_filters"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            >
+
+            <!-- UI elements for Min Players filter -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="15dp"
+                >
+
+                <TextView
+                    android:id="@+id/minplayers_filter_header"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textSize="12sp"
+                    android:text="@string/activity_gameslist_filter_minplayers_header"
+                    />
+
+                <!-- Dropdown spinner for the Min Players [12] -->
+                <Spinner
+                    android:id="@+id/spinner_filter_minplayers"
+                    android:layout_width="83dp"
+                    android:layout_height="48dp"
+
+                    android:entries="@array/number_of_players"
+                    android:prompt="@string/activity_gameslist_filter_minmaxplayers_prompt"
+                    android:spinnerMode="dropdown"
+                    />
+
+            </LinearLayout>
+
+            <!-- UI elements for Max Players filter -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginRight="20dp"
+                >
+
+                <TextView
+                    android:id="@+id/maxplayers_filter_header"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textSize="12sp"
+                    android:text="@string/activity_gameslist_filter_maxplayers_header"
+                    />
+
+                <!-- Dropdown spinner for the Max Players [12] -->
+                <Spinner
+                    android:id="@+id/spinner_filter_maxplayers"
+                    android:layout_width="83dp"
+                    android:layout_height="48dp"
+
+                    android:entries="@array/number_of_players"
+                    android:prompt="@string/activity_gameslist_filter_minmaxplayers_prompt"
+                    android:spinnerMode="dropdown"
+                    />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/filter_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/list_page_filter_button"
+            android:layout_marginRight="10dp"
+            />
+
+        <Button
+            android:id="@+id/reset_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/reset_button_text"
+            android:layout_marginRight="10dp"
+            />
+
+    </LinearLayout>
+
+    <!-- LinearLayout to contain upper page content that is dynamically generated in the code -->
     <LinearLayout
         android:id="@+id/layout_horizontal_top"
         android:layout_width="match_parent"
@@ -31,7 +162,7 @@
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="540dp"
-        android:layout_marginBottom="40dp"
+        android:layout_marginBottom="7dp"
         android:orientation="vertical"
         android:elevation="0dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -45,7 +176,7 @@
         android:background="?android:attr/listDivider"
         />
 
-    <!-- LinearLayout to contain lower page content (TBD) -->
+    <!-- LinearLayout to contain lower page content that is dynamically generated in the code -->
     <LinearLayout
         android:id="@+id/layout_horizontal_bottom"
         android:layout_width="match_parent"
