@@ -251,7 +251,7 @@ public class SignupActivity extends AppCompatActivity {
 
                         Intent intent = new Intent(
                                 SignupActivity.this,
-                                GamesListActivity.class
+                                AppContentActivity.class
                         );
 
                         /*

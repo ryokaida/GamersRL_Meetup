@@ -2,8 +2,10 @@ package com.example.gamersrl_meetup.activity;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -15,6 +17,7 @@ import com.example.gamersrl_meetup.R;
 import com.example.gamersrl_meetup.fragment.EventsFragment;
 import com.example.gamersrl_meetup.fragment.GamesListFragment;
 import com.google.android.material.navigation.NavigationView;
+import com.example.gamersrl_meetup.fragment.MapFragment;
 
 /**
  * AppContentActivity class
@@ -63,12 +66,28 @@ public class AppContentActivity extends AppCompatActivity implements NavigationV
         // The syncState method is used to sync the state of the Navigation Drawer
         mActionBarDrawerToggle.syncState();
 
+        if (getSupportActionBar() != null)
+        {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
         /**
          * Set default Fragment to PirateListFragment
          * by making a new PirateListFragment and replacing the FrameLayout in activity_appcontent with it
          */
         navigateToEventsFragment();
         navigateToGamesListFragment();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item)
+    {
+        if (mActionBarDrawerToggle.onOptionsItemSelected(item))
+        {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     /**
@@ -96,25 +115,29 @@ public class AppContentActivity extends AppCompatActivity implements NavigationV
         {
             navigateToGamesListFragment();
         }
+        else if (id == R.id.nav_map)
+        {
+            navigateToMapFragment();
+        }
 
         // Close Navigation Drawer
         mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
 
-    /**
-     * Inflate the Menu Items - Add items to the Action Bar if it is present.
-     *
-     * @param menu The options menu in which you place your items.
-     *
-     * @return That inflating the Menu Items was successful
-     */
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
-        getMenuInflater().inflate(R.menu.nav_drawer_items, menu);
-        return true;
-    }
+//    /**
+//     * Inflate the Menu Items - Add items to the Action Bar if it is present.
+//     *
+//     * @param menu The options menu in which you place your items.
+//     *
+//     * @return That inflating the Menu Items was successful
+//     */
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu)
+//    {
+//        getMenuInflater().inflate(R.menu.nav_drawer_items, menu);
+//        return true;
+//    }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig)
@@ -139,5 +162,14 @@ public class AppContentActivity extends AppCompatActivity implements NavigationV
     private void navigateToGamesListFragment()
     {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new GamesListFragment()).commit();
+    }
+
+//    Helper method to set Fragment to MapFragment
+    private void navigateToMapFragment()
+    {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, new MapFragment())
+                .commit();
     }
 }

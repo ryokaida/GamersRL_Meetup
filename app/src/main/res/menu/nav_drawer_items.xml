@@ -16,6 +16,11 @@
             android:title="@string/nav_drawer_item_gameslist"
             />
 
+        <item
+            android:id="@+id/nav_map"
+            android:icon="@drawable/ic_map"
+            android:title="Map" />
+
     </group>
 
 </menu>
