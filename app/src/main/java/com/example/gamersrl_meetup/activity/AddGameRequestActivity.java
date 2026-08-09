@@ -33,10 +33,11 @@ public class AddGameRequestActivity extends AbstractAddUpdateGameActivity  imple
     protected void onCreate(Bundle savedInstanceState)
     {
         // Use the parent AbstractAddUpdateGameActivity's logic to Load the Saved Instance State and set the layout
+        Log.d(LOG_TAG, "Creating the Settings view");
         super.onCreate(savedInstanceState);
 
         // Instantiate UI elements
-        Log.d(LOG_TAG, "Instantiating UI elements for the Add Game Request page");
+        Log.d(LOG_TAG, "Instantiating UI elements");
         mTitleEditText = findViewById(R.id.input_title);
         mDescriptionEditText = findViewById(R.id.input_description);
         mReleaseDateEditText = findViewById(R.id.input_releasedate);
@@ -49,6 +50,7 @@ public class AddGameRequestActivity extends AbstractAddUpdateGameActivity  imple
         mBackButton = findViewById(R.id.back_button);
 
         // Set the OnClick Listener for the buttons
+        Log.d(LOG_TAG, "Setting OnClick Listeners");
         mSubmitButton.setOnClickListener(this);
         mResetButton.setOnClickListener(this);
         mBackButton.setOnClickListener(this);
@@ -72,14 +74,17 @@ public class AddGameRequestActivity extends AbstractAddUpdateGameActivity  imple
          */
         if (id == R.id.submit_button)
         {
+            Log.d(LOG_TAG, "User clicked Submit button");
             handleSubmittingAddGameRequest();
         }
         else if (id == R.id.reset_button)
         {
+            Log.d(LOG_TAG, "User clicked Reset button");
             clearFields();
         }
         else if (id == R.id.back_button)
         {
+            Log.d(LOG_TAG, "User clicked Back button, navigating back to Games List page");
             Intent intent = new Intent(AddGameRequestActivity.this, AppContentActivity.class);
             intent.putExtra("fragmentToLoad", "GamesList");
             startActivity(intent);
@@ -98,6 +103,7 @@ public class AddGameRequestActivity extends AbstractAddUpdateGameActivity  imple
          */
         try
         {
+            Log.d(LOG_TAG, "Attempting to handle submitting the Add Game Request");
             // Retrieve entered Game information
             String title = mTitleEditText.getText().toString().trim();
             String description = mDescriptionEditText.getText().toString().trim();
@@ -133,6 +139,7 @@ public class AddGameRequestActivity extends AbstractAddUpdateGameActivity  imple
              */
             Game newGame = new Game(title, description, developer, publisher, DATE_FORMAT.parse(releaseDate), Integer.parseInt(minPlayers), Integer.parseInt(maxPlayers), R.drawable.ic_gamecontroller, "N");
             dbHelper.addToDatabase(newGame);
+            Log.d(LOG_TAG, "Successfully sent request to add new game!");
             showSnackbar(mSubmitButton, "Successfully sent request to add new game!");
 
             // Reset the page for a new Game to be added

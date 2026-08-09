@@ -38,10 +38,11 @@ public class UpdateGameActivity extends AbstractAddUpdateGameActivity implements
     protected void onCreate(Bundle savedInstanceState)
     {
         // Use the parent AbstractAddUpdateGameActivity's logic to Load the Saved Instance State and set the layout
+        Log.d(LOG_TAG, "Creating the page view");
         super.onCreate(savedInstanceState);
 
         // Instantiate UI elements
-        Log.d(LOG_TAG, "Instantiating UI elements for the Add Game Request page");
+        Log.d(LOG_TAG, "Instantiating UI elements");
         mTitleEditText = findViewById(R.id.input_title);
         mDescriptionEditText = findViewById(R.id.input_description);
         mReleaseDateEditText = findViewById(R.id.input_releasedate);
@@ -54,11 +55,13 @@ public class UpdateGameActivity extends AbstractAddUpdateGameActivity implements
         mBackButton = findViewById(R.id.back_button);
 
         // Set the OnClick Listener for the buttons
+        Log.d(LOG_TAG, "Setting OnClick Listeners");
         mSubmitButton.setOnClickListener(this);
         mResetButton.setOnClickListener(this);
         mBackButton.setOnClickListener(this);
 
         // Enable the Approved status EditText
+        Log.d(LOG_TAG, "Enabling Approved status EditText");
         mApprovedEditText = findViewById(R.id.input_approved);
         mApprovedEditText.setVisibility(View.VISIBLE);
 
@@ -85,18 +88,19 @@ public class UpdateGameActivity extends AbstractAddUpdateGameActivity implements
          */
         if (id == R.id.submit_button)
         {
+            Log.d(LOG_TAG, "User clicked Submit button");
             handleUpdatingIteminDB();
+            navigateBackToGamesList();
         }
         else if (id == R.id.reset_button)
         {
+            Log.d(LOG_TAG, "User clicked Reset button");
             clearFields();
         }
         else if (id == R.id.back_button)
         {
-            Intent intent = new Intent(UpdateGameActivity.this, GameDetailsActivity.class);
-            intent.putExtra("updatedGame", mGame);
-            intent.putExtra("parentActivity", "UpdateGameActivity");
-            startActivity(intent);
+            Log.d(LOG_TAG, "User clicked Back button");
+            navigateBackToGamesList();
         }
     }
 
@@ -113,6 +117,7 @@ public class UpdateGameActivity extends AbstractAddUpdateGameActivity implements
         try
         {
             // Retrieve entered Game information
+            Log.d(LOG_TAG, "Retrieving entered Game data");
             String title = mTitleEditText.getText().toString().trim();
             String description = mDescriptionEditText.getText().toString().trim();
             String developer = mDeveloperEditText.getText().toString().trim();
@@ -218,6 +223,8 @@ public class UpdateGameActivity extends AbstractAddUpdateGameActivity implements
             // Get the updated Game from the database, so it can be passed back to the Game Details page when the user clicks the Back button
             mGame = getUpdatedGameFromDB(String.valueOf(mGame.getId()));
 
+            Log.d(LOG_TAG, "Updated Game with ID: " + mGame.getId());
+
             // Reset the page for a new Game to be added
             clearFields();
         }
@@ -258,5 +265,19 @@ public class UpdateGameActivity extends AbstractAddUpdateGameActivity implements
 
         // Also clear the Approved EditText
         mApprovedEditText.setText("");
+    }
+
+    /**
+     * Helper method to navigate back to the Games List page.
+     */
+    private void navigateBackToGamesList()
+    {
+        // Navigate to the Game List page
+        Log.d(LOG_TAG, "Navigating back to Games List page");
+        Intent intent = new Intent(UpdateGameActivity.this, GameDetailsActivity.class);
+        intent.putExtra("updatedGame", mGame);
+        intent.putExtra("parentActivity", "UpdateGameActivity");
+        startActivity(intent);
+        finish();
     }
 }

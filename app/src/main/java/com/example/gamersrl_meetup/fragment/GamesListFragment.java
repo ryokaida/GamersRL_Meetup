@@ -85,6 +85,7 @@ public class GamesListFragment extends Fragment implements View.OnClickListener
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
     {
         // Inflate the layout for this Fragment
+        Log.d(LOG_TAG, "Creating the page view");
         View view = inflater.inflate(R.layout.list_page_layout, container, false);
 
         // TODO - Actually get admin role from user
@@ -94,18 +95,22 @@ public class GamesListFragment extends Fragment implements View.OnClickListener
          * Instantiate the RecyclerView, the dividers indicating the start and end the RecyclerView, and the Button.
          * Use the hosting activity as the context.
          */
-        Log.d(LOG_TAG, "Instantiating UI elements for the Games List page");
+        Log.d(LOG_TAG, "Instantiating UI elements");
         mRecyclerView = view.findViewById(R.id.recycler_view);
 
         // Instantiate the header and set its text
         mHeader = view.findViewById(R.id.list_header);
         mHeader.setText(R.string.frag_gameslist_header);
 
+        // Instantiate the Filter Dialog [48]
+        mFilterDialog = new Dialog(this.getContext());
+
         // Instantiate Filter/Reset buttons
         mResetButton = view.findViewById(R.id.reset_button);
         mFilterButton = view.findViewById(R.id.filter_button);
 
         // Set the OnClick Listener for the filter buttons
+        Log.d(LOG_TAG, "Setting OnClick Listeners");
         mFilterButton.setOnClickListener(this);
         mResetButton.setOnClickListener(this);
 
@@ -159,9 +164,6 @@ public class GamesListFragment extends Fragment implements View.OnClickListener
         Log.d(LOG_TAG, "Making linear layout manager");
         layoutManager = new LinearLayoutManager(this.getContext(), LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(layoutManager);
-
-        // Instantiate the Filter Dialog [48]
-        mFilterDialog = new Dialog(this.getContext());
 
         return view;
     }
@@ -222,16 +224,18 @@ public class GamesListFragment extends Fragment implements View.OnClickListener
          */
         if (id == R.id.addgamerequest_button)
         {
-            Log.d(LOG_TAG, "Navigating to Add Game Request page");
+            Log.d(LOG_TAG, "User clicked Add Game Request button, navigating to Add Game Request page");
             Intent intent = new Intent(getActivity(), AddGameRequestActivity.class);
             startActivity(intent);
         }
         else if (id == R.id.filter_button)
         {
+            Log.d(LOG_TAG, "User clicked Filter button, opening the filter dialog");
             showFilterDialog();
         }
         else if (id == R.id.reset_button)
         {
+            Log.d(LOG_TAG, "User clicked Reset button, resetting the list to all games");
             /**
              * If the user is an admin, then reset the list to all Games.
              * Otherwise, reset the list to only approved Games.
@@ -247,6 +251,7 @@ public class GamesListFragment extends Fragment implements View.OnClickListener
         }
         else if (id == R.id.filter_ok_button)
         {
+            Log.d(LOG_TAG, "User clicked OK button, applying filter(s)");
             // Handle filtering and determine if it was successful or not
             boolean successfulFilter;
             successfulFilter = handleFiltering();
@@ -262,6 +267,7 @@ public class GamesListFragment extends Fragment implements View.OnClickListener
         }
         else if (id == R.id.filter_cancel_button)
         {
+            Log.d(LOG_TAG, "User clicked Cancel button, canceling filter");
             // Close the filter [48]
             mFilterDialog.dismiss();
             Toast.makeText(this.getContext(), "Canceled filtering", Toast.LENGTH_SHORT).show();
@@ -274,20 +280,24 @@ public class GamesListFragment extends Fragment implements View.OnClickListener
     private void showFilterDialog()
     {
         // Set up the Filter Dialog and set its attributes
+        Log.d(LOG_TAG, "Setting up the filter dialog");
         mFilterDialog.setContentView(R.layout.dialog_game_filters);
         mFilterDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         mFilterDialog.setCancelable(false);
         mFilterDialog.getWindow().getAttributes().windowAnimations = R.style.animation;
 
         // Instantiate the OK and Cancel buttons on the Filter Dialog
+        Log.d(LOG_TAG, "Adding the filter dialog buttons");
         mFilterDialogOKButton = mFilterDialog.findViewById(R.id.filter_ok_button);
         mFilterDialogCancelButton = mFilterDialog.findViewById(R.id.filter_cancel_button);
 
         // Set OnClick Listeners onto the Filter Dialog buttons
+        Log.d(LOG_TAG, "Setting OnClick Listeners on the filter dialog buttons");
         mFilterDialogOKButton.setOnClickListener(this);
         mFilterDialogCancelButton.setOnClickListener(this);
 
         // Instantiate the filter dropdowns for Developer, Publisher, Min Players, and Max Players
+        Log.d(LOG_TAG, "Adding the filter dropdowns to the filter dialog");
         mSpinnerDeveloper = mFilterDialog.findViewById(R.id.spinner_filter_developer);
         mSpinnerPublisher = mFilterDialog.findViewById(R.id.spinner_filter_publisher);
         mSpinnerMinPlayers = mFilterDialog.findViewById(R.id.spinner_filter_minplayers);
@@ -301,10 +311,12 @@ public class GamesListFragment extends Fragment implements View.OnClickListener
          */
         if (isAdmin)
         {
+            Log.d(LOG_TAG, "Enabling the Approved filter");
             mGroupForApprovedFilter.setVisibility(View.VISIBLE);
         }
         else
         {
+            Log.d(LOG_TAG, "Hiding the Approved filter");
             mGroupForApprovedFilter.setVisibility(View.GONE);
         }
 
@@ -327,6 +339,7 @@ public class GamesListFragment extends Fragment implements View.OnClickListener
      */
     private void populateFilter(String filterAttribute, Spinner spinnerToPopulate)
     {
+        Log.d(LOG_TAG, "Populating " + filterAttribute + " spinner");
         // Make a new List of String for the retrieved attributes
         List<String> attributesForFilter = new ArrayList<>();
         // Add the default Spinner Option as the first option
@@ -352,9 +365,11 @@ public class GamesListFragment extends Fragment implements View.OnClickListener
                  */
                 if (!attributesForFilter.contains(attributeToAdd))
                 {
+                    Log.d(LOG_TAG, "Adding " + attributeToAdd + " to the Developer filter spinner list");
                     attributesForFilter.add(attributeToAdd);
                 }
-            } else if (filterAttribute.equals("publisher"))
+            }
+            else if (filterAttribute.equals("publisher"))
             {
                 // Get the Publisher from the current Game
                 String attributeToAdd = game.getPublisher();
@@ -364,12 +379,14 @@ public class GamesListFragment extends Fragment implements View.OnClickListener
                  */
                 if (!attributesForFilter.contains(attributeToAdd))
                 {
+                    Log.d(LOG_TAG, "Adding " + attributeToAdd + " to the Publisher filter spinner list");
                     attributesForFilter.add(attributeToAdd);
                 }
             }
         }
 
         // Populate the Spinner with the actual values from the database [49] [50] [51]
+        Log.d(LOG_TAG, "Populating the spinner with the retrieved values");
         ArrayAdapter spinnerAdapter = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_spinner_item, attributesForFilter);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerToPopulate.setAdapter(spinnerAdapter);
@@ -429,18 +446,22 @@ public class GamesListFragment extends Fragment implements View.OnClickListener
          */
         if (!isAdmin && developerWhereClause.isEmpty() && publisherWhereClause.isEmpty() && numberOfPlayersWhereClause.isEmpty())
         {
+            Log.e(LOG_TAG, "Valid options must be chosen!");
             showSnackbar(mFilterDialogOKButton, "Valid options must be chosen!");
         }
         else if (isAdmin && developerWhereClause.isEmpty() && publisherWhereClause.isEmpty() && numberOfPlayersWhereClause.isEmpty() && approvedWhereClause.isEmpty())
         {
+            Log.e(LOG_TAG, "Valid options must be chosen!");
             showSnackbar(mFilterDialogOKButton, "Valid options must be chosen!");
         }
         else if (numberOfPlayersWhereClause.equals("INVALID NUM PLAYERS OPTIONS"))
         {
+            Log.e(LOG_TAG, "The number of Min Players should not be greater than the number of Max Players!");
             showSnackbar(mFilterDialogOKButton, "The number of Min Players should not be greater than the number of Max Players!");
         }
         else
         {
+            Log.d(LOG_TAG, "Constructing final query");
             // Make the query to get data
             selectQuery += developerWhereClause;
             selectQuery += publisherWhereClause;
@@ -452,6 +473,7 @@ public class GamesListFragment extends Fragment implements View.OnClickListener
              */
             if (isAdmin)
             {
+                Log.d(LOG_TAG, "Adding Approved where clause to final query");
                 selectQuery += approvedWhereClause;
             }
 
@@ -470,6 +492,7 @@ public class GamesListFragment extends Fragment implements View.OnClickListener
             updateRecyclerView(mGames);
 
             successfulFilter = true;
+            Log.d(LOG_TAG, "Successfully filtered list");
         }
 
         return successfulFilter;
@@ -485,6 +508,7 @@ public class GamesListFragment extends Fragment implements View.OnClickListener
      */
     private String filterByOneAttribute(Spinner filteringSpinner, String attributeToFilterOn, List<String> io_listOfWhereArgsForFilter)
     {
+        Log.d(LOG_TAG, "Constructing query where clause for: " + attributeToFilterOn);
         // Retrieve the selected filter option [12]
         String filterOptionChosen = filteringSpinner.getSelectedItem().toString();
 
@@ -494,10 +518,12 @@ public class GamesListFragment extends Fragment implements View.OnClickListener
          */
         if (filterOptionChosen.equals(DEFAULT_SPINNER_OPTION))
         {
+            Log.d(LOG_TAG, "No option selected for " + attributeToFilterOn);
             return "";
         }
         else
         {
+            Log.d(LOG_TAG, "Filter option " + filterOptionChosen + " selected for " + attributeToFilterOn);
             // Add the filter option chosen to the list of where args
             io_listOfWhereArgsForFilter.add(filterOptionChosen);
             return " AND " + attributeToFilterOn + " = ?";
@@ -513,6 +539,7 @@ public class GamesListFragment extends Fragment implements View.OnClickListener
      */
     private String filterByNumberOfPlayers(List<String> io_listOfWhereArgsForFilter)
     {
+        Log.d(LOG_TAG, "Retrieving Min and Max Players from filters");
         // Retrieve the selected filter options [12]
         String filterOptionChosenMinPlayers = mSpinnerMinPlayers.getSelectedItem().toString();
         String filterOptionChosenMaxPlayers = mSpinnerMaxPlayers.getSelectedItem().toString();
@@ -523,10 +550,12 @@ public class GamesListFragment extends Fragment implements View.OnClickListener
          */
         if (filterOptionChosenMinPlayers.equals(DEFAULT_SPINNER_OPTION) || filterOptionChosenMaxPlayers.equals(DEFAULT_SPINNER_OPTION))
         {
+            Log.d(LOG_TAG, "No option selected for Min/Max Players");
             return "";
         }
         else
         {
+            Log.d(LOG_TAG, "Removing any '+' from the Min/Max Players");
             // Remove the "+" from the selected number of players if it is present to make input validations and querying the database easier
             filterOptionChosenMinPlayers = filterOptionChosenMinPlayers.replace("+", "");
             filterOptionChosenMaxPlayers = filterOptionChosenMaxPlayers.replace("+", "");
@@ -535,6 +564,7 @@ public class GamesListFragment extends Fragment implements View.OnClickListener
             int intMinPlayers;
             int intMaxPlayers;
 
+            Log.d(LOG_TAG, "Converting Min/Max Players to integers");
             // Retrieve the selected Min and Max Players as integers
             intMinPlayers = Integer.parseInt(filterOptionChosenMinPlayers);
             intMaxPlayers = Integer.parseInt(filterOptionChosenMaxPlayers);
@@ -559,10 +589,12 @@ public class GamesListFragment extends Fragment implements View.OnClickListener
              */
             if (intMinPlayers == 5)
             {
+                Log.d(LOG_TAG, "Using Min Players Greater Than clause since 5+ option was chosen");
                 numberOfPlayersFilterWhereClause += " AND min_players >= ?";
             }
             else
             {
+                Log.d(LOG_TAG, "Using Min Players Equal To clause since a smaller number option was chosen");
                 numberOfPlayersFilterWhereClause += " AND min_players = ?";
             }
 
@@ -572,13 +604,16 @@ public class GamesListFragment extends Fragment implements View.OnClickListener
              */
             if (intMaxPlayers == 5)
             {
+                Log.d(LOG_TAG, "Using Max Players Greater Than clause since 5+ option was chosen");
                 numberOfPlayersFilterWhereClause += " AND max_players >= ?";
             }
             else
             {
+                Log.d(LOG_TAG, "Using Max Players Equal To clause since a smaller number option was chosen");
                 numberOfPlayersFilterWhereClause += " AND max_players = ?";
             }
 
+            Log.d(LOG_TAG, "Adding where args for Min/Max Players to the list");
             // Add the filter options chosen to the list of where args
             io_listOfWhereArgsForFilter.add(filterOptionChosenMinPlayers);
             io_listOfWhereArgsForFilter.add(filterOptionChosenMaxPlayers);
@@ -595,6 +630,7 @@ public class GamesListFragment extends Fragment implements View.OnClickListener
      */
     private void updateRecyclerView(@Nullable List<Game> games)
     {
+        Log.d(LOG_TAG, "Refreshing adapter/RecyclerView");
         adapter = new Adapter_Game(games);
         mRecyclerView.setAdapter(adapter);
     }
@@ -607,6 +643,7 @@ public class GamesListFragment extends Fragment implements View.OnClickListener
      */
     private void showSnackbar(View v, String message)
     {
+        Log.d(LOG_TAG, "Displaying snackbar");
         Snackbar snackbar = Snackbar.make(v, message, Snackbar.LENGTH_SHORT);
         snackbar.show();
     }

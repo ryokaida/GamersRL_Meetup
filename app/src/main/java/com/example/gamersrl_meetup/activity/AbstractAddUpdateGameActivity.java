@@ -48,6 +48,7 @@ public abstract class AbstractAddUpdateGameActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         // Load the Saved Instance State and set the layout
+        Log.d(LOG_TAG, "Creating the page view");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_update_game);
 
@@ -99,6 +100,7 @@ public abstract class AbstractAddUpdateGameActivity extends AppCompatActivity
          */
         try
         {
+            Log.d(LOG_TAG, "Validating Number of Players");
             // Initialize min/max players as integers
             int intNumberOfPlayers;
 
@@ -150,6 +152,7 @@ public abstract class AbstractAddUpdateGameActivity extends AppCompatActivity
          */
         try
         {
+            Log.d(LOG_TAG, "Validating that Max Players is not less than Min Players");
             /**
              * Verify that the max number of players is not less than the min number of players.
              * If the max number of players is less than the min number of players, then inform the user to put a max number of players that is greater than the min number of players.
@@ -180,6 +183,7 @@ public abstract class AbstractAddUpdateGameActivity extends AppCompatActivity
          */
         try
         {
+            Log.d(LOG_TAG, "Validating Release Date");
             // Initialize release date as a date
             Date dateRelaseDate = new Date();
 

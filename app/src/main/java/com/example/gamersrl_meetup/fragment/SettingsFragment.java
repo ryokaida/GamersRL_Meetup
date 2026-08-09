@@ -1,6 +1,8 @@
 package com.example.gamersrl_meetup.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.gamersrl_meetup.R;
+import com.example.gamersrl_meetup.activity.AppContentActivity;
 import com.example.gamersrl_meetup.utility.SharedPreferencesHelper;
 
 /**
@@ -21,6 +24,9 @@ import com.example.gamersrl_meetup.utility.SharedPreferencesHelper;
  */
 public class SettingsFragment extends Fragment implements View.OnClickListener
 {
+    // Set up the Log tag [26]
+    final String LOG_TAG = "SETTINGS PAGE - ";
+
     // Initialize the UI Elements
     private Button mLightModeButton, mDarkModeButton, mSaveButton, mClearButton;
 
@@ -44,17 +50,21 @@ public class SettingsFragment extends Fragment implements View.OnClickListener
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // Inflate the layout for this Fragment
+        Log.d(LOG_TAG, "Creating the page view");
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
 
+        Log.d(LOG_TAG, "Creating Shared Preferences Helper");
         // Instantiate the Shared Preferences Helper and determine the appearance mode to use [56] [57] [58]
         sharedPreferencesHelper = new SharedPreferencesHelper(this.getContext());
 
+        Log.d(LOG_TAG, "Instantiating UI elements");
         // Instantiate the UI Elements
         mLightModeButton = view.findViewById(R.id.lightmode_button);
         mDarkModeButton = view.findViewById(R.id.darkmode_button);
         mSaveButton = view.findViewById(R.id.save_button);
         mClearButton = view.findViewById(R.id.clear_button);
 
+        Log.d(LOG_TAG, "Setting OnClick Listeners");
         // Set OnClick Listeners on the buttons
         mLightModeButton.setOnClickListener(this);
         mDarkModeButton.setOnClickListener(this);
@@ -83,21 +93,37 @@ public class SettingsFragment extends Fragment implements View.OnClickListener
          */
         if (id == R.id.lightmode_button)
         {
+            Log.d(LOG_TAG, "User clicked Light Mode button");
             sharedPreferencesHelper.saveAppearanceToSharedPreferences(false);
         }
         else if (id == R.id.darkmode_button)
         {
+            Log.d(LOG_TAG, "User clicked Dark Mode button");
             sharedPreferencesHelper.saveAppearanceToSharedPreferences(true);
         }
         else if (id == R.id.save_button)
         {
-            sharedPreferencesHelper.setAppearanceFromSharedPreferences();
+            Log.d(LOG_TAG, "User clicked Save button");
+            showNewAppearanceSetting();
         }
         else if (id == R.id.clear_button)
         {
+            Log.d(LOG_TAG, "User clicked Clear button");
             sharedPreferencesHelper.clearSharedPreferences();
+            showNewAppearanceSetting();
         }
+    }
 
-        //sharedPreferencesHelper.setAppearanceFromSharedPreferences();
+    /**
+     * Show the new appearance by navigating back to the AppContentActivity and reloading the Settings Fragment.
+     */
+    private void showNewAppearanceSetting()
+    {
+        Log.d(LOG_TAG, "Navigating back to Game List page");
+        // Navigate to the Game List page
+        Intent intent = new Intent(this.getActivity(), AppContentActivity.class);
+        intent.putExtra("fragmentToLoad", "Settings");
+        startActivity(intent);
+        this.getActivity().finish();
     }
 }

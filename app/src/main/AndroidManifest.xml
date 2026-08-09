@@ -40,7 +40,6 @@
             android:name=".activity.GameDetailsActivity"
             android:label="@string/activity_gamedetails_header"
             android:exported="false"
-            android:parentActivityName=".activity.AppContentActivity"
             />
 
         <activity
