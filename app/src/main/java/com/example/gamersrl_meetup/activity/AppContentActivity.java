@@ -175,21 +175,6 @@ public class AppContentActivity extends AppCompatActivity implements NavigationV
         return true;
     }
 
-    /**
-     * Inflate the Menu Items - Add items to the Action Bar if it is present.
-     *
-     * @param menu The options menu in which you place your items.
-     *
-     * @return That inflating the Menu Items was successful
-     */
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
-        Log.d(LOG_TAG, "Creating Options Menu");
-        getMenuInflater().inflate(R.menu.nav_drawer_items, menu);
-        return true;
-    }
-
     @Override
     public void onConfigurationChanged(Configuration newConfig)
     {
