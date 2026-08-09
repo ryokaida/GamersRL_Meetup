@@ -207,7 +207,7 @@ public class GamesListFragment extends Fragment implements View.OnClickListener
     }
 
     /**
-     * If the user is an admin, then show the unapproved games so that they can be approved.
+     * If the user is an admin, then show all games, including the unapproved games so that they can be approved.
      * Otherwise, only show the approved games and the button to request that a new game be added.
      */
     private void setupGamesForRole(View view)
