@@ -14,6 +14,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.example.gamersrl_meetup.R;
 import com.example.gamersrl_meetup.fragment.EventsFragment;
 import com.example.gamersrl_meetup.fragment.GamesListFragment;
+import com.example.gamersrl_meetup.fragment.SettingsFragment;
+import com.example.gamersrl_meetup.utility.SharedPreferencesHelper;
 import com.google.android.material.navigation.NavigationView;
 
 /**
@@ -27,6 +29,9 @@ public class AppContentActivity extends AppCompatActivity implements NavigationV
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mActionBarDrawerToggle;
     private NavigationView mNavigationView;
+
+    // Initialize Shared Preferences Helper [56] [57] [58]
+    SharedPreferencesHelper sharedPreferencesHelper;
 
     /**
      * Create the MainActivity page and generate the correct Fragment based on what Navigation Menu Item was chosen.
@@ -42,6 +47,10 @@ public class AppContentActivity extends AppCompatActivity implements NavigationV
         // Load the saved instance state and set the main layout
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_appcontent);
+
+        // Instantiate the Shared Preferences Helper and determine the appearance mode to use [56] [57] [58]
+        sharedPreferencesHelper = new SharedPreferencesHelper(this);
+        sharedPreferencesHelper.setAppearanceFromSharedPreferences();
 
         // Instantiate the Navigation Drawer and  the NavigationView object
         mDrawerLayout = findViewById(R.id.nav_drawer_layout);
@@ -67,8 +76,9 @@ public class AppContentActivity extends AppCompatActivity implements NavigationV
          * Set default Fragment to PirateListFragment
          * by making a new PirateListFragment and replacing the FrameLayout in activity_appcontent with it
          */
-        navigateToEventsFragment();
+        //navigateToEventsFragment();
         navigateToGamesListFragment();
+        //navigateToSettingsFragment();
     }
 
     /**
@@ -87,6 +97,7 @@ public class AppContentActivity extends AppCompatActivity implements NavigationV
          * Inflate the correct Fragment based on the chosen Navigation Menu Item
          * If the user selects Events, then open the Events Fragment.
          * If the user selects Games List, then open the Games List Fragment.
+         * If the user selects Settings, then open the Settings Fragment.
          */
         if (id == R.id.nav_events)
         {
@@ -95,6 +106,10 @@ public class AppContentActivity extends AppCompatActivity implements NavigationV
         else if (id == R.id.nav_gameslist)
         {
             navigateToGamesListFragment();
+        }
+        else if (id == R.id.nav_settings)
+        {
+            navigateToSettingsFragment();
         }
 
         // Close Navigation Drawer
@@ -139,5 +154,14 @@ public class AppContentActivity extends AppCompatActivity implements NavigationV
     private void navigateToGamesListFragment()
     {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new GamesListFragment()).commit();
+    }
+
+    /**
+     * Helper method to set Fragment to SettingsFragment
+     * by making a new SettingsFragment and replacing the FrameLayout in activity_appcontent with it
+     */
+    private void navigateToSettingsFragment()
+    {
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SettingsFragment()).commit();
     }
 }

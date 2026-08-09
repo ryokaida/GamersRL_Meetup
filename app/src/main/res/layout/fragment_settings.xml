@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Icons from EliverLara's GitHub [59]. -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <TextView
+        android:id="@+id/events_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="24sp"
+        android:text="@string/frag_settings_header"
+        android:layout_marginTop="130dp"
+        android:gravity="center_horizontal"
+        android:layout_marginBottom="120dp"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/frag_settings_instructions"
+        android:textSize="20sp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginBottom="40dp"
+        android:gravity="center"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:gravity="center_horizontal"
+        android:layout_marginBottom="120dp"
+        >
+
+        <!-- Include an icon on the button [53] -->
+        <Button
+            android:id="@+id/lightmode_button"
+            android:layout_width="150dp"
+            android:layout_height="80dp"
+            android:text="@string/frag_settings_lightmode"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:drawableLeft="@drawable/ic_lightmode"
+            android:layout_marginRight="30dp"
+            />
+
+        <!-- Include an icon on the button [53] -->
+        <Button
+            android:id="@+id/darkmode_button"
+            android:layout_width="150dp"
+            android:layout_height="80dp"
+            android:text="@string/frag_settings_darkmode"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:drawableLeft="@drawable/ic_darkmode"
+            />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/save_button"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:text="@string/save_button_text"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="20dp"
+        />
+
+    <Button
+        android:id="@+id/clear_button"
+        android:layout_width="200dp"
+        android:layout_height="80dp"
+        android:text="@string/frag_settings_clearsharedpreferences"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="20dp"
+        />
+
+</LinearLayout>

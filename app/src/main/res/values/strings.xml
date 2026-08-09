@@ -50,6 +50,13 @@
     <string name="activity_add_update_game_input_hint_maxplayers">Enter the maximum number of players</string>
     <string name="activity_add_update_game_input_hint_approved">Enter the Approved status</string>
 
+    <!-- Strings for the Settings page -->
+    <string name="frag_settings_header">Settings</string>
+    <string name="frag_settings_instructions">Pick your preferred appearance</string>
+    <string name="frag_settings_lightmode">Light Mode</string>
+    <string name="frag_settings_darkmode">Dark Mode</string>
+    <string name="frag_settings_clearsharedpreferences">Clear Shared Preferences</string>
+
     <!-- Strings for the Events page -->
     <string name="frag_events_header">Events</string>
 
@@ -71,6 +78,7 @@
     <string name="back_button_text">Back</string>
     <string name="submit_button_text">Submit</string>
     <string name="reset_button_text">Reset</string>
+    <string name="save_button_text">Save</string> <!-- Save button is used on the Settings page [53] -->
 
     <!-- Strings for the Navigation Drawer -->
     <string name="navigation_drawer_header_subtitle">Find Gaming Events IRL</string>
@@ -78,4 +86,5 @@
     <string name="navigation_drawer_close">Close</string>
     <string name="nav_drawer_item_events">Events</string>
     <string name="nav_drawer_item_gameslist">Games List</string>
+    <string name="nav_drawer_item_settings">Settings</string>
 </resources>

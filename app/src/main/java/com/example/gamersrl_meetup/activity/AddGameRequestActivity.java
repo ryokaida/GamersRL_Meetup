@@ -128,9 +128,10 @@ public class AddGameRequestActivity extends AbstractAddUpdateGameActivity  imple
 
             /**
              * Create the new Game and add it to the database.
-             * Ensure that Release Date is converted to Date before processing in the database [2] [35]
+             * Ensure that Release Date is converted to Date before processing in the database [2] [35].
+             * Default Game Icon from EliverLara's GitHub [59].
              */
-            Game newGame = new Game(title, description, developer, publisher, DATE_FORMAT.parse(releaseDate), Integer.parseInt(minPlayers), Integer.parseInt(maxPlayers), R.drawable.neckdefender, "N");
+            Game newGame = new Game(title, description, developer, publisher, DATE_FORMAT.parse(releaseDate), Integer.parseInt(minPlayers), Integer.parseInt(maxPlayers), R.drawable.ic_gamecontroller, "N");
             dbHelper.addToDatabase(newGame);
             showSnackbar(mSubmitButton, "Successfully sent request to add new game!");
 
