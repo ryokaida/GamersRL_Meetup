@@ -39,11 +39,11 @@ import java.util.List;
 public class SingleChatFragment extends Fragment
 {
     // Initialize the UI elements
-    private ImageButton mBackButton;
-    private TextView mChatTitle;
     private RecyclerView mRecyclerView;
     private EditText mMessageEditText;
     private Button mSendButton;
+    private ImageButton mBackButton;
+    private TextView mChatWithName;
 
     // Initialize the selected user's information
     private String receiverUid;
@@ -84,11 +84,11 @@ public class SingleChatFragment extends Fragment
         );
 
         // Instantiate the UI elements
-        mBackButton = view.findViewById(R.id.back_button);
-        mChatTitle = view.findViewById(R.id.chat_title);
         mRecyclerView = view.findViewById(R.id.chat_recycler_view);
         mMessageEditText = view.findViewById(R.id.message_edittext);
         mSendButton = view.findViewById(R.id.send_button);
+        mBackButton = view.findViewById(R.id.chat_back_button);
+        mChatWithName = view.findViewById(R.id.chat_with_name);
         db = FirebaseFirestore.getInstance();
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -104,8 +104,19 @@ public class SingleChatFragment extends Fragment
             receiverName = arguments.getString("receiverName");
         }
 
-        // Set the page title to indicate who the user is chatting with
-        mChatTitle.setText("Chat with " + receiverName);
+        // Display the selected user's name
+        mChatWithName.setText("Chatting with " + receiverName);
+
+        /**
+         * Navigate back to the previous Fragment when
+         * the Back button is clicked.
+         */
+        mBackButton.setOnClickListener(v ->
+        {
+            requireActivity()
+                    .getSupportFragmentManager()
+                    .popBackStack();
+        });
 
         // Make a LinearLayoutManager to display messages vertically
         LinearLayoutManager layoutManager =
@@ -121,17 +132,6 @@ public class SingleChatFragment extends Fragment
 
         // Listen for Messages in Firestore
         loadMessages();
-
-        /**
-         * Navigate back to the Chats Fragment when the
-         * Back button is clicked.
-         */
-        mBackButton.setOnClickListener(v ->
-        {
-            requireActivity()
-                    .getSupportFragmentManager()
-                    .popBackStack();
-        });
 
         /**
          * Handle the Send button.

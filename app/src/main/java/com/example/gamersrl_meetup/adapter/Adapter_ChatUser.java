@@ -110,8 +110,8 @@ public class Adapter_ChatUser extends RecyclerView.Adapter<Adapter_ChatUser.View
         holder.mUserEmail.setText(user.getEmail());
 
         /**
-         * Navigate to the Chats Fragment when the selected user is clicked.
-         * Pass the selected user's UID and name to the Chats Fragment.
+         * Navigate to the Single Chat Fragment when the selected user is clicked.
+         * Pass the selected user's UID and name to the Single Chat Fragment.
          */
         holder.itemView.setOnClickListener(v ->
         {
