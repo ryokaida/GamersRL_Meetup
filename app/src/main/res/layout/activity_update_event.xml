@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="120dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Update Event"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="20dp" />
+
+        <EditText
+            android:id="@+id/update_event_title_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Event title"
+            android:inputType="textCapSentences" />
+
+        <EditText
+            android:id="@+id/update_event_description_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Description"
+            android:inputType="textMultiLine"
+            android:minLines="3"
+            android:gravity="top"
+            android:layout_marginTop="12dp" />
+
+        <EditText
+            android:id="@+id/update_event_address_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Street address"
+            android:inputType="textPostalAddress"
+            android:layout_marginTop="12dp" />
+
+        <EditText
+            android:id="@+id/update_event_city_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="City"
+            android:inputType="textCapWords"
+            android:layout_marginTop="12dp" />
+
+        <EditText
+            android:id="@+id/update_event_state_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="State"
+            android:inputType="textCapCharacters"
+            android:maxLength="2"
+            android:layout_marginTop="12dp" />
+
+        <Button
+            android:id="@+id/update_event_save_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="UPDATE EVENT"
+            android:layout_marginTop="24dp" />
+
+        <Button
+            android:id="@+id/update_event_cancel_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="CANCEL"
+            android:layout_marginTop="8dp" />
+
+    </LinearLayout>
+
+</ScrollView>

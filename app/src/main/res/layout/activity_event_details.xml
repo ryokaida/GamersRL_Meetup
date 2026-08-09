@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="120dp">
+
+        <TextView
+            android:id="@+id/event_details_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Event Title"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="20dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Description"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/event_details_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Event description"
+            android:textSize="16sp"
+            android:layout_marginBottom="20dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Address"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/event_details_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="123 Main Street"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/event_details_city_state"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ashburn, VA"
+            android:textSize="16sp"
+            android:layout_marginBottom="24dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Location"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp" />
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/event_map_container"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp" />
+
+        <Button
+            android:id="@+id/join_event_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="JOIN EVENT"
+            android:layout_marginTop="12dp" />
+
+        <Button
+            android:id="@+id/update_event_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="UPDATE EVENT"
+            android:visibility="gone"
+            android:layout_marginTop="12dp" />
+
+        <Button
+            android:id="@+id/delete_event_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="DELETE EVENT"
+            android:visibility="gone"
+            android:layout_marginTop="12dp" />
+
+        <Button
+            android:id="@+id/back_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="BACK"
+            android:layout_marginTop="20dp" />
+
+    </LinearLayout>
+
+</ScrollView>
