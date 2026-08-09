@@ -1,5 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
+    id("com.google.gms.google-services")
+    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 
 android {
@@ -35,10 +37,16 @@ android {
 dependencies {
     implementation libs.appcompat
     implementation libs.material
+    implementation libs.play.services.location
     testImplementation libs.junit
     androidTestImplementation libs.espresso.core
     androidTestImplementation libs.ext.junit
     implementation("com.stripe:identity:23.10.0"){
         exclude group: "com.google.ai.edge.litert", module: "litert-support-api"
     }
+    implementation(platform("com.google.firebase:firebase-bom:34.17.0"))
+    implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.android.gms:play-services-maps:19.2.0")
+    implementation("com.google.android.gms:play-services-location:21.3.0")
+    implementation("com.google.firebase:firebase-firestore")
 }

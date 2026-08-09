@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -18,6 +19,7 @@ import com.example.gamersrl_meetup.fragment.GamesListFragment;
 import com.example.gamersrl_meetup.fragment.SettingsFragment;
 import com.example.gamersrl_meetup.utility.SharedPreferencesHelper;
 import com.google.android.material.navigation.NavigationView;
+import com.example.gamersrl_meetup.fragment.MapFragment;
 
 /**
  * AppContentActivity class
@@ -82,6 +84,11 @@ public class AppContentActivity extends AppCompatActivity implements NavigationV
         // The syncState method is used to sync the state of the Navigation Drawer
         mActionBarDrawerToggle.syncState();
 
+        if (getSupportActionBar() != null)
+        {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
         /**
          * Figure out which fragment to load.
          * This is done because other pages might lead back to the AppContentActivity page and the correct fragment needs to be loaded.
@@ -101,6 +108,17 @@ public class AppContentActivity extends AppCompatActivity implements NavigationV
         {
             navigateToEventsFragment();
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item)
+    {
+        if (mActionBarDrawerToggle.onOptionsItemSelected(item))
+        {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     /**
@@ -128,6 +146,10 @@ public class AppContentActivity extends AppCompatActivity implements NavigationV
         else if (id == R.id.nav_gameslist)
         {
             navigateToGamesListFragment();
+        }
+        else if (id == R.id.nav_map)
+        {
+            navigateToMapFragment();
         }
         else if (id == R.id.nav_settings)
         {
@@ -190,5 +212,14 @@ public class AppContentActivity extends AppCompatActivity implements NavigationV
     {
         Log.d(LOG_TAG, "Navigating to Settings Page");
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SettingsFragment()).commit();
+    }
+
+//    Helper method to set Fragment to MapFragment
+    private void navigateToMapFragment()
+    {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, new MapFragment())
+                .commit();
     }
 }

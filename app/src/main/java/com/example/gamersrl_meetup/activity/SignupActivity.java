@@ -1,12 +1,18 @@
 package com.example.gamersrl_meetup.activity;
+
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.gamersrl_meetup.R;
+import com.google.firebase.auth.FirebaseAuth;
 import com.stripe.android.identity.IdentityVerificationSheet;
 
 import org.json.JSONObject;
@@ -17,106 +23,374 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import android.view.View;
-
-
 public class SignupActivity extends AppCompatActivity {
-    private IdentityVerificationSheet identityVerificationSheet;
+
+    private static final String LOG_TAG = "SignupPage";
+
+    private FirebaseAuth firebaseAuth;
+
+    private EditText fullNameEditText;
+    private EditText emailEditText;
+    private EditText passwordEditText;
+    private EditText phoneEditText;
+    private EditText dobEditText;
+
     private Button verifyIdentityButton;
-    final String strLogTag = "SignupPage - ";
+    private Button signUpButton;
+
+    private IdentityVerificationSheet identityVerificationSheet;
+
+    /*
+     * For this sandbox project, this becomes true when the user completes
+     * the Stripe Identity sheet.
+     *
+     * In a production application, the backend/webhook should determine
+     * whether verification was truly approved.
+     */
+    private boolean identityVerificationCompleted = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.signup_activity);
-        Uri logoUri = Uri.parse("android.resource://" + getPackageName() + "/" + R.mipmap.ic_launcher);
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        identityVerificationSheet = IdentityVerificationSheet.Companion.create(
-                this,
-                new IdentityVerificationSheet.Configuration(logoUri),
-                verificationResult -> {
-                    Log.d(strLogTag, "Stripe verification result: " + verificationResult.toString());
+        firebaseAuth = FirebaseAuth.getInstance();
 
-                    if (verificationResult instanceof IdentityVerificationSheet.VerificationFlowResult.Completed) {
-                        Log.d(strLogTag, "Verification completed");
-                    } else if (verificationResult instanceof IdentityVerificationSheet.VerificationFlowResult.Canceled) {
-                        Log.d(strLogTag, "Verification canceled");
-                    } else if (verificationResult instanceof IdentityVerificationSheet.VerificationFlowResult.Failed) {
-                        Log.d(strLogTag, "Verification failed");
-                    }
-                }
-        );
+        fullNameEditText = findViewById(R.id.fullNameEditText);
+        emailEditText = findViewById(R.id.emailEditText);
+        passwordEditText = findViewById(R.id.passwordEditText);
+        phoneEditText = findViewById(R.id.phoneEditText);
+        dobEditText = findViewById(R.id.dobEditText);
+
         verifyIdentityButton = findViewById(R.id.verifyIdentityButton);
+        signUpButton = findViewById(R.id.signUpButton);
 
-        verifyIdentityButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        /*
+         * Do not allow account creation until the user completes
+         * the Stripe sandbox verification flow.
+         */
+        signUpButton.setEnabled(false);
+
+        configureStripeIdentity();
+
+        verifyIdentityButton.setOnClickListener(v -> {
+            if (validateForm()) {
                 didTapVerifyButton();
             }
         });
+
+        signUpButton.setOnClickListener(v -> createFirebaseAccount());
+    }
+
+    private void configureStripeIdentity() {
+        Uri logoUri = Uri.parse(
+                "android.resource://" +
+                        getPackageName() +
+                        "/" +
+                        R.mipmap.ic_launcher
+        );
+
+        identityVerificationSheet =
+                IdentityVerificationSheet.Companion.create(
+                        this,
+                        new IdentityVerificationSheet.Configuration(logoUri),
+                        verificationResult -> {
+                            Log.d(
+                                    LOG_TAG,
+                                    "Stripe result: " + verificationResult
+                            );
+
+                            if (verificationResult instanceof
+                                    IdentityVerificationSheet
+                                            .VerificationFlowResult
+                                            .Completed) {
+
+                                identityVerificationCompleted = true;
+                                signUpButton.setEnabled(true);
+                                verifyIdentityButton.setEnabled(false);
+
+                                Toast.makeText(
+                                        SignupActivity.this,
+                                        "Identity verification completed. " +
+                                                "You may now create your account.",
+                                        Toast.LENGTH_LONG
+                                ).show();
+
+                            } else if (verificationResult instanceof
+                                    IdentityVerificationSheet
+                                            .VerificationFlowResult
+                                            .Canceled) {
+
+                                identityVerificationCompleted = false;
+                                signUpButton.setEnabled(false);
+
+                                Toast.makeText(
+                                        SignupActivity.this,
+                                        "Identity verification was canceled.",
+                                        Toast.LENGTH_LONG
+                                ).show();
+
+                            } else if (verificationResult instanceof
+                                    IdentityVerificationSheet
+                                            .VerificationFlowResult
+                                            .Failed) {
+
+                                identityVerificationCompleted = false;
+                                signUpButton.setEnabled(false);
+
+                                Toast.makeText(
+                                        SignupActivity.this,
+                                        "Identity verification failed.",
+                                        Toast.LENGTH_LONG
+                                ).show();
+                            }
+                        }
+                );
+    }
+
+//    Validation of the inputs in the form
+    private boolean validateForm() {
+        String fullName =
+                fullNameEditText.getText().toString().trim();
+
+        String email =
+                emailEditText.getText().toString().trim();
+
+        String password =
+                passwordEditText.getText().toString();
+
+        String phone =
+                phoneEditText.getText().toString().trim();
+
+        String dob =
+                dobEditText.getText().toString().trim();
+
+        if (fullName.isEmpty()) {
+            fullNameEditText.setError("Full name is required");
+            fullNameEditText.requestFocus();
+            return false;
+        }
+
+        if (email.isEmpty()) {
+            emailEditText.setError("Email is required");
+            emailEditText.requestFocus();
+            return false;
+        }
+
+        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            emailEditText.setError("Enter a valid email address");
+            emailEditText.requestFocus();
+            return false;
+        }
+
+        if (password.isEmpty()) {
+            passwordEditText.setError("Password is required");
+            passwordEditText.requestFocus();
+            return false;
+        }
+
+        if (password.length() < 6) {
+            passwordEditText.setError(
+                    "Password must be at least 6 characters"
+            );
+            passwordEditText.requestFocus();
+            return false;
+        }
+
+        if (phone.isEmpty()) {
+            phoneEditText.setError("Phone number is required");
+            phoneEditText.requestFocus();
+            return false;
+        }
+
+        if (dob.isEmpty()) {
+            dobEditText.setError("Date of birth is required");
+            dobEditText.requestFocus();
+            return false;
+        }
+
+        return true;
+    }
+// Firebase account creator
+    private void createFirebaseAccount() {
+        if (!identityVerificationCompleted) {
+            Toast.makeText(
+                    this,
+                    "Complete identity verification before signing up.",
+                    Toast.LENGTH_LONG
+            ).show();
+            return;
+        }
+
+        if (!validateForm()) {
+            return;
+        }
+
+        String email =
+                emailEditText.getText().toString().trim();
+
+        String password =
+                passwordEditText.getText().toString();
+
+        signUpButton.setEnabled(false);
+
+        firebaseAuth
+                .createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, task -> {
+
+                    if (task.isSuccessful()) {
+                        Toast.makeText(
+                                SignupActivity.this,
+                                "Account created successfully.",
+                                Toast.LENGTH_LONG
+                        ).show();
+
+                        Intent intent = new Intent(
+                                SignupActivity.this,
+                                AppContentActivity.class
+                        );
+
+                        /*
+                         * Prevent the user from returning to the signup page
+                         * with the Back button.
+                         */
+                        intent.addFlags(
+                                Intent.FLAG_ACTIVITY_NEW_TASK |
+                                        Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        );
+
+                        startActivity(intent);
+                        finish();
+
+                    } else {
+                        /*
+                         * Re-enable it because verification was already
+                         * completed and the user may correct the signup error.
+                         */
+                        signUpButton.setEnabled(true);
+
+                        String errorMessage =
+                                "Account creation failed.";
+
+                        if (task.getException() != null &&
+                                task.getException().getMessage() != null) {
+                            errorMessage =
+                                    task.getException().getMessage();
+                        }
+
+                        Toast.makeText(
+                                SignupActivity.this,
+                                errorMessage,
+                                Toast.LENGTH_LONG
+                        ).show();
+                    }
+                });
     }
 
     private void didTapVerifyButton() {
-        Log.d(strLogTag, "didTapVerifyButton started");
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    URL url = new URL("http://10.0.2.2:8080/create-verification-session");
+        Log.d(LOG_TAG, "Starting Stripe verification");
 
-                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                    connection.setRequestMethod("POST");
-                    connection.setDoOutput(true);
+        verifyIdentityButton.setEnabled(false);
 
-                    OutputStream outputStream = connection.getOutputStream();
-                    outputStream.write(new byte[0]);
-                    outputStream.flush();
-                    outputStream.close();
+        new Thread(() -> {
+            HttpURLConnection connection = null;
 
-                    BufferedReader reader = new BufferedReader(
-                            new InputStreamReader(connection.getInputStream())
+            try {
+                URL url = new URL(
+                        "http://10.0.2.2:8080/create-verification-session"
+                );
+
+                connection =
+                        (HttpURLConnection) url.openConnection();
+
+                connection.setRequestMethod("POST");
+                connection.setDoOutput(true);
+                connection.setConnectTimeout(10000);
+                connection.setReadTimeout(10000);
+
+                OutputStream outputStream =
+                        connection.getOutputStream();
+
+                outputStream.write(new byte[0]);
+                outputStream.flush();
+                outputStream.close();
+
+                int responseCode = connection.getResponseCode();
+
+                if (responseCode < 200 || responseCode >= 300) {
+                    throw new IllegalStateException(
+                            "Server returned response code " +
+                                    responseCode
+                    );
+                }
+
+                BufferedReader reader = new BufferedReader(
+                        new InputStreamReader(
+                                connection.getInputStream()
+                        )
+                );
+
+                StringBuilder response = new StringBuilder();
+                String line;
+
+                while ((line = reader.readLine()) != null) {
+                    response.append(line);
+                }
+
+                reader.close();
+
+                JSONObject responseJson =
+                        new JSONObject(response.toString());
+
+                String verificationSessionId =
+                        responseJson.getString("id");
+
+                String ephemeralKeySecret =
+                        responseJson.getString(
+                                "ephemeral_key_secret"
+                        );
+
+                runOnUiThread(() -> {
+                    Log.d(
+                            LOG_TAG,
+                            "Presenting Stripe Identity sheet"
                     );
 
-                    StringBuilder response = new StringBuilder();
-                    String line;
+                    identityVerificationSheet.present(
+                            verificationSessionId,
+                            ephemeralKeySecret
+                    );
+                });
 
-                    while ((line = reader.readLine()) != null) {
-                        response.append(line);
-                    }
+            } catch (Exception e) {
+                Log.e(
+                        LOG_TAG,
+                        "Error starting Stripe verification",
+                        e
+                );
 
-                    reader.close();
+                runOnUiThread(() -> {
+                    verifyIdentityButton.setEnabled(true);
 
-                    JSONObject responseJson = new JSONObject(response.toString());
+                    String errorMessage =
+                            e.getMessage() == null
+                                    ? "Could not start verification."
+                                    : e.getMessage();
 
-                    String verificationSessionId = responseJson.getString("id");
-                    String ephemeralKeySecret = responseJson.getString("ephemeral_key_secret");
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Log.d(strLogTag, "About to present Stripe sheet");
-                            identityVerificationSheet.present(
-                                    verificationSessionId,
-                                    ephemeralKeySecret
-                            );
-                        }
-                    });
+                    Toast.makeText(
+                            SignupActivity.this,
+                            errorMessage,
+                            Toast.LENGTH_LONG
+                    ).show();
+                });
 
-                } catch (Exception e) {
-                    Log.e(strLogTag, "Error starting Stripe verification", e);
-
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(
-                                    SignupActivity.this,
-                                    e.getMessage(),
-                                    Toast.LENGTH_LONG
-                            ).show();
-                        }
-                    });
+            } finally {
+                if (connection != null) {
+                    connection.disconnect();
                 }
             }
         }).start();
