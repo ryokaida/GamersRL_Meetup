@@ -14,7 +14,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.gamersrl_meetup.R;
 import com.example.gamersrl_meetup.database.DatabaseHelper_Game;
 import com.example.gamersrl_meetup.model.Game;
-import com.example.gamersrl_meetup.utility.AdminRoleHelper;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
 
@@ -109,11 +111,6 @@ public class GameDetailsActivity extends AppCompatActivity implements View.OnCli
             mGame = getIntent().getParcelableExtra("updatedGame");
         }
 
-        // Get the user role from the intent extras to determine what UI elements and actions should be allowed
-        //isAdmin = getIntent().getBooleanExtra("isAdmin", false);
-        // TODO - Pass admin role in via intent
-        isAdmin = new AdminRoleHelper().getIsAdmin();
-
         /**
          * Set the text to the correct data
          */
@@ -143,14 +140,90 @@ public class GameDetailsActivity extends AppCompatActivity implements View.OnCli
         mGameDetailsImage.setImageResource(mGame.getPictureURI());
 
         /**
-         * If the user is an admin, then show the Game Approved status.
-         * Otherwise, do not show it.
+         * Retrieve the current user's role.
+         * Once the role has been retrieved, display the appropriate
+         * Game Details UI elements based on the user's role.
          */
+        loadUserRole();
+    }
+
+    /**
+     * Retrieve the current user's administrator role from Firestore.
+     * If the role cannot be retrieved, default to a regular user.
+     */
+    private void loadUserRole()
+    {
+        // Get the currently authenticated Firebase user
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (user == null)
+        {
+            Log.d(LOG_TAG, "No logged-in Firebase user");
+
+            isAdmin = false;
+            setupPageForRole();
+            return;
+        }
+
+        // Retrieve the current user's unique Firebase ID
+        String uid = user.getUid();
+
+        // Get an instance of Firestore
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        /**
+         * Retrieve the user's document from the Firestore users collection.
+         * Once the role is retrieved, set up the appropriate UI elements.
+         */
+        db.collection("users")
+                .document(uid)
+                .get()
+                .addOnSuccessListener(documentSnapshot ->
+                {
+                    Boolean adminValue =
+                            documentSnapshot.getBoolean("isAdmin");
+
+                    if (adminValue != null)
+                    {
+                        isAdmin = adminValue;
+                    }
+                    else
+                    {
+                        // Default to a regular user if the role is not present
+                        isAdmin = false;
+                    }
+
+                    Log.d(LOG_TAG, "Firebase isAdmin = " + isAdmin);
+
+                    setupPageForRole();
+                })
+                .addOnFailureListener(e ->
+                {
+                    Log.e(
+                            LOG_TAG,
+                            "Could not load user role",
+                            e
+                    );
+
+                    // Safest fallback: regular user
+                    isAdmin = false;
+
+                    setupPageForRole();
+                });
+    }
+
+    /**
+     * If the user is an admin, then show the Game Approved status.
+     * Otherwise, do not show it.
+     */
+    private void setupPageForRole()
+    {
         if (isAdmin)
         {
             // Show Game Approved status
             Log.d(LOG_TAG, "Setting Game Approved status: " + mGame.getApproved());
             mGameDetailsApproved.setVisibility(View.VISIBLE);
+            mGameDetailsApprovedLabel.setVisibility(View.VISIBLE);
             mGameDetailsApproved.setText(mGame.getApproved());
 
             // Set the Delete button to be visible and clickable

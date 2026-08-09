@@ -15,6 +15,9 @@ import com.example.gamersrl_meetup.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.stripe.android.identity.IdentityVerificationSheet;
 
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -22,6 +25,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 public class SignupActivity extends AppCompatActivity {
 
@@ -243,30 +248,9 @@ public class SignupActivity extends AppCompatActivity {
                 .addOnCompleteListener(this, task -> {
 
                     if (task.isSuccessful()) {
-                        Toast.makeText(
-                                SignupActivity.this,
-                                "Account created successfully.",
-                                Toast.LENGTH_LONG
-                        ).show();
-
-                        Intent intent = new Intent(
-                                SignupActivity.this,
-                                AppContentActivity.class
-                        );
-
-                        /*
-                         * Prevent the user from returning to the signup page
-                         * with the Back button.
-                         */
-                        intent.addFlags(
-                                Intent.FLAG_ACTIVITY_NEW_TASK |
-                                        Intent.FLAG_ACTIVITY_CLEAR_TASK
-                        );
-
-                        startActivity(intent);
-                        finish();
-
-                    } else {
+                        createFirestoreUser();
+                    }
+                    else {
                         /*
                          * Re-enable it because verification was already
                          * completed and the user may correct the signup error.
@@ -394,6 +378,70 @@ public class SignupActivity extends AppCompatActivity {
                 }
             }
         }).start();
+    }
+
+    private void createFirestoreUser() {
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (user == null) {
+            return;
+        }
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        Map<String, Object> userData = new HashMap<>();
+
+        userData.put(
+                "name",
+                fullNameEditText.getText().toString().trim()
+        );
+
+        userData.put("email", user.getEmail());
+
+        // All new users start as regular users
+        userData.put("isAdmin", false);
+
+        db.collection("users")
+                .document(user.getUid())
+                .set(userData)
+                .addOnSuccessListener(unused -> {
+                    Log.d(LOG_TAG, "Firestore user created");
+
+                    Toast.makeText(
+                            SignupActivity.this,
+                            "Account created successfully.",
+                            Toast.LENGTH_LONG
+                    ).show();
+
+                    Intent intent = new Intent(
+                            SignupActivity.this,
+                            AppContentActivity.class
+                    );
+
+                    intent.addFlags(
+                            Intent.FLAG_ACTIVITY_NEW_TASK |
+                                    Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    );
+
+                    startActivity(intent);
+                    finish();
+                })
+                .addOnFailureListener(e -> {
+                    Log.e(
+                            LOG_TAG,
+                            "Could not create Firestore user",
+                            e
+                    );
+
+                    signUpButton.setEnabled(true);
+
+                    Toast.makeText(
+                            SignupActivity.this,
+                            "Account created, but user profile could not be saved.",
+                            Toast.LENGTH_LONG
+                    ).show();
+                });
     }
 
     @Override

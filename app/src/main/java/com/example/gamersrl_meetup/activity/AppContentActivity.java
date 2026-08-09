@@ -14,12 +14,15 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.gamersrl_meetup.R;
+import com.example.gamersrl_meetup.fragment.ChatsFragment;
 import com.example.gamersrl_meetup.fragment.EventsFragment;
 import com.example.gamersrl_meetup.fragment.GamesListFragment;
 import com.example.gamersrl_meetup.fragment.SettingsFragment;
 import com.example.gamersrl_meetup.utility.SharedPreferencesHelper;
 import com.google.android.material.navigation.NavigationView;
 import com.example.gamersrl_meetup.fragment.MapFragment;
+import android.content.Intent;
+import com.google.firebase.auth.FirebaseAuth;
 
 /**
  * AppContentActivity class
@@ -151,9 +154,20 @@ public class AppContentActivity extends AppCompatActivity implements NavigationV
         {
             navigateToMapFragment();
         }
+        else if (id == R.id.nav_chats)
+        {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, new ChatsFragment())
+                    .commit();
+        }
         else if (id == R.id.nav_settings)
         {
             navigateToSettingsFragment();
+        }
+        else if (id == R.id.nav_logout)
+        {
+            logoutUser();
         }
 
         // Close Navigation Drawer
@@ -221,5 +235,30 @@ public class AppContentActivity extends AppCompatActivity implements NavigationV
                 .beginTransaction()
                 .replace(R.id.fragment_container, new MapFragment())
                 .commit();
+    }
+
+    /**
+     * Sign out the current Firebase user and return to the start page.
+     */
+    private void logoutUser()
+    {
+        FirebaseAuth.getInstance().signOut();
+
+        Intent intent = new Intent(
+                AppContentActivity.this,
+                MainActivity.class
+        );
+
+        /**
+         * Clear the activity stack so that the user cannot press
+         * the Back button and return to authenticated app content.
+         */
+        intent.addFlags(
+                Intent.FLAG_ACTIVITY_NEW_TASK |
+                        Intent.FLAG_ACTIVITY_CLEAR_TASK
+        );
+
+        startActivity(intent);
+        finish();
     }
 }

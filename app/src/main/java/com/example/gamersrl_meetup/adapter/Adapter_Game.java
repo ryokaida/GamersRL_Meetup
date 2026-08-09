@@ -7,10 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-
 import com.example.gamersrl_meetup.R;
 import com.example.gamersrl_meetup.activity.GameDetailsActivity;
-import com.example.gamersrl_meetup.utility.AdminRoleHelper;
 import com.example.gamersrl_meetup.model.Game;
 
 import java.util.List;
@@ -39,12 +37,12 @@ public class Adapter_Game extends Adapter
      * Construct a new Adapter with the list of items to display.
      *
      * @param games The list of items to display
+     * @param isAdmin Whether the current user is an administrator
      */
-    public Adapter_Game(List<Game> games) {
+    public Adapter_Game(List<Game> games, Boolean isAdmin) {
         super();
         this.games = games;
-        // TODO - Actually get admin role from user
-        isAdmin = new AdminRoleHelper().getIsAdmin();
+        this.isAdmin = isAdmin;
     }
 
     /**
@@ -62,6 +60,7 @@ public class Adapter_Game extends Adapter
         Log.d(LOG_TAG, "Retrieved Label1: " + label1);
         return label1;
     }
+
     @Override
     public String getLabel2(Context context)
     {
@@ -70,6 +69,7 @@ public class Adapter_Game extends Adapter
         Log.d(LOG_TAG, "Retrieved Label2: " + label2);
         return label2;
     }
+
     @Override
     public String getIdLabel(Context context)
     {
@@ -93,6 +93,7 @@ public class Adapter_Game extends Adapter
         Log.d(LOG_TAG, "Retrieved name text: " + nameText);
         return nameText;
     }
+
     @Override
     public String getSubtitle1(int position)
     {
@@ -100,6 +101,7 @@ public class Adapter_Game extends Adapter
         Log.d(LOG_TAG, "Retrieved subtitle 1: " + subtitle1);
         return subtitle1;
     }
+
     @Override
     public String getSubtitle2(int position)
     {
@@ -107,6 +109,7 @@ public class Adapter_Game extends Adapter
         Log.d(LOG_TAG, "Retrieved subtitle 2: " + subtitle2);
         return subtitle2;
     }
+
     @Override
     public String getIdText(int position)
     {
@@ -114,6 +117,7 @@ public class Adapter_Game extends Adapter
         Log.d(LOG_TAG, "Retrieved ID text: " + idText);
         return idText;
     }
+
     @Override
     public int getImage(int position)
     {
@@ -134,12 +138,14 @@ public class Adapter_Game extends Adapter
         Log.d(LOG_TAG, "Retrieved Approved attribute: " + approved);
         return approved;
     }
+
     private int getMinPlayers(int position)
     {
         int minPlayers = games.get(position).getMinPlayers();
         Log.d(LOG_TAG, "Retrieved Min Players: " + minPlayers);
         return minPlayers;
     }
+
     private int getMaxPlayers(int position)
     {
         int maxPlayers = games.get(position).getMaxPlayers();
@@ -234,6 +240,7 @@ public class Adapter_Game extends Adapter
             // Show the Approved attribute label
             mApprovedLabel = v.findViewById(R.id.approved_label);
             mApprovedLabel.setVisibility(View.VISIBLE);
+
             // Set the text for the Approved TextView and show it
             mApprovedTextView = v.findViewById(R.id.approved_textview);
             mApprovedTextView.setText(getApproved(position));
@@ -244,6 +251,7 @@ public class Adapter_Game extends Adapter
             // Show the Min Players label
             mMinPlayersLabel = v.findViewById(R.id.minplayers_label);
             mMinPlayersLabel.setVisibility(View.VISIBLE);
+
             // Set the text for the Min Players TextView and show it
             mMinPlayersTextView = v.findViewById(R.id.minplayers_textview);
             mMinPlayersTextView.setText(String.valueOf(getMinPlayers(position)));
@@ -252,6 +260,7 @@ public class Adapter_Game extends Adapter
             // Show the Max Players label
             mMaxPlayersLabel = v.findViewById(R.id.maxplayers_label);
             mMaxPlayersLabel.setVisibility(View.VISIBLE);
+
             // Set the text for the Max Players TextView and show it
             mMaxPlayersTextView = v.findViewById(R.id.maxplayers_textview);
             mMaxPlayersTextView.setText(String.valueOf(getMaxPlayers(position)));
