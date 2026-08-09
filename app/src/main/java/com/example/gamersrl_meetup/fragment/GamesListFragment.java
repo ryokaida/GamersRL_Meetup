@@ -258,7 +258,7 @@ public class GamesListFragment extends Fragment implements View.OnClickListener
         mAddGameRequestButton.setElevation(20.0F);
         mAddGameRequestButton.setGravity(Gravity.CENTER);
         mAddGameRequestButton.setBackgroundColor(v.getContext().getColor(R.color.colorPrimary)); // Use the View's context to get the color
-        mAddGameRequestButton.setTextColor(v.getContext().getColor(R.color.white)); // Use the View's context to get the color
+        mAddGameRequestButton.setTextColor(v.getContext().getColor(R.color.textColor)); // Use the View's context to get the color
         // Make a new LayoutParams to set the button width to MATCH_PARENT and WRAP_CONTENT and to set the margins
         Log.d(LOG_TAG, "Setting Layout Params for Add Game Request button");
         LinearLayout.LayoutParams paramsForButton = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);

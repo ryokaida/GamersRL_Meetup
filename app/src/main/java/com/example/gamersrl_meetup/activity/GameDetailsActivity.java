@@ -238,8 +238,10 @@ public class GameDetailsActivity extends AppCompatActivity implements View.OnCli
             // Set the Update button to be visible and clickable
             mUpdateGameButton.setVisibility(View.VISIBLE);
             mUpdateGameButton.setClickable(true);
-            // Set OnClick Listener on the Approve Game Request button.
+            // Set OnClick Listener on the Update Game Request button.
             mUpdateGameButton.setOnClickListener(this);
+            // Set OnClick Listener on the Approve Game Request button.
+            mApproveGameRequestButton.setOnClickListener(this);
 
             /**
              * If the game is not approved yet, then enable button and logic to approve the Game Request
@@ -249,16 +251,13 @@ public class GameDetailsActivity extends AppCompatActivity implements View.OnCli
             {
                 Log.d(LOG_TAG, "Admin needs to approve the game");
                 // Set the Approve Game Request button to be clickable
-                mApproveGameRequestButton.setClickable(true);
-                // Set OnClick Listener on the Approve Game Request button.
-                mApproveGameRequestButton.setOnClickListener(this);
+                mApproveGameRequestButton.setEnabled(true);
             }
             else
             {
                 Log.d(LOG_TAG, "Game already approved");
                 // Make Approve Game Request button unclickable and gray it out
-                mApproveGameRequestButton.setBackgroundColor(getColor(R.color.disabledButton));
-                mApproveGameRequestButton.setClickable(false);
+                mApproveGameRequestButton.setEnabled(false);
             }
         }
         else

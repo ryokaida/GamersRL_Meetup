@@ -70,9 +70,5 @@
             android:exported="true" >
         </activity>
 
-        <activity
-            android:name=".activity.ChatActivity" >
-        </activity>
-
     </application>
 </manifest>
