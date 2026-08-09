@@ -21,6 +21,16 @@
             android:icon="@drawable/ic_map"
             android:title="Map" />
 
+        <item
+            android:id="@+id/nav_chats"
+            android:icon="@drawable/ic_chats"
+            android:title="Chats" />
+
+        <item
+            android:id="@+id/nav_logout"
+            android:icon="@drawable/ic_logout"
+            android:title="Logout" />
+
     </group>
 
 </menu>

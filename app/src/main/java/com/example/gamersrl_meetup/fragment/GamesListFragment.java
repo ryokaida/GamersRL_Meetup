@@ -20,11 +20,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gamersrl_meetup.R;
 import com.example.gamersrl_meetup.activity.AddGameRequestActivity;
-import com.example.gamersrl_meetup.activity.TempAdminTester;
 import com.example.gamersrl_meetup.adapter.Adapter_Game;
 import com.example.gamersrl_meetup.database.DatabaseHelper_Game;
 import com.example.gamersrl_meetup.model.Game;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,9 +84,6 @@ public class GamesListFragment extends Fragment implements View.OnClickListener
         // Inflate the layout for this Fragment
         View view = inflater.inflate(R.layout.list_page_layout, container, false);
 
-        // TODO - Actually get admin role from user
-        isAdmin = new TempAdminTester().getIsAdmin();
-
         /**
          * Instantiate the RecyclerView, the dividers indicating the start and end the RecyclerView, and the Button.
          * Use the hosting activity as the context.
@@ -114,7 +113,7 @@ public class GamesListFragment extends Fragment implements View.OnClickListener
         dbHelper = new DatabaseHelper_Game(this.getContext());
 
         // Make an empty list of Games
-        List<Game> games;
+//        List<Game> games;
 
         /**
          * If the database is empty, then populate it.
@@ -133,10 +132,86 @@ public class GamesListFragment extends Fragment implements View.OnClickListener
             Log.d(LOG_TAG, "Game table is populated");
         }
 
+        // Make a LinearLayoutManager to draw the objects and set it onto the RecyclerView
+        Log.d(LOG_TAG, "Making linear layout manager");
+        layoutManager = new LinearLayoutManager(this.getContext(), LinearLayoutManager.VERTICAL, false);
+        mRecyclerView.setLayoutManager(layoutManager);
+
         /**
-         * If the user is an admin, then show the unapproved games so that they can be approved.
-         * Otherwise, only show the approved games and the button to request that a new game be added.
+         * Retrieve the current user's role.
+         * Once the role has been retrieved, populate the page
+         * with the appropriate Games and UI elements.
          */
+        loadUserRole(view);
+
+        return view;
+    }
+
+    private void loadUserRole(View view)
+    {
+        FirebaseUser user =
+                FirebaseAuth.getInstance().getCurrentUser();
+
+        if (user == null)
+        {
+            Log.d(LOG_TAG, "No logged-in Firebase user");
+
+            isAdmin = false;
+            setupGamesForRole(view);
+            return;
+        }
+
+        String uid = user.getUid();
+
+        FirebaseFirestore db =
+                FirebaseFirestore.getInstance();
+
+        db.collection("users")
+                .document(uid)
+                .get()
+                .addOnSuccessListener(documentSnapshot ->
+                {
+                    Boolean adminValue =
+                            documentSnapshot.getBoolean("isAdmin");
+
+                    if (adminValue != null)
+                    {
+                        isAdmin = adminValue;
+                    }
+                    else
+                    {
+                        isAdmin = false;
+                    }
+
+                    Log.d(
+                            LOG_TAG,
+                            "Firebase isAdmin = " + isAdmin
+                    );
+
+                    setupGamesForRole(view);
+                })
+                .addOnFailureListener(e ->
+                {
+                    Log.e(
+                            LOG_TAG,
+                            "Could not load user role",
+                            e
+                    );
+                    // Safest fallback: regular user
+                    isAdmin = false;
+
+                    setupGamesForRole(view);
+                });
+    }
+
+    /**
+     * If the user is an admin, then show the unapproved games so that they can be approved.
+     * Otherwise, only show the approved games and the button to request that a new game be added.
+     */
+    private void setupGamesForRole(View view)
+    {
+        List<Game> games;
+
         if (isAdmin)
         {
             // Get all the items for the list
@@ -170,15 +245,9 @@ public class GamesListFragment extends Fragment implements View.OnClickListener
 
         // Make the adapter and set it onto the RecyclerView
         Log.d(LOG_TAG, "Making adapter");
-        adapter = new Adapter_Game(games);
+        adapter = new Adapter_Game(games, isAdmin);
         mRecyclerView.setAdapter(adapter);
 
-        // Make a LinearLayoutManager to draw the objects and set it onto the RecyclerView
-        Log.d(LOG_TAG, "Making linear layout manager");
-        layoutManager = new LinearLayoutManager(this.getContext(), LinearLayoutManager.VERTICAL, false);
-        mRecyclerView.setLayoutManager(layoutManager);
-
-        return view;
     }
 
     /**
@@ -440,7 +509,7 @@ public class GamesListFragment extends Fragment implements View.OnClickListener
      */
     private void updateRecyclerView(@Nullable List<Game> games)
     {
-        adapter = new Adapter_Game(games);
+        adapter = new Adapter_Game(games, isAdmin);
         mRecyclerView.setAdapter(adapter);
     }
 
