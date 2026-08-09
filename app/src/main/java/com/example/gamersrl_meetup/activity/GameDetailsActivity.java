@@ -34,7 +34,7 @@ public class GameDetailsActivity extends AppCompatActivity implements View.OnCli
     private TextView mGameDetailsTitle, mGameDetailsId, mGameDetailsDeveloper, mGameDetailsPublisher, mGameDetailsReleaseDate, mGameDetailsDescription, mGameDetailsMinPlayers, mGameDetailsMaxPlayers;
     private ImageView mGameDetailsImage;
     private TextView mGameDetailsApproved, mGameDetailsApprovedLabel;
-    private Button mApproveGameRequestButton, mDeleteGameButton, mUpdateGameButton;
+    private Button mApproveGameRequestButton, mDeleteGameButton, mUpdateGameButton, mBackButton;
 
     // Initialize the boolean to determine the user's role
     private Boolean isAdmin;
@@ -57,11 +57,12 @@ public class GameDetailsActivity extends AppCompatActivity implements View.OnCli
     protected void onCreate(Bundle savedInstanceState)
     {
         // Set the view
-        Log.d(LOG_TAG, "Creating the Game Details view");
+        Log.d(LOG_TAG, "Creating the page view");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_details);
 
         // Instantiate the UI elements
+        Log.d(LOG_TAG, "Instantiating UI elements");
         mGameDetailsTitle = findViewById(R.id.game_details_title);
         mGameDetailsId = findViewById(R.id.game_details_id);
         mGameDetailsDeveloper = findViewById(R.id.game_details_developer);
@@ -76,6 +77,11 @@ public class GameDetailsActivity extends AppCompatActivity implements View.OnCli
         mApproveGameRequestButton = findViewById(R.id.approvegame_button);
         mDeleteGameButton = findViewById(R.id.deletegame_button);
         mUpdateGameButton = findViewById(R.id.updategame_button);
+        mBackButton = findViewById(R.id.back_button);
+
+        // Set OnClick Listener on the back button
+        Log.d(LOG_TAG, "Setting OnClick Listener");
+        mBackButton.setOnClickListener(this);
 
         // Make a Database Helper to manipulate the database
         Log.d(LOG_TAG, "Making database helper");
@@ -251,7 +257,7 @@ public class GameDetailsActivity extends AppCompatActivity implements View.OnCli
             {
                 Log.d(LOG_TAG, "Game already approved");
                 // Make Approve Game Request button unclickable and gray it out
-                mApproveGameRequestButton.setBackgroundColor(getColor(R.color.light_purple));
+                mApproveGameRequestButton.setBackgroundColor(getColor(R.color.disabledButton));
                 mApproveGameRequestButton.setClickable(false);
             }
         }
@@ -293,7 +299,7 @@ public class GameDetailsActivity extends AppCompatActivity implements View.OnCli
          */
         if (id == R.id.approvegame_button)
         {
-            Log.d(LOG_TAG, "Approving Game Request");
+            Log.d(LOG_TAG, "User clicked Approve button, approving Game Request");
             /**
              * Update the selected Game to be approved
              * Pass in the data that the Game already has to ensure that only the Approved attribute changes.
@@ -308,7 +314,7 @@ public class GameDetailsActivity extends AppCompatActivity implements View.OnCli
         }
         else if (id == R.id.deletegame_button)
         {
-            Log.d(LOG_TAG, "Deleting game");
+            Log.d(LOG_TAG, "User clicked Delete button, eleting game");
             // Delete the selected Game
             dbHelper.deleteGameFromDB(String.valueOf(mGame.getId()));
 
@@ -319,11 +325,16 @@ public class GameDetailsActivity extends AppCompatActivity implements View.OnCli
         }
         else if (id == R.id.updategame_button)
         {
-            Log.d(LOG_TAG, "Updating game");
+            Log.d(LOG_TAG, "User clicked Update button, updating game");
             // Navigate to the Update Game page
             Intent intent = new Intent(GameDetailsActivity.this, UpdateGameActivity.class);
             intent.putExtra("gameToUpdate", mGame);
             startActivity(intent);
+        }
+        else if (id == R.id.back_button)
+        {
+            Log.d(LOG_TAG, "User clicked Back button, navigating back to Game List page");
+            navigateBackToGamesList();
         }
     }
 
@@ -332,8 +343,10 @@ public class GameDetailsActivity extends AppCompatActivity implements View.OnCli
      */
     private void navigateBackToGamesList()
     {
-        Log.d(LOG_TAG, "Navigating back to Games List page");
+        // Navigate to the Game List page
         Intent intent = new Intent(GameDetailsActivity.this, AppContentActivity.class);
+        intent.putExtra("fragmentToLoad", "GamesList");
         startActivity(intent);
+        finish();
     }
 }
