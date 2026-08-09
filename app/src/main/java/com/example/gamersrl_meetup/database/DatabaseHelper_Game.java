@@ -344,7 +344,7 @@ public class DatabaseHelper_Game extends DatabaseHelper<Game>
         values.put(KEY_DESCRIPTION, "A looter-shooter set in a science-fantasy setting where the players play as Vault Hunters hunting for treasure in Vaults.");
         values.put(KEY_DEVELOPER, "Gearbox");
         values.put(KEY_PUBLISHER, "2K");
-        values.put(KEY_RELEASE_DATE, "9/11/2025 00:00:00");
+        values.put(KEY_RELEASE_DATE, "09/11/2025 00:00:00");
         values.put(KEY_MIN_PLAYERS, 1);
         values.put(KEY_MAX_PLAYERS, 4);
         values.put(KEY_PICTURE_URI, R.drawable.borderlands4);
@@ -359,7 +359,7 @@ public class DatabaseHelper_Game extends DatabaseHelper<Game>
         values.put(KEY_DESCRIPTION, "Overcooked is a chaotic couch co-op cooking game for one to four players. Working as a team, you and your fellow chefs must prepare, cook and serve up a variety of tasty orders before the baying customers storm out in a huff.");
         values.put(KEY_DEVELOPER, "Ghost Town Games Ltd.");
         values.put(KEY_PUBLISHER, "Team17 Digital Ltd");
-        values.put(KEY_RELEASE_DATE, "8/3/2016 00:00:00");
+        values.put(KEY_RELEASE_DATE, "08/03/2016 00:00:00");
         values.put(KEY_MIN_PLAYERS, 1);
         values.put(KEY_MAX_PLAYERS, 4);
         values.put(KEY_PICTURE_URI, R.drawable.overcooked);
@@ -374,7 +374,7 @@ public class DatabaseHelper_Game extends DatabaseHelper<Game>
         values.put(KEY_DESCRIPTION, "His vengeance against the Gods of Olympus years behind him, Kratos now lives as a man in the realm of Norse Gods and monsters. It is in this harsh, unforgiving world that he must fight to survive… and teach his son to do the same.");
         values.put(KEY_DEVELOPER, "Santa Monica Studio, Jetpack Interactive");
         values.put(KEY_PUBLISHER, "PlayStation Publishing LLC");
-        values.put(KEY_RELEASE_DATE, "1/14/2022 00:00:00");
+        values.put(KEY_RELEASE_DATE, "01/14/2022 00:00:00");
         values.put(KEY_MIN_PLAYERS, 1);
         values.put(KEY_MAX_PLAYERS, 1);
         values.put(KEY_PICTURE_URI, R.drawable.god_of_war);
@@ -389,7 +389,7 @@ public class DatabaseHelper_Game extends DatabaseHelper<Game>
         values.put(KEY_DESCRIPTION, "Play through all nine Skywalker saga films in a game unlike any other. With over 300 playable characters, over 100 vehicles, and 23 planets to explore, a galaxy far, far away has never been more fun!");
         values.put(KEY_DEVELOPER, "TT Games");
         values.put(KEY_PUBLISHER, "Warner Bros.");
-        values.put(KEY_RELEASE_DATE, "4/5/2022 00:00:00");
+        values.put(KEY_RELEASE_DATE, "04/05/2022 00:00:00");
         values.put(KEY_MIN_PLAYERS, 1);
         values.put(KEY_MAX_PLAYERS, 2);
         values.put(KEY_PICTURE_URI, R.drawable.lego_star_wars_the_skywalker_saga);
@@ -404,13 +404,28 @@ public class DatabaseHelper_Game extends DatabaseHelper<Game>
         values.put(KEY_DESCRIPTION, "10 years of horror. 10 years of jump scares and close calls. 10 years of brutal sacrifices and thrilling escapes. Trapped forever in a realm of eldritch evil where even death is not an escape, four determined Survivors face a bloodthirsty Killer in a vicious game of nerve and wits.");
         values.put(KEY_DEVELOPER, "Behaviour Interactive Inc.");
         values.put(KEY_PUBLISHER, "Behaviour Interactive Inc.");
-        values.put(KEY_RELEASE_DATE, "6/14/2016 00:00:00");
+        values.put(KEY_RELEASE_DATE, "06/14/2016 00:00:00");
         values.put(KEY_MIN_PLAYERS, 1);
         values.put(KEY_MAX_PLAYERS, 5);
         values.put(KEY_PICTURE_URI, R.drawable.dead_by_daylight);
         values.put(KEY_APPROVED, "Y");
         // Insert the values into the table
         Log.d(LOG_TAG, "Inserting Dead by Daylight into db");
+        database.insert(TABLE_NAME, null, values);
+
+        // Refresh the ContentValues and add to the table
+        values = new ContentValues();
+        values.put(KEY_TITLE, "Co-op Hot Potato");
+        values.put(KEY_DESCRIPTION, "Hot potato, but you work together, and there's lava.");
+        values.put(KEY_DEVELOPER, "Sour Cream, Inc.");
+        values.put(KEY_PUBLISHER, "Sour Cream, Inc.");
+        values.put(KEY_RELEASE_DATE, "07/07/2016 00:00:00");
+        values.put(KEY_MIN_PLAYERS, 2);
+        values.put(KEY_MAX_PLAYERS, 8);
+        values.put(KEY_PICTURE_URI, R.drawable.neckdefender);
+        values.put(KEY_APPROVED, "Y");
+        // Insert the values into the table
+        Log.d(LOG_TAG, "Inserting Co-oop Hot Potato into db");
         database.insert(TABLE_NAME, null, values);
     }
 }
