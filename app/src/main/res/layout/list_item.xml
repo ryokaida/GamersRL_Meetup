@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="10dp"
+    android:layout_margin="5dp"
     >
 
     <LinearLayout
@@ -27,7 +27,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/list_item_view_button_text"
-            android:textColor="@color/white"
             />
 
     </LinearLayout>
@@ -125,6 +124,100 @@
 
             </LinearLayout>
 
+            <!--
+                LinearLayout to contain the extra information content for the list item
+                In this section is a bunch of UI elements that are set to invisible and turned visible when they are needed.
+            -->
+            <LinearLayout
+                android:id="@+id/extra_listitem_information"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+
+                <LinearLayout
+                    android:id="@+id/game_extra_approved"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    >
+                    <TextView
+                        android:id="@+id/approved_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:visibility="gone"
+                        android:text="@string/game_label_approved"
+                        android:layout_marginRight="5dp"
+                        />
+                    <TextView
+                        android:id="@+id/approved_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:visibility="gone"
+                        />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/game_extra_minmaxplayers"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    >
+                    <LinearLayout
+                        android:id="@+id/game_extra_minplayers"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        >
+                        <TextView
+                            android:id="@+id/minplayers_label"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:visibility="gone"
+                            android:text="@string/game_label_minplayers"
+                            android:layout_marginRight="5dp"
+                            />
+                        <TextView
+                            android:id="@+id/minplayers_textview"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="16sp"
+                            android:visibility="gone"
+                            />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/game_extra_maxplayers"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        >
+                        <TextView
+                            android:id="@+id/maxplayers_label"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:visibility="gone"
+                            android:text="@string/game_label_maxplayers"
+                            android:layout_marginRight="5dp"
+                            />
+                        <TextView
+                            android:id="@+id/maxplayers_textview"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="16sp"
+                            android:visibility="gone"
+                            />
+                    </LinearLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+
         </LinearLayout>
 
     </LinearLayout>
@@ -134,7 +227,7 @@
         android:layout_width="match_parent"
         android:layout_height="5dp"
         android:background="?android:attr/listDivider"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         />
 
 </LinearLayout>

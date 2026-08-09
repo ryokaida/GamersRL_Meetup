@@ -2,6 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
 
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -15,38 +16,56 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="20sp"
         android:layout_marginRight="20sp"
-        android:textAlignment="center"
         android:textAllCaps="true"
-        android:textSize="40sp"
+        android:textSize="30sp"
         android:textStyle="bold"
         android:layout_marginBottom="3sp"
         android:layout_marginTop="130dp"
         />
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="15dp"
         >
 
-        <TextView
-            android:id="@+id/game_details_label_id"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:text="@string/list_item_id_label"
-            android:layout_marginRight="5dp"
-            android:textAlignment="center"
-            />
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginRight="250dp"
+            >
 
-        <TextView
-            android:id="@+id/game_details_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
+            <TextView
+                android:id="@+id/game_details_label_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:text="@string/game_label_id"
+                android:layout_marginRight="5dp"
+                android:textAlignment="center"
+                />
+
+            <TextView
+                android:id="@+id/game_details_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textAlignment="center"
+                />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/back_button"
+            android:layout_width="80dp"
+            android:layout_height="48dp"
+            android:elevation="20dp"
+            android:text="@string/back_button_text"
             android:textAlignment="center"
             />
 
@@ -57,7 +76,7 @@
         android:layout_width="300dp"
         android:layout_height="200dp"
         android:layout_gravity="center"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="15dp"
         />
 
     <LinearLayout
@@ -75,7 +94,7 @@
             android:layout_marginLeft="20sp"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:text="@string/game_details_page_label_developer"
+            android:text="@string/game_label_developer"
             />
 
         <TextView
@@ -103,7 +122,7 @@
             android:layout_marginRight="5dp"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:text="@string/game_details_page_label_publisher"
+            android:text="@string/game_label_publisher"
             />
 
         <TextView
@@ -130,7 +149,7 @@
             android:layout_marginRight="5dp"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:text="@string/game_details_page_label_releasedate"
+            android:text="@string/game_label_releasedate"
             />
 
         <TextView
@@ -152,7 +171,7 @@
         android:layout_marginTop="15sp"
         android:textSize="16sp"
         android:textStyle="bold"
-        android:text="@string/list_item_description_label"
+        android:text="@string/game_label_description"
         />
 
     <TextView
@@ -180,7 +199,7 @@
             android:layout_marginRight="5dp"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:text="@string/game_details_page_label_minplayers"
+            android:text="@string/game_label_minplayers"
             />
 
         <TextView
@@ -208,7 +227,7 @@
             android:layout_marginRight="5dp"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:text="@string/game_details_page_label_maxplayers"
+            android:text="@string/game_label_maxplayers"
             />
 
         <TextView
@@ -236,7 +255,7 @@
             android:layout_marginRight="5dp"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:text="@string/game_details_page_label_approved"
+            android:text="@string/game_label_approved"
             />
 
         <TextView
@@ -249,12 +268,55 @@
 
     </LinearLayout>
 
-    <!-- LinearLayout to contain lower page content (TBD) -->
+    <!-- LinearLayout to contain the admin buttons that will be dynamically shown based on the user's role -->
     <LinearLayout
-        android:id="@+id/layout_horizontal_bottom"
+        android:id="@+id/admin_buttons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        />
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="20dp"
+        >
+
+        <Button
+            android:id="@+id/approvegame_button"
+            android:layout_width="120dp"
+            android:layout_height="55dp"
+            android:elevation="20dp"
+            android:textAlignment="center"
+            android:text="@string/activity_gamedetails_approvegamerequest_button_text"
+            android:visibility="gone"
+            android:clickable="false"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginRight="10dp"
+
+            />
+
+        <Button
+            android:id="@+id/updategame_button"
+            android:layout_width="120dp"
+            android:layout_height="55dp"
+            android:elevation="20dp"
+            android:textAlignment="center"
+            android:text="@string/activity_gamedetails_updategamerequest_button_text"
+            android:visibility="gone"
+            android:clickable="false"
+            android:layout_marginRight="10dp"
+            />
+
+        <Button
+            android:id="@+id/deletegame_button"
+            android:layout_width="120dp"
+            android:layout_height="55dp"
+            android:elevation="20dp"
+            android:textAlignment="center"
+            android:text="@string/activity_gamedetails_deletegame_button_text"
+            android:visibility="gone"
+            android:clickable="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+    </LinearLayout>
 
 </LinearLayout>

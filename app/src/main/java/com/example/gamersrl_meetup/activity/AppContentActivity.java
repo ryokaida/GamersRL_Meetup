@@ -16,6 +16,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.example.gamersrl_meetup.R;
 import com.example.gamersrl_meetup.fragment.EventsFragment;
 import com.example.gamersrl_meetup.fragment.GamesListFragment;
+import com.example.gamersrl_meetup.fragment.SettingsFragment;
+import com.example.gamersrl_meetup.utility.SharedPreferencesHelper;
 import com.google.android.material.navigation.NavigationView;
 import com.example.gamersrl_meetup.fragment.MapFragment;
 
@@ -26,10 +28,16 @@ import com.example.gamersrl_meetup.fragment.MapFragment;
  */
 public class AppContentActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
 {
+    // Set up the Log tag [26]
+    private final String LOG_TAG = "AppContentActivity - ";
+
     // Create reference to the DrawerLayout
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mActionBarDrawerToggle;
     private NavigationView mNavigationView;
+
+    // Initialize Shared Preferences Helper [56] [57] [58]
+    SharedPreferencesHelper sharedPreferencesHelper;
 
     /**
      * Create the MainActivity page and generate the correct Fragment based on what Navigation Menu Item was chosen.
@@ -43,17 +51,27 @@ public class AppContentActivity extends AppCompatActivity implements NavigationV
     protected void onCreate(Bundle savedInstanceState)
     {
         // Load the saved instance state and set the main layout
+        Log.d(LOG_TAG, "Creating page view");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_appcontent);
 
+
+        // Instantiate the Shared Preferences Helper and determine the appearance mode to use [56] [57] [58]
+        Log.d(LOG_TAG, "Creating Shared Preferences Helper and setting the appearanced based on the Shared Service");
+        sharedPreferencesHelper = new SharedPreferencesHelper(this);
+        sharedPreferencesHelper.setAppearanceFromSharedPreferences();
+
         // Instantiate the Navigation Drawer and  the NavigationView object
+        Log.d(LOG_TAG, "Creating Navigation Drawer");
         mDrawerLayout = findViewById(R.id.nav_drawer_layout);
         mNavigationView = findViewById(R.id.nav_view);
 
         // Set the NavigationItemSelected Listener on the NavigationView object
+        Log.d(LOG_TAG, "Setting NavigationItemSelected Listener");
         mNavigationView.setNavigationItemSelectedListener(this);;
 
         // Set up the Action Bar Drawer Toggle
+        Log.d(LOG_TAG, "Setting Action Bar Drawer Toggle");
         mActionBarDrawerToggle = new ActionBarDrawerToggle(
                 this, // The activity/context for the Action Bar Drawer Toggle
                 mDrawerLayout, // The Drawer Layout
@@ -72,11 +90,24 @@ public class AppContentActivity extends AppCompatActivity implements NavigationV
         }
 
         /**
-         * Set default Fragment to PirateListFragment
-         * by making a new PirateListFragment and replacing the FrameLayout in activity_appcontent with it
+         * Figure out which fragment to load.
+         * This is done because other pages might lead back to the AppContentActivity page and the correct fragment needs to be loaded.
          */
-        navigateToEventsFragment();
-        navigateToGamesListFragment();
+        String fragmentToLoad = getIntent().getStringExtra("fragmentToLoad");
+        Log.d(LOG_TAG, "Determined the fragment to load: " + fragmentToLoad);
+
+        if (fragmentToLoad != null && fragmentToLoad.equals("GamesList"))
+        {
+            navigateToGamesListFragment();
+        }
+        else if (fragmentToLoad != null && fragmentToLoad.equals("Settings"))
+        {
+            navigateToSettingsFragment();
+        }
+        else
+        {
+            navigateToEventsFragment();
+        }
     }
 
     @Override
@@ -106,6 +137,7 @@ public class AppContentActivity extends AppCompatActivity implements NavigationV
          * Inflate the correct Fragment based on the chosen Navigation Menu Item
          * If the user selects Events, then open the Events Fragment.
          * If the user selects Games List, then open the Games List Fragment.
+         * If the user selects Settings, then open the Settings Fragment.
          */
         if (id == R.id.nav_events)
         {
@@ -119,29 +151,35 @@ public class AppContentActivity extends AppCompatActivity implements NavigationV
         {
             navigateToMapFragment();
         }
+        else if (id == R.id.nav_settings)
+        {
+            navigateToSettingsFragment();
+        }
 
         // Close Navigation Drawer
         mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
 
-//    /**
-//     * Inflate the Menu Items - Add items to the Action Bar if it is present.
-//     *
-//     * @param menu The options menu in which you place your items.
-//     *
-//     * @return That inflating the Menu Items was successful
-//     */
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu)
-//    {
-//        getMenuInflater().inflate(R.menu.nav_drawer_items, menu);
-//        return true;
-//    }
+    /**
+     * Inflate the Menu Items - Add items to the Action Bar if it is present.
+     *
+     * @param menu The options menu in which you place your items.
+     *
+     * @return That inflating the Menu Items was successful
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        Log.d(LOG_TAG, "Creating Options Menu");
+        getMenuInflater().inflate(R.menu.nav_drawer_items, menu);
+        return true;
+    }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig)
     {
+        Log.d(LOG_TAG, "Setting up new Configuration");
         super.onConfigurationChanged(newConfig);
         mActionBarDrawerToggle.onConfigurationChanged(newConfig);
     }
@@ -152,6 +190,7 @@ public class AppContentActivity extends AppCompatActivity implements NavigationV
      */
     private void navigateToEventsFragment()
     {
+        Log.d(LOG_TAG, "Navigating to Events Page");
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new EventsFragment()).commit();
     }
 
@@ -161,7 +200,18 @@ public class AppContentActivity extends AppCompatActivity implements NavigationV
      */
     private void navigateToGamesListFragment()
     {
+        Log.d(LOG_TAG, "Navigating to Games List Page");
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new GamesListFragment()).commit();
+    }
+
+    /**
+     * Helper method to set Fragment to SettingsFragment
+     * by making a new SettingsFragment and replacing the FrameLayout in activity_appcontent with it
+     */
+    private void navigateToSettingsFragment()
+    {
+        Log.d(LOG_TAG, "Navigating to Settings Page");
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SettingsFragment()).commit();
     }
 
 //    Helper method to set Fragment to MapFragment

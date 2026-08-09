@@ -8,11 +8,47 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
-    tools:context=".activity.GamesListActivity"
+    tools:context=".activity.AppContentActivity"
     >
 
-    <!-- LinearLayout to contain upper page content (TBD) -->
+    <TextView
+        android:id="@+id/list_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="24sp"
+        android:layout_marginTop="120dp"
+        android:layout_marginBottom="5dp"
+        android:layout_gravity="center_horizontal"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal"
+        android:layout_marginBottom="10dp"
+        >
+
+        <Button
+            android:id="@+id/filter_button"
+            android:layout_width="155dp"
+            android:layout_height="48dp"
+            android:text="@string/list_page_filter_button"
+            android:layout_marginRight="20dp"
+            />
+
+        <Button
+            android:id="@+id/reset_button"
+            android:layout_width="155dp"
+            android:layout_height="48dp"
+            android:text="@string/reset_button_text"
+            android:layout_marginRight="10dp"
+            />
+
+    </LinearLayout>
+
+    <!-- LinearLayout to contain upper page content that is dynamically generated in the code -->
     <LinearLayout
         android:id="@+id/layout_horizontal_top"
         android:layout_width="match_parent"
@@ -31,7 +67,7 @@
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="540dp"
-        android:layout_marginBottom="40dp"
+        android:layout_marginBottom="7dp"
         android:orientation="vertical"
         android:elevation="0dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -45,7 +81,7 @@
         android:background="?android:attr/listDivider"
         />
 
-    <!-- LinearLayout to contain lower page content (TBD) -->
+    <!-- LinearLayout to contain lower page content that is dynamically generated in the code -->
     <LinearLayout
         android:id="@+id/layout_horizontal_bottom"
         android:layout_width="match_parent"

@@ -9,7 +9,6 @@ import android.util.Log;
 import com.example.gamersrl_meetup.R;
 import com.example.gamersrl_meetup.model.Game;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -176,20 +175,6 @@ public class DatabaseHelper_Game extends DatabaseHelper<Game>
     }
 
     /**
-     * Wrapper method to retrieve all unapproved Games from the database so that admins can approve them.
-     *
-     * @return All Games from the database that unapproved Gamers
-     */
-    public List<Game> getAllUnapprovedGames()
-    {
-        // Make the query to get data
-        String selectQuery = "SELECT * FROM " + TABLE_NAME + " WHERE " + KEY_APPROVED + " = ?";
-        Log.d(LOG_TAG, "Created query to get all approved games: " + selectQuery);
-
-        return getItemsFromDB(selectQuery, new String[]{"N"});
-    }
-
-    /**
      * Add a new Game to the database [12].
      *
      * @param game The Game to add to the database
@@ -235,7 +220,7 @@ public class DatabaseHelper_Game extends DatabaseHelper<Game>
         db.insert(TABLE_NAME, null, values);
 
         // Close the database connection
-       // db.close();
+        db.close();
     }
 
     /**
@@ -250,11 +235,9 @@ public class DatabaseHelper_Game extends DatabaseHelper<Game>
 
     /**
      * Update one Game in the database (found by its ID) [39].
-     * If there is any attributes that don't need updated, pass in the empty string.
-     * If the attribute that doesn't need updating is an integer, pass in -1.
-     * If the attribute that doesn't need updating is a date, pass in null.
+     * If there are any attributes that don't need updated, pass in what the Game already has for that value (e.g. by passing in game.getTitle()).
      *
-     * @param id The ID of the Game
+     * @param id The ID of the Game - This comes in as a string instead of an integer because SQL Lite requires a string array for the where args
      * @param title The Game's title
      * @param description The game's description
      * @param developer The game's developer
@@ -296,17 +279,17 @@ public class DatabaseHelper_Game extends DatabaseHelper<Game>
         {
             values.put(KEY_RELEASE_DATE, releaseDate.getTime());
         }
-        if (minPlayers == -1)
+        if (minPlayers > 0)
         {
             values.put(KEY_MIN_PLAYERS, minPlayers);
         }
-        if (maxPlayers == -1)
+        if (maxPlayers > 0)
         {
             values.put(KEY_MAX_PLAYERS, maxPlayers);
         }
-        if (pictureURI == -1)
+        if (pictureURI > -1)
         {
-            values.put(KEY_MAX_PLAYERS, pictureURI);
+            values.put(KEY_PICTURE_URI, pictureURI);
         }
         if (approved != null && !approved.isEmpty())
         {
@@ -314,10 +297,33 @@ public class DatabaseHelper_Game extends DatabaseHelper<Game>
         }
 
         // Update the database with the new value(s)
+        Log.d(LOG_TAG, "Updating item with ID: " + id);
         db.update(TABLE_NAME, values, "id=?", new String[]{id});
 
         // Close the database connection
-        // db.close();
+        db.close();
+    }
+
+    /**
+     * Wrapper method to delete a Game from the database.
+     *
+     * @param id The ID of the Game - This comes in as a string instead of an integer because SQL Lite requires a string array for the where args
+     */
+    public void deleteGameFromDB(String id)
+    {
+        deleteItemFromDB(TABLE_NAME, id);
+    }
+
+    /**
+     * Delete one item in the database (found by its ID) [44].
+     *
+     * @param tableName The name of the table to delete from
+     * @param id The ID of the Game - This comes in as a string instead of an integer because SQL Lite requires a string array for the where args
+     */
+    @Override
+    public void deleteItemFromDB(String tableName, String id)
+    {
+        super.deleteItemFromDB(tableName, id);
     }
 
     /**

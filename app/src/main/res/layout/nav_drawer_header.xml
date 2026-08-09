@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Icons from EliverLara's GitHub [59]. -->
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
 
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/nav_drawer_header_image"
@@ -12,8 +13,8 @@
         android:layout_height="80dp"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="130dp"
-        android:src="@drawable/neckdefender"
-        />
+        android:src="@drawable/app_logo"
+        app:tint="@color/colorPrimaryDark" />
 
     <TextView
         android:id="@+id/nav_drawer_header_title"
