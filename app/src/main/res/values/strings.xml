@@ -11,12 +11,21 @@
     <!-- Strings for the Games List page -->
     <string name="frag_gameslist_header">Games List</string>
     <string name="frag_gameslist_addgamerequest_button_text">Request a Game to be Added</string>
-    <string name="activity_gameslist_filter_approved_header">Filter Games by Approved Status</string>
-    <string name="activity_gameslist_filter_approved_prompt">Select Approved status</string>
-    <string name="activity_gameslist_filter_numberofplayers_header">Filter Games by Number of Players</string>
-    <string name="activity_gameslist_filter_minmaxplayers_prompt">Select number of players</string>
-    <string name="activity_gameslist_filter_minplayers_header">Min Players</string>
-    <string name="activity_gameslist_filter_maxplayers_header">Max Players</string>
+
+    <!-- Strings for the filters -->
+    <string name="filter_header">Filter</string>
+    <string name="filter_ok_text">Apply</string>
+    <string name="filter_cancel_text">Cancel</string>
+    <string name="game_filter_developer_header">Developer</string>
+    <string name="game_filter_developer_prompt">Select Developer</string>
+    <string name="game_filter_publisher_header">Publisher</string>
+    <string name="game_filter_publisher_prompt">Select Publisher</string>
+    <string name="game_filter_approved_header">Approved Status</string>
+    <string name="game_filter_approved_prompt">Select Approved status</string>
+    <string name="game_filter_numberofplayers_header">Number of Players</string>
+    <string name="game_filter_minmaxplayers_prompt">Select number of players</string>
+    <string name="game_filter_minplayers_header">Minimum Players</string>
+    <string name="game_filter_maxplayers_header">Maximum Players</string>
 
     <!-- Strings for the Game Details page -->
     <string name="activity_gamedetails_header">Game Details Page</string>

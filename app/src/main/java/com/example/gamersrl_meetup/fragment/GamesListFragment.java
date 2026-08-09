@@ -1,5 +1,6 @@
 package com.example.gamersrl_meetup.fragment;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -7,10 +8,12 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -41,20 +44,19 @@ public class GamesListFragment extends Fragment implements View.OnClickListener
     private final String LOG_TAG = "GAMES LIST ACTIVITY - ";
 
     // Initialize the UI elements
-    private TextView mHeader, mFilterHeader;
+    private TextView mHeader;
     private RecyclerView mRecyclerView;
     private LinearLayoutManager layoutManager;
     private Button mAddGameRequestButton, mFilterButton, mResetButton;
 
-    // Initialize variables for the Approved attribute and Number of Players Spinners [12]
-    private Spinner mSpinnerApproved, mSpinnerMinPlayers, mSpinnerMaxPlayers;
-    private String FILTER_OPTION_APPROVED = "option_selected";
+    // Initialize the Filter Dialog UI elements [48]
+    private Dialog mFilterDialog;
+    private Button mFilterDialogOKButton, mFilterDialogCancelButton;
+
+    // Initialize variables for the Filter Spinners [12]
+    private Spinner mSpinnerDeveloper, mSpinnerPublisher, mSpinnerMinPlayers, mSpinnerMaxPlayers, mSpinnerApproved;
+    private LinearLayout mGroupForApprovedFilter; // Used to turn the visibility of the Approved Filter UI elements on and off
     private final String DEFAULT_SPINNER_OPTION = "---";
-    private LinearLayout mGroupForNumberOfPlayersSPinners;
-    private String FILTER_OPTION_MINPLAYERS = "option_selected";
-    private String FILTER_OPTION_MAXPLAYERS = "option_selected";
-    private final String MIN_PLAYERS_QUERY_CLAUSE = "<minPlayersClause>";
-    private final String MAX_PLAYERS_QUERY_CLAUSE = "<maxPlayersClause>";
 
     // Initialize the database helper and the adapter
     private DatabaseHelper_Game dbHelper;
@@ -63,22 +65,25 @@ public class GamesListFragment extends Fragment implements View.OnClickListener
     // Initialize the boolean to determine the user's role
     private boolean isAdmin;
 
+    // Create a list of Games that the page can use
+    private List<Game> mGames;
+
     /**
      * Inflate the layout for the Games List Fragment.
      *
-     * @param inflater The LayoutInflater object that can be used to inflate
-     * any views in the fragment,
-     * @param container If non-null, this is the parent view that the fragment's
-     * UI should be attached to.  The fragment should not add the view itself,
-     * but this can be used to generate the LayoutParams of the view.
+     * @param inflater           The LayoutInflater object that can be used to inflate
+     *                           any views in the fragment,
+     * @param container          If non-null, this is the parent view that the fragment's
+     *                           UI should be attached to.  The fragment should not add the view itself,
+     *                           but this can be used to generate the LayoutParams of the view.
      * @param savedInstanceState If non-null, this fragment is being re-constructed
-     * from a previous saved state as given here.
-     *
+     *                           from a previous saved state as given here.
      * @return The Games List Fragment view
      */
     @NonNull
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
+    {
         // Inflate the layout for this Fragment
         View view = inflater.inflate(R.layout.list_page_layout, container, false);
 
@@ -96,14 +101,9 @@ public class GamesListFragment extends Fragment implements View.OnClickListener
         mHeader = view.findViewById(R.id.list_header);
         mHeader.setText(R.string.frag_gameslist_header);
 
-        // Initialize UI elements for filtering
-        mFilterHeader = view.findViewById(R.id.filter_header);
-        mSpinnerApproved = view.findViewById(R.id.spinner_filter_approved); // For filtering by Approved attribute
+        // Instantiate Filter/Reset buttons
         mResetButton = view.findViewById(R.id.reset_button);
         mFilterButton = view.findViewById(R.id.filter_button);
-        mGroupForNumberOfPlayersSPinners = view.findViewById(R.id.number_of_players_filters); // For filtering by Number of Players
-        mSpinnerMinPlayers = view.findViewById(R.id.spinner_filter_minplayers); // For filtering by Number of Players
-        mSpinnerMaxPlayers = view.findViewById(R.id.spinner_filter_maxplayers); // For filtering by Number of Players
 
         // Set the OnClick Listener for the filter buttons
         mFilterButton.setOnClickListener(this);
@@ -112,9 +112,6 @@ public class GamesListFragment extends Fragment implements View.OnClickListener
         // Make a Database Helper to manipulate the database
         Log.d(LOG_TAG, "Making database helper");
         dbHelper = new DatabaseHelper_Game(this.getContext());
-
-        // Make an empty list of Games
-        List<Game> games;
 
         /**
          * If the database is empty, then populate it.
@@ -141,36 +138,21 @@ public class GamesListFragment extends Fragment implements View.OnClickListener
         {
             // Get all the items for the list
             Log.d(LOG_TAG, "Populating list with all unapproved games");
-            //games = dbHelper.getAllUnapprovedGames();
-            games = dbHelper.getAllGames();
-
-            Log.d(LOG_TAG, "Creating Approved attribute filter spinner");
-            // Show the spinner to filter by the Approved attribute
-            mFilterHeader.setText(R.string.activity_gameslist_filter_approved_header);
-            mSpinnerApproved.setVisibility(View.VISIBLE);
-            // Hide the Number of Players spinners
-            mGroupForNumberOfPlayersSPinners.setVisibility(View.GONE);
+            mGames = dbHelper.getAllGames();
         }
         else
         {
             // Get all the items for the list
             Log.d(LOG_TAG, "Populating list with only approved games");
-            games = dbHelper.getAllApprovedGames();
+            mGames = dbHelper.getAllApprovedGames();
 
             // Add the Request to Add Game button to the bottom of the screen
             createAddGameRequestButton(view);
-
-            Log.d(LOG_TAG, "Creating Number of Players filter spinners");
-            // Show the spinner to filter by the Number of Players
-            mFilterHeader.setText(R.string.activity_gameslist_filter_numberofplayers_header);
-            mGroupForNumberOfPlayersSPinners.setVisibility(View.VISIBLE);
-            // Hide the Approved attribute spinners
-            mSpinnerApproved.setVisibility(View.GONE);
         }
 
         // Make the adapter and set it onto the RecyclerView
         Log.d(LOG_TAG, "Making adapter");
-        adapter = new Adapter_Game(games);
+        adapter = new Adapter_Game(mGames);
         mRecyclerView.setAdapter(adapter);
 
         // Make a LinearLayoutManager to draw the objects and set it onto the RecyclerView
@@ -178,12 +160,16 @@ public class GamesListFragment extends Fragment implements View.OnClickListener
         layoutManager = new LinearLayoutManager(this.getContext(), LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(layoutManager);
 
+        // Instantiate the Filter Dialog [48]
+        mFilterDialog = new Dialog(this.getContext());
+
         return view;
     }
 
     /**
      * Set up the Request to Add Game button and add it to the page [27] [28] [29] [30] [31] [32] [33] [34].
      * Use the incoming view as the context to find the Views by ID.
+     *
      * @param v The view to use to set up the UI elements
      */
     private void createAddGameRequestButton(View v)
@@ -231,28 +217,18 @@ public class GamesListFragment extends Fragment implements View.OnClickListener
 
         /**
          * If the basic user clicked the Add Game Request button, then navigate to the Add Game Request page.
-         * If the user clicked the filter button, then handle the Approved/Number of Players filters based on user role.
+         * If the user clicked the filter button, then show the Filter Dialog.
          * If the user clicked the reset button, then reset the list of Games based on user role.
          */
-        if (id == R.id.addgamerequest_button) {
+        if (id == R.id.addgamerequest_button)
+        {
             Log.d(LOG_TAG, "Navigating to Add Game Request page");
             Intent intent = new Intent(getActivity(), AddGameRequestActivity.class);
             startActivity(intent);
         }
         else if (id == R.id.filter_button)
         {
-            /**
-             * If the user is an admin, then filter based on Approved status.
-             * Otherwise, filter based on Number of Players.
-             */
-            if (isAdmin)
-            {
-                handleAdminFilter();
-            }
-            else
-            {
-                handleMinMaxPlayersFilter();
-            }
+            showFilterDialog();
         }
         else if (id == R.id.reset_button)
         {
@@ -269,88 +245,299 @@ public class GamesListFragment extends Fragment implements View.OnClickListener
                 updateRecyclerView(dbHelper.getAllApprovedGames());
             }
         }
+        else if (id == R.id.filter_ok_button)
+        {
+            // Handle filtering and determine if it was successful or not
+            boolean successfulFilter;
+            successfulFilter = handleFiltering();
+
+            /**
+             * If the filter was successful, then dismiss the Filter Dialog.
+             * Otherwise, leave it open.
+             */
+            if (successfulFilter)
+            {
+                mFilterDialog.dismiss();
+            }
+        }
+        else if (id == R.id.filter_cancel_button)
+        {
+            // Close the filter [48]
+            mFilterDialog.dismiss();
+            Toast.makeText(this.getContext(), "Canceled filtering", Toast.LENGTH_SHORT).show();
+        }
     }
 
     /**
-     * Handle filtering on Approved status by admins.
+     * Show the Filter Dialog [48].
      */
-    private void handleAdminFilter()
+    private void showFilterDialog()
     {
-        // Retrieve the selected filter option [12]
-        FILTER_OPTION_APPROVED = mSpinnerApproved.getSelectedItem().toString();
+        // Set up the Filter Dialog and set its attributes
+        mFilterDialog.setContentView(R.layout.dialog_game_filters);
+        mFilterDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        mFilterDialog.setCancelable(false);
+        mFilterDialog.getWindow().getAttributes().windowAnimations = R.style.animation;
+
+        // Instantiate the OK and Cancel buttons on the Filter Dialog
+        mFilterDialogOKButton = mFilterDialog.findViewById(R.id.filter_ok_button);
+        mFilterDialogCancelButton = mFilterDialog.findViewById(R.id.filter_cancel_button);
+
+        // Set OnClick Listeners onto the Filter Dialog buttons
+        mFilterDialogOKButton.setOnClickListener(this);
+        mFilterDialogCancelButton.setOnClickListener(this);
+
+        // Instantiate the filter dropdowns for Developer, Publisher, Min Players, and Max Players
+        mSpinnerDeveloper = mFilterDialog.findViewById(R.id.spinner_filter_developer);
+        mSpinnerPublisher = mFilterDialog.findViewById(R.id.spinner_filter_publisher);
+        mSpinnerMinPlayers = mFilterDialog.findViewById(R.id.spinner_filter_minplayers);
+        mSpinnerMaxPlayers = mFilterDialog.findViewById(R.id.spinner_filter_maxplayers);
+        mGroupForApprovedFilter = mFilterDialog.findViewById(R.id.group_for_approved_filter); // Used to turn the visibility of the Approved Filter UI elements on and off
+        mSpinnerApproved = mFilterDialog.findViewById(R.id.spinner_filter_approved);
 
         /**
-         * If the filter option is the default blank one, then inform the user to select a valid option.
-         * Otherwise, continue.
+         * If the user is an admin, then show the Approved Filter.
+         * Otherwise, hide it.
          */
-        if (FILTER_OPTION_APPROVED.equals(DEFAULT_SPINNER_OPTION))
+        if (isAdmin)
         {
-            showSnackbar(mFilterButton, "Select a valid Approved status!");
+            mGroupForApprovedFilter.setVisibility(View.VISIBLE);
         }
         else
         {
-            // Make an empty list of Games
-            List<Game> games = new ArrayList<>();
+            mGroupForApprovedFilter.setVisibility(View.GONE);
+        }
+
+        // Populate the Developer filter
+        populateFilter("developer", mSpinnerDeveloper);
+
+        // Populate the Publisher filter
+        populateFilter("publisher", mSpinnerPublisher);
+
+        // Show the Filter Dialog
+        mFilterDialog.show();
+    }
+
+    /**
+     * Retrieve the attributes to fill the spinner with from the database,
+     * and populate the spinner with them [49] [50] [51].
+     *
+     * @param filterAttribute   The attribute to populate the spinner with (e.g. Developer, Publisher, etc.)
+     * @param spinnerToPopulate The spinner to populate with the attributes
+     */
+    private void populateFilter(String filterAttribute, Spinner spinnerToPopulate)
+    {
+        // Make a new List of String for the retrieved attributes
+        List<String> attributesForFilter = new ArrayList<>();
+        // Add the default Spinner Option as the first option
+        attributesForFilter.add(DEFAULT_SPINNER_OPTION);
+
+        // Retrieve all Games from the database
+        List<Game> gamesForPopulatingFilter = dbHelper.getAllGames();
+
+        // Iterate through the list of Games from the DB and retrieve the correct attribute for the List of Strings
+        for (Game game : gamesForPopulatingFilter)
+        {
+            /**
+             * If the attribute to populate is Developer, then retrieve the Developer from the Games.
+             * If the attribute to populate is Developer, then retrieve the Publisher from the Games.
+             */
+            if (filterAttribute.equals("developer"))
+            {
+                // Get the Developer from the current Game
+                String attributeToAdd = game.getDeveloper();
+                /**
+                 * If the Developer is not already in the list of attributes for the filter, then add it.
+                 * Otherwise, do nothing.
+                 */
+                if (!attributesForFilter.contains(attributeToAdd))
+                {
+                    attributesForFilter.add(attributeToAdd);
+                }
+            } else if (filterAttribute.equals("publisher"))
+            {
+                // Get the Publisher from the current Game
+                String attributeToAdd = game.getPublisher();
+                /**
+                 * If the Publisher is not already in the list of attributes for the filter, then add it.
+                 * Otherwise, do nothing.
+                 */
+                if (!attributesForFilter.contains(attributeToAdd))
+                {
+                    attributesForFilter.add(attributeToAdd);
+                }
+            }
+        }
+
+        // Populate the Spinner with the actual values from the database [49] [50] [51]
+        ArrayAdapter spinnerAdapter = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_spinner_item, attributesForFilter);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerToPopulate.setAdapter(spinnerAdapter);
+    }
+
+    /**
+     * Handle the filtering logic to filter by the Publisher, Developer, Number of Players, and/or Approved status.
+     *
+     * @return Whether the filtering was successful or not
+     */
+    private Boolean handleFiltering()
+    {
+        // Make an empty list of Games
+        List<Game> gamesForFiltering = new ArrayList<>();
+
+        // Initialize and start the filter query
+        String selectQuery = "SELECT * FROM " + dbHelper.getTableName() + " WHERE ";
+
+        // Initialize the where args for the filter query
+        List<String> whereArgsForFilter = new ArrayList<>();
+
+        // Initialize the where clauses for the filter options
+        String developerWhereClause, publisherWhereClause, numberOfPlayersWhereClause, approvedWhereClause = "";
+
+        // Initialize result of filtering to FALSE
+        boolean successfulFilter = false;
+
+        /**
+         * Set the list of Games to empty before doing the filter.
+         * This is done so that the app shows an empty list if are no Games in a certain category.
+         */
+        //updateRecyclerView(games);
+
+        // Construct where clause for Developer filter
+        developerWhereClause = filterByOneAttribute(mSpinnerDeveloper, "developer", whereArgsForFilter);
+        Log.d(LOG_TAG, "Constructed where clause for developer filter: " + developerWhereClause);
+
+        // Construct where clause for Publisher filter
+        publisherWhereClause = filterByOneAttribute(mSpinnerPublisher, "publisher", whereArgsForFilter);
+        Log.d(LOG_TAG, "Constructed where clause for publisher filter: " + publisherWhereClause);
+
+        /**
+         * Construct where clause for Number of Players filter
+         * Use a custom where query building method since the filter for number of players works differently
+         */
+        numberOfPlayersWhereClause = filterByNumberOfPlayers(whereArgsForFilter);
+        Log.d(LOG_TAG, "Constructed where clause for number of players filter: " + numberOfPlayersWhereClause);
+
+        // Construct where clause for Approved filter
+        approvedWhereClause = filterByOneAttribute(mSpinnerApproved, "approved", whereArgsForFilter);
+        Log.d(LOG_TAG, "Constructed where clause for approved filter: " + approvedWhereClause);
+
+        /**
+         * If all the fields are empty, then inform the user of the error (the logic will also check the Approved Where Clause if the user is an admin; otherwise, it will not).
+         * If the user put in invalid Number of Players options, inform the user of the error.
+         * Otherwise, construct the entire query and run it in the database.
+         */
+        if (!isAdmin && developerWhereClause.isEmpty() && publisherWhereClause.isEmpty() && numberOfPlayersWhereClause.isEmpty())
+        {
+            showSnackbar(mFilterDialogOKButton, "Valid options must be chosen!");
+        }
+        else if (isAdmin && developerWhereClause.isEmpty() && publisherWhereClause.isEmpty() && numberOfPlayersWhereClause.isEmpty() && approvedWhereClause.isEmpty())
+        {
+            showSnackbar(mFilterDialogOKButton, "Valid options must be chosen!");
+        }
+        else if (numberOfPlayersWhereClause.equals("INVALID NUM PLAYERS OPTIONS"))
+        {
+            showSnackbar(mFilterDialogOKButton, "The number of Min Players should not be greater than the number of Max Players!");
+        }
+        else
+        {
+            // Make the query to get data
+            selectQuery += developerWhereClause;
+            selectQuery += publisherWhereClause;
+            selectQuery += numberOfPlayersWhereClause;
 
             /**
-             * Set the list of Games to empty before doing the filter.
-             * This is done so that the app shows an empty list if are no Games in a certain category.
+             * If the user is an admin, also add the Approved Where Clause.
+             * Otherwise, do nothing.
              */
-            updateRecyclerView(games);
+            if (isAdmin)
+            {
+                selectQuery += approvedWhereClause;
+            }
 
-            /** Filter the database by category to find the items that match the selected filter option */
-            Log.d(LOG_TAG, "Filtering to get all games with Approved status: " + FILTER_OPTION_APPROVED);
-            // Make the query to get data
-            String selectQuery = "SELECT * FROM " + dbHelper.getTableName() + " WHERE approved = ?";
-            games = dbHelper.getItemsFromDB(selectQuery, new String[]{FILTER_OPTION_APPROVED});
+            // Remove the "AND" in between the "WHERE" and the first filter where clause
+            selectQuery = selectQuery.replace("WHERE  AND ", "WHERE ");
+
+            // Run the query for the filter
+            Log.d(LOG_TAG, "Filtering to get all games with query: " + selectQuery);
+            // Convert the List of Where Clauses to an array since the getItemsFromDB requires a String[] for the where args [52]
+            String[] whereClauseAsArray = new String[whereArgsForFilter.size()];
+            whereArgsForFilter.toArray(whereClauseAsArray);
+            gamesForFiltering = dbHelper.getItemsFromDB(selectQuery, whereClauseAsArray);
+            mGames = gamesForFiltering;
 
             // Reset the RecyclerView with the resulting list of Games
-            updateRecyclerView(games);
+            updateRecyclerView(mGames);
+
+            successfulFilter = true;
+        }
+
+        return successfulFilter;
+    }
+
+    /**
+     * Retrieve the chosen filter option and add it to the query for filtering.
+     *
+     * @param filteringSpinner The spinner where the filter option was picked on
+     * @param attributeToFilterOn The actual attribute to filter on (e.g. Developer, Publisher, Approved, etc.
+     * @param io_listOfWhereArgsForFilter The list of where args for the query filter
+     * @return The query clause for filtering on the chosen option
+     */
+    private String filterByOneAttribute(Spinner filteringSpinner, String attributeToFilterOn, List<String> io_listOfWhereArgsForFilter)
+    {
+        // Retrieve the selected filter option [12]
+        String filterOptionChosen = filteringSpinner.getSelectedItem().toString();
+
+        /**
+         * If the filter option is the default blank one, then return the empty string.
+         * Otherwise, add the chosen filter to the where args for the filter query and return a query clause to filter on the chosen option.
+         */
+        if (filterOptionChosen.equals(DEFAULT_SPINNER_OPTION))
+        {
+            return "";
+        }
+        else
+        {
+            // Add the filter option chosen to the list of where args
+            io_listOfWhereArgsForFilter.add(filterOptionChosen);
+            return " AND " + attributeToFilterOn + " = ?";
         }
     }
 
-    private void handleMinMaxPlayersFilter()
+    /**
+     * Handle filtering by Number of Players.
+     * This is a custom filter method since the number filters work different than the other String filters.
+     *
+     * @param io_listOfWhereArgsForFilter The list of where args for the query filter
+     * @return The query clause for filtering on the Min/Max Players
+     */
+    private String filterByNumberOfPlayers(List<String> io_listOfWhereArgsForFilter)
     {
         // Retrieve the selected filter options [12]
-        FILTER_OPTION_MINPLAYERS = mSpinnerMinPlayers.getSelectedItem().toString();
-        FILTER_OPTION_MAXPLAYERS = mSpinnerMaxPlayers.getSelectedItem().toString();
+        String filterOptionChosenMinPlayers = mSpinnerMinPlayers.getSelectedItem().toString();
+        String filterOptionChosenMaxPlayers = mSpinnerMaxPlayers.getSelectedItem().toString();
 
         /**
-         * The logic for retrieving the entered data and validating it is in a TryCatch, so the code can be cleaner (not having a bunch of nested If Statements).
-         * Inside the TryCatch, if there is invalid data, an exception is thrown.
-         * The exception is then handled by showing a Toast to the user about the error.
+         * If both Min and Max Players was left empty, return the empty string.
+         * Otherwise, processes the chosen options.
          */
-        try
+        if (filterOptionChosenMinPlayers.equals(DEFAULT_SPINNER_OPTION) || filterOptionChosenMaxPlayers.equals(DEFAULT_SPINNER_OPTION))
         {
-            /**
-             * Verify that a valid option was selected for the Min Players filter.
-             * If the default blank option was selected, then inform the user to select a valid option.
-             */
-            if (FILTER_OPTION_MINPLAYERS.equals(DEFAULT_SPINNER_OPTION))
-            {
-                throw new Exception("Select a valid Approved option for Min Players!");
-            }
-
-            /**
-             * Verify that a valid option was selected for the Max Players filter.
-             * If the default blank option was selected, then inform the user to select a valid option.
-             */
-            if (FILTER_OPTION_MAXPLAYERS.equals(DEFAULT_SPINNER_OPTION))
-            {
-                throw new Exception("Select a valid Approved option for Max Players!");
-            }
-
+            return "";
+        }
+        else
+        {
             // Remove the "+" from the selected number of players if it is present to make input validations and querying the database easier
-            FILTER_OPTION_MINPLAYERS = FILTER_OPTION_MINPLAYERS.replace("+", "");
-            FILTER_OPTION_MAXPLAYERS = FILTER_OPTION_MAXPLAYERS.replace("+", "");
+            filterOptionChosenMinPlayers = filterOptionChosenMinPlayers.replace("+", "");
+            filterOptionChosenMaxPlayers = filterOptionChosenMaxPlayers.replace("+", "");
 
             // Initialize Min and Max Players as integers
             int intMinPlayers;
             int intMaxPlayers;
 
             // Retrieve the selected Min and Max Players as integers
-            intMinPlayers = Integer.parseInt(FILTER_OPTION_MINPLAYERS);
-            intMaxPlayers = Integer.parseInt(FILTER_OPTION_MAXPLAYERS);
+            intMinPlayers = Integer.parseInt(filterOptionChosenMinPlayers);
+            intMaxPlayers = Integer.parseInt(filterOptionChosenMaxPlayers);
 
             /**
              * Verify that the number of Min Players is not greater than the number of Max Players.
@@ -358,78 +545,46 @@ public class GamesListFragment extends Fragment implements View.OnClickListener
              */
             if (intMinPlayers > intMaxPlayers)
             {
-                throw new Exception("The number of Min Players should not be greater than the number of Max Players!");
+                return "INVALID NUM PLAYERS OPTIONS";
             }
 
             Log.d(LOG_TAG, "Valid options chosen for the Number of Players filters");
 
-            // Make an empty list of Games
-            List<Game> games = new ArrayList<>();
+            // Initialize the where clause for the Number of Players filter
+            String numberOfPlayersFilterWhereClause = "";
 
             /**
-             * Set the list of Games to empty before doing the filter.
-             * This is done so that the app shows an empty list if are no Games in a certain category.
+             * If the user selected the 5+ option, set the query to pull Games where min_players is greater than or equal to the 5.
+             * Otherwise, set the query to pull Games where the min_players is equal to the selected number.
              */
-            updateRecyclerView(games);
+            if (intMinPlayers == 5)
+            {
+                numberOfPlayersFilterWhereClause += " AND min_players >= ?";
+            }
+            else
+            {
+                numberOfPlayersFilterWhereClause += " AND min_players = ?";
+            }
 
-            /** Filter the database by category to find the items that match the selected filter option */
-            Log.d(LOG_TAG, "Filtering to get all games with with a Number of Players within the range: " + FILTER_OPTION_MINPLAYERS + "-" + FILTER_OPTION_MAXPLAYERS);
+            /**
+             * If the user selected the 5+ option, set the query to pull Games where max_players is greater than or equal to the 5.
+             * Otherwise, set the query to pull Games where the max_players is equal to the selected number.
+             */
+            if (intMaxPlayers == 5)
+            {
+                numberOfPlayersFilterWhereClause += " AND max_players >= ?";
+            }
+            else
+            {
+                numberOfPlayersFilterWhereClause += " AND max_players = ?";
+            }
 
-            // Construct the filter query
-            String selectQuery = getNumberOfPlayersFilterQuery(intMinPlayers, intMaxPlayers);
-            //showSnackbar(mFilterButton, selectQuery);
-            // Run the query
-            games = dbHelper.getItemsFromDB(selectQuery, new String[]{FILTER_OPTION_MINPLAYERS, FILTER_OPTION_MAXPLAYERS});
+            // Add the filter options chosen to the list of where args
+            io_listOfWhereArgsForFilter.add(filterOptionChosenMinPlayers);
+            io_listOfWhereArgsForFilter.add(filterOptionChosenMaxPlayers);
 
-            // Reset the RecyclerView with the resulting list of Games
-            updateRecyclerView(games);
+            return numberOfPlayersFilterWhereClause;
         }
-        catch (Exception e)
-        {
-            showSnackbar(mFilterButton, e.getMessage());
-        }
-    }
-
-    /**
-     * Helper method to construct the filter query for Number of Players based on what the user selects for the Min/Max Players spinners.
-     *
-     * @param intMinPlayers
-     * @param intMaxPlayers
-     * @return The query to filter by Number of Players
-     */
-    @NonNull
-    private String getNumberOfPlayersFilterQuery(int intMinPlayers, int intMaxPlayers)
-    {
-        // Initialize and start constructing the query with 2 where clauses [45]
-        String selectQuery = "SELECT * FROM " + dbHelper.getTableName() + " WHERE " + MIN_PLAYERS_QUERY_CLAUSE + " AND " + MAX_PLAYERS_QUERY_CLAUSE;
-
-        /**
-         * If the user selected the 5+ option, set the query to pull Games where min_players is greater than or equal to the 5.
-         * Otherwise, set the query to pull Games where the min_players is equal to the selected number.
-         */
-        if (intMinPlayers == 5)
-        {
-            selectQuery = selectQuery.replace(MIN_PLAYERS_QUERY_CLAUSE, "min_players >= ?");
-        }
-        else
-        {
-            selectQuery = selectQuery.replace(MIN_PLAYERS_QUERY_CLAUSE, "min_players = ?");
-        }
-
-        /**
-         * If the user selected the 5+ option, set the query to pull Games where max_players is greater than or equal to the 5.
-         * Otherwise, set the query to pull Games where the max_players is equal to the selected number.
-         */
-        if (intMaxPlayers == 5)
-        {
-            selectQuery = selectQuery.replace(MAX_PLAYERS_QUERY_CLAUSE, "max_players <= ?");
-        }
-        else
-        {
-            selectQuery = selectQuery.replace(MAX_PLAYERS_QUERY_CLAUSE, "max_players = ?");
-        }
-
-        return selectQuery;
     }
 
     /**

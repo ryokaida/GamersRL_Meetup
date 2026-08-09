@@ -187,7 +187,7 @@ public class Adapter_Game extends Adapter
     public int getItemCount()
     {
         int numItemsInList = games.size();
-        Log.d(LOG_TAG, "Retrieved number of items in list: " + String.valueOf(numItemsInList));
+        Log.d(LOG_TAG, "Retrieved number of items in list: " + numItemsInList);
         return numItemsInList;
     }
 
