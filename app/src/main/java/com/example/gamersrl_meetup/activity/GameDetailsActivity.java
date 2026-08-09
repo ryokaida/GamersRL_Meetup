@@ -313,7 +313,7 @@ public class GameDetailsActivity extends AppCompatActivity implements View.OnCli
         }
         else if (id == R.id.deletegame_button)
         {
-            Log.d(LOG_TAG, "User clicked Delete button, eleting game");
+            Log.d(LOG_TAG, "User clicked Delete button, deleting game");
             // Delete the selected Game
             dbHelper.deleteGameFromDB(String.valueOf(mGame.getId()));
 

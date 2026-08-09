@@ -279,7 +279,6 @@
         android:layout_marginTop="20dp"
         >
 
-        <!--            android:clickable="false"-->
         <Button
             android:id="@+id/approvegame_button"
             android:layout_width="120dp"
@@ -288,7 +287,6 @@
             android:textAlignment="center"
             android:text="@string/activity_gamedetails_approvegamerequest_button_text"
             android:visibility="gone"
-
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginRight="10dp"
 
