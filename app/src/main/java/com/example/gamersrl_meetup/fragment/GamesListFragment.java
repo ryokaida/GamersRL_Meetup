@@ -23,7 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gamersrl_meetup.R;
 import com.example.gamersrl_meetup.activity.AddGameRequestActivity;
-import com.example.gamersrl_meetup.activity.TempAdminTester;
+import com.example.gamersrl_meetup.utility.AdminRoleHelper;
 import com.example.gamersrl_meetup.adapter.Adapter_Game;
 import com.example.gamersrl_meetup.database.DatabaseHelper_Game;
 import com.example.gamersrl_meetup.model.Game;
@@ -88,7 +88,7 @@ public class GamesListFragment extends Fragment implements View.OnClickListener
         View view = inflater.inflate(R.layout.list_page_layout, container, false);
 
         // TODO - Actually get admin role from user
-        isAdmin = new TempAdminTester().getIsAdmin();
+        isAdmin = new AdminRoleHelper().getIsAdmin();
 
         /**
          * Instantiate the RecyclerView, the dividers indicating the start and end the RecyclerView, and the Button.

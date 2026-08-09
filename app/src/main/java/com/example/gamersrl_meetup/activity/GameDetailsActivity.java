@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.gamersrl_meetup.R;
 import com.example.gamersrl_meetup.database.DatabaseHelper_Game;
 import com.example.gamersrl_meetup.model.Game;
+import com.example.gamersrl_meetup.utility.AdminRoleHelper;
 
 import java.text.SimpleDateFormat;
 
@@ -105,7 +106,7 @@ public class GameDetailsActivity extends AppCompatActivity implements View.OnCli
         // Get the user role from the intent extras to determine what UI elements and actions should be allowed
         //isAdmin = getIntent().getBooleanExtra("isAdmin", false);
         // TODO - Pass admin role in via intent
-        isAdmin = new TempAdminTester().getIsAdmin();
+        isAdmin = new AdminRoleHelper().getIsAdmin();
 
         /**
          * Set the text to the correct data

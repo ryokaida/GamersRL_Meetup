@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.example.gamersrl_meetup.R;
 import com.example.gamersrl_meetup.activity.GameDetailsActivity;
-import com.example.gamersrl_meetup.activity.TempAdminTester;
+import com.example.gamersrl_meetup.utility.AdminRoleHelper;
 import com.example.gamersrl_meetup.model.Game;
 
 import java.util.List;
@@ -44,7 +44,7 @@ public class Adapter_Game extends Adapter
         super();
         this.games = games;
         // TODO - Actually get admin role from user
-        isAdmin = new TempAdminTester().getIsAdmin();
+        isAdmin = new AdminRoleHelper().getIsAdmin();
     }
 
     /**
